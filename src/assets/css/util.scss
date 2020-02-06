@@ -1,0 +1,42 @@
+$boxWidth: 260px; //盒子宽度
+$boxHeight: 160px; //盒子高度
+
+.table_cell_visible .cell {
+  overflow: visible;
+}
+
+.list-link > li {
+  padding: 5px 10px;
+  line-height: 1;
+  // border-bottom: 1px #ddd dashed;
+}
+
+.list-link > li a {
+  color: #666;
+  text-decoration: none;
+}
+.big_group {
+  margin-bottom: 10px;
+}
+
+.big_group_title {
+  font-size: 18px;
+  text-align: left;
+  line-height: 1;
+  padding: 10px 0;
+}
+.small_group_box {
+  margin-bottom: 10px;
+}
+.small_group_link{
+  display: block;
+  width: 100%;
+}
+
+.n-el-collapse .el-collapse-item__header{
+  background-color: #f0f0f0;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 0 0 10px;
+  margin-bottom: 5px;
+}
