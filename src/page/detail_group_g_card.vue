@@ -9,15 +9,11 @@
     </h1>
     <dm_loading height="100" v-if="!listData"></dm_loading>
     <div class="big_group" v-for="docBig in listData" :key="docBig._id">
-      <h2 class="big_group_title">{{docBig.targetDoc.title}}</h2>
+     
 
-      <el-row :gutter="12" class="big_group_List">
-        <el-col
-          :span="6"
-          class="small_group_box"
-          v-for="docSmall in docBig.sonList"
-          :key="docSmall._id"
-        >
+      <dm_pannel class="MB10" :title="docBig.targetDoc.title"  type="plain">
+  
+        <dm_list_flex_res class=" MT10" :list="docBig.sonList" #default="{item:docSmall}">
           <el-link
             class="small_group_link"
             type="primary"
@@ -25,13 +21,13 @@
             target="_blank"
           >
             <el-card shadow="hover" :body-style="{ padding: '10px' }">
-              <el-row :gutter="20">
-                <el-col :span="18">
+              <el-row :gutter="10">
+                <el-col style="width:60%">
                   <p class="FS14">{{docSmall.targetDoc.title}}</p>
 
                   <p class="FS12 C_999">笔记数：{{docSmall.targetDoc.countData}}</p>
                 </el-col>
-                <el-col :span="6">
+                <el-col style="width:60px">
                   <el-progress
                     type="circle"
                     :percentage="formatScore(docSmall)"
@@ -42,8 +38,10 @@
               </el-row>
             </el-card>
           </el-link>
-        </el-col>
-      </el-row>
+        </dm_list_flex_res>
+      </dm_pannel>
+
+     
     </div>
   </div>
 </template>
@@ -69,7 +67,6 @@ export default {
     },
     //函数：{列表查询后执行的函数}
     async afterSearch() {
-
       let arrGroupId = []; //变量：{需要查询分数的分组id}
 
       //拼接{需要查询分数的分组id}-取二级数据
@@ -147,9 +144,7 @@ export default {
   },
   async created() {
     this.groupId = this.$route.query.groupId;
-
     this.getDataList(); //调用：{ajax获取列表函数}
-
     this.getGroupDoc(); //调用：{获取分组详情函数}
   }
 };

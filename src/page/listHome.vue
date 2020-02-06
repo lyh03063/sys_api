@@ -3,11 +3,7 @@
     <div class="TAC">
       <h1 class="FS24">欢迎使用{{systemName}}</h1>
 
-      <dm_pannel class="MB20" title="默认的列表(4列)">
-        <dm_list_flex_res class="MB20" :list="productList" com="product_old" #default="{item}">
-          <div class="group">{{item.title}}</div>
-        </dm_list_flex_res>
-      </dm_pannel>
+      
 
       <div class="big_group" v-for="docBig in listData" :key="docBig._id">
         <h2 class="big_group_title">{{docBig.targetDoc.title}}</h2>

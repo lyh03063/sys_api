@@ -1,10 +1,7 @@
 Vue.config.productionTip = false
 window.lodash = lodash
 Vue.prototype.$lodash = lodash//让vue实例中可访问$store
-import axios from "axios";
 window.axios = axios;
-import ajax from "@/assets/js/ajax.js";
-window.ajax = ajax;
 import moment from "moment";
 window.moment = moment;
 import "@/assets/js/config.js";
