@@ -40,3 +40,21 @@ $boxHeight: 160px; //盒子高度
   padding: 0 0 0 10px;
   margin-bottom: 5px;
 }
+
+/****************************针对置顶/置底按钮样式补丁-START****************************/
+.sort-top-bottom  .el-icon-top{
+  text-decoration: overline;
+
+}
+
+.sort-top-bottom  .el-icon-bottom{
+  text-decoration: underline;
+
+}
+ /****************************针对置顶/置底按钮样式补丁-END****************************/
+
+  /****************************笔记详情行高设置-START****************************/
+  .detail_box *{
+    line-height: 1.8
+  }
+/****************************笔记详情行高设置-END****************************/

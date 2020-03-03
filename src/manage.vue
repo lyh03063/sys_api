@@ -61,7 +61,7 @@ export default {
   computed: {
     //计算属性
     isProEnvConfig() {
-      return PUB.domain == "http://120.76.160.41:3000";
+      return PUB.domain == "https://www.dmagic.cn";
     },
 
     activeMenuIndex() {

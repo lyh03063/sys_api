@@ -4,7 +4,7 @@
       <dm_debug_item v-model="listData" text="listData" />
     </dm_debug_list>
     <h1 class="FS24 TAC">
-      {{groupDoc.title}}
+      {{groupDoc.title}} <a  class="n-link FS13" href="#/">返回后台</a>
       <!-- <el-button plain @click="getDataList" size="mini">刷新</el-button> -->
     </h1>
     <dm_loading height="100" v-if="!listData"></dm_loading>

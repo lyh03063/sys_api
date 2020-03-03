@@ -41,7 +41,7 @@
     </div>
 
     <!-- <h1>{{dataTypeLabel}}详情</h1> -->
-    <div class="detail_box" >
+    <div class="detail_box">
       <div class v-html="doc._detail"></div>
 
       <div class v-if="doc._dataType=='vedio'">
@@ -75,8 +75,8 @@
         @cancel="isShowDialogEdit = false"
       ></dm_dynamic_form>
     </el-dialog>
-
-    <div class="float_bar">
+    <div class="float_bar" v-if="countReldata>0">
+      
       <ul>
         <li>
           <a href="javascript:;" @click="scrollView('top')">详情</a>
@@ -101,10 +101,13 @@
           :name="item.type"
         >
           <template slot="title">
-            <div class="n-title-bar" >
-               <b > {{item.title}}<span class="C_999">（{{item.list.length}}）</span> </b>
+            <div class="n-title-bar">
+              <b>
+                {{item.title}}
+                <span class="C_999">（{{item.list.length}}）</span>
+              </b>
             </div>
-          
+
             <!-- <i class="header-icon el-icon-info"></i> -->
           </template>
 
@@ -113,7 +116,6 @@
               <a target="_blank" :href="`#/detail_data?dataId=${doc._id}`">{{doc.title}}</a>
             </li>
           </ul>
-         
         </el-collapse-item>
       </template>
     </el-collapse>
@@ -172,6 +174,16 @@ export default {
     };
   },
   computed: {
+    //变量：{关联数据数量}
+    countReldata() {
+      //reduce求和，指定初始n值为0
+      let total = this.arrCards.reduce(
+        (n, doc) => n + (doc["list"].length || 0),
+        0
+      );
+      return total
+
+    },
     arrCards() {
       let arr = [
         //关联笔记 (${noteListByKeyword.length})
@@ -375,10 +387,10 @@ export default {
 
 
 <style  scoped>
-
-.detail_box{
-   padding: 8px 0 12px;
+.detail_box {
+  padding: 8px 0 12px;
 }
+
 .float_bar {
   position: fixed;
   right: 10px;
@@ -391,7 +403,7 @@ export default {
 }
 .float_bar a {
   color: #666;
-  text-decoration: none
+  text-decoration: none;
 }
 .link_iframe {
   width: 100%;
