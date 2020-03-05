@@ -12,6 +12,7 @@
       </div>
       <el-menu
         :default-active="activeMenuIndex"
+        :unique-opened="true"
         class="el-menu-vertical-demo"
         background-color="#545c64"
         text-color="#fff"

@@ -8,7 +8,7 @@
 
     <!-- <dm_dynamic_form :cf="cfFormSearch" v-model="formDataSearch" @submit="searchList"></dm_dynamic_form> -->
 
-    <dm_list_data ref="listData" :cf="cfList" v-if="ready" @single-btn-click="singleEvent">
+    <dm_list_data ref="listData" :cf="cfList" v-if="ready" @single-btn-click="singleEvent" @after-search="updateGroupCountData">
       <!--自定义详情弹窗插槽-->
       <template v-slot:customDetail="{detailData}">
         <detail_data :propDataId="detailData._idRel2"></detail_data>

@@ -75,7 +75,7 @@
         @cancel="isShowDialogEdit = false"
       ></dm_dynamic_form>
     </el-dialog>
-    <div class="float_bar" v-if="countReldata>0">
+    <div class="float_bar " v-if="countReldata>0&&isShowFloatBar">
       
       <ul>
         <li>
@@ -90,6 +90,7 @@
           </li>
         </template>
       </ul>
+      <a class="btn-hide MT15"  href="javascript:;" @click="isShowFloatBar=false" > <i class="el-icon-close">隐藏</i> </a>
     </div>
 
     <el-collapse v-model="activeNames" class="n-el-collapse">
@@ -133,6 +134,7 @@ export default {
   },
   data() {
     return {
+      isShowFloatBar:true,
       activeNames: [], //激活的折叠面板
       familiarityDoc: {},
       dataId: null,
@@ -433,5 +435,19 @@ export default {
   border: 1px #ddd dashed;
   border-radius: 5px;
   margin-bottom: 10px;
+}
+
+.btn-hide{
+  border-radius: 5px;
+  color: #666;
+  display: block;
+ text-align: center;
+  height: 22px;
+  line-height: 22px;
+  background: #F7F8FA;
+  cursor: pointer;
+  font-size: 12px;
+
+
 }
 </style>

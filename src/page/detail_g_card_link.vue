@@ -17,24 +17,17 @@
           <el-link
             class="small_group_link"
             type="primary"
-            :href="`#/detail_group?groupId=${docSmall.targetDoc._id}`"
+            :href="`${docSmall.targetDoc.link}`"
             target="_blank"
           >
             <el-card shadow="hover" :body-style="{ padding: '10px' }">
               <el-row :gutter="10">
-                <el-col style="width:60%">
+                <el-col style="width:100%">
                   <p class="FS14">{{docSmall.targetDoc.title}}</p>
 
-                  <p class="FS12 C_999">数量：{{docSmall.targetDoc.countData}}</p>
+                  
                 </el-col>
-                <el-col style="width:60px" v-if="docSmall.targetDoc.dataType=='note'">
-                  <el-progress
-                    type="circle"
-                    :percentage="formatScore(docSmall)"
-                    :width="60"
-                    color="#67c23a"
-                  ></el-progress>
-                </el-col>
+               
               </el-row>
             </el-card>
           </el-link>
@@ -134,7 +127,7 @@ export default {
         data: {
           _systemId: PUB._systemId,
           groupId: this.groupId,
-          arrType: ["group"]
+          arrType: ["group","url"]
         }
       });
 

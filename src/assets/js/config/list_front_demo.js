@@ -22,7 +22,7 @@ PUB.listCF.list_front_demo = {
     _dataType
   },
   //-------列配置数组-------
-  columns: [COLUMNS.title_fixed_edit,COLUMNS.keyword_edit,COLUMNS.link, COLUMNS.desc, COLUMNS.category],
+  columns: [COLUMNS.title_fixed_edit,COLUMNS._id,COLUMNS.keyword_edit,COLUMNS.link, COLUMNS.desc, COLUMNS.category],
   //-------筛选表单字段数组-------
   searchFormItems: [F_ITEMS.title_search],
   //-------详情字段数组-------
