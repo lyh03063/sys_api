@@ -4,16 +4,16 @@
       <dm_debug_item v-model="listData" text="listData" />
     </dm_debug_list>
     <h1 class="FS24 TAC">
-      {{groupDoc.title}} 
+      {{groupDoc.title}}
       <!-- <el-button plain @click="getDataList" size="mini">刷新</el-button> -->
     </h1>
     <dm_loading height="100" v-if="!listData"></dm_loading>
     <div class="big_group" v-for="docBig in listData" :key="docBig._id">
-     
-
-      <dm_pannel class="MB10" :title="docBig.targetDoc.title"  type="plain">
-  
-        <dm_list_flex_res class=" MT10" :list="docBig.sonList" #default="{item:docSmall}">
+      <dm_pannel class="MB10" :title="docBig.targetDoc.title" type="plain">
+        <template v-slot:more >
+          <a target="_blank" class="FS12" :href="`#/detail_group?groupId=${docBig.targetDoc._id}`">编辑</a>
+        </template>
+        <dm_list_flex_res class="MT10" :list="docBig.sonList" #default="{item:docSmall}">
           <el-link
             class="small_group_link"
             type="primary"
@@ -21,13 +21,13 @@
             target="_blank"
           >
             <el-card shadow="hover" :body-style="{ padding: '10px' }">
-              <el-row :gutter="10">
-                <el-col style="width:60%">
+              <el-row :gutter="10" type="flex">
+                <el-col>
                   <p class="FS14">{{docSmall.targetDoc.title}}</p>
 
                   <p class="FS12 C_999">数量：{{docSmall.targetDoc.countData}}</p>
                 </el-col>
-                <el-col style="width:60px" v-if="docSmall.targetDoc.dataType=='note'">
+                <el-col style="width:70px" v-if="docSmall.targetDoc.dataType=='note'">
                   <el-progress
                     type="circle"
                     :percentage="formatScore(docSmall)"
@@ -40,8 +40,6 @@
           </el-link>
         </dm_list_flex_res>
       </dm_pannel>
-
-     
     </div>
   </div>
 </template>
