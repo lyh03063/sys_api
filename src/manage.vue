@@ -9,7 +9,7 @@
           </div>
           <div class="FR MT20 C_fff">
             <role></role>
-          </div> 
+          </div>
         </el-row>
       </el-header>
     </el-container>
@@ -24,15 +24,13 @@
 </template>
 
 <script>
-
 export default {
   mixins: [MIX.base],
   components: {
-    NavMenu: () => import("./components/NavMenu/NavMenu"),
-    role: () => import("@/page/role.vue") //登录角色组件
+    NavMenu: () => import("@/components/NavMenu/NavMenu"),
+    role: () => import("@/components/common/role") //登录角色组件
   }, //注册组件
-  methods: {
-  },
+  methods: {},
   computed: {
     //计算属性
     isProEnvConfig() {
@@ -95,7 +93,7 @@ export default {
   },
   created() {
     //*引用当前用户名
-    
+
     document.title = PUB.systemName; //修改浏览器标题栏文字
 
     document.onkeydown = e => {

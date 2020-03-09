@@ -57,7 +57,7 @@
 export default {
   mixins: [MIX.base],
   components: {
-    role: () => import("@/page/role.vue") //登录角色组件
+      role: () => import("@/components/common/role") //登录角色组件
   },
   props: {},
   data() {
