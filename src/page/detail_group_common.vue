@@ -21,6 +21,7 @@
           v-model="arrSelect2"
           :cf="cfSelectList2"
           @select="afterSelect"
+          v-if="$power('groupDataList.all.modify')"
         ></dm_select_list_data>
       </template>
     </dm_list_data>
@@ -34,7 +35,7 @@ export default {
   components: {
     detail_data: () => import("@/page/detail_data.vue") //数据详情页组件
   },
-  mixins: [MIX.listGroupData],
+  mixins: [MIX.base,MIX.listGroupData],
   props: {},
   
   data() {

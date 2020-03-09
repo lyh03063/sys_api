@@ -114,7 +114,6 @@ export default {
 
         //Q2:熟悉度uuid不存在，新增
       } else {
-        alert(this.$sys.userId)
         let { data } = await axios({
           //请求接口
           method: "post",

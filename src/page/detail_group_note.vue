@@ -31,12 +31,13 @@
         </div>
       </template>
       <!--分组数据选择列表按钮插槽-->
-      <template v-slot:slot_btn_select>
+      <template v-slot:slot_btn_select  v-if="$power('groupDataList.all.modify')">
         <dm_select_list_data
           class="DPIB MR10"
           v-model="arrSelect2"
           :cf="cfSelectList2"
           @select="afterSelect"
+         
         ></dm_select_list_data>
       </template>
       <!--计分板和筛选按钮插槽-->
@@ -60,6 +61,7 @@
 
 <script>
 export default {
+ mixins: [MIX.base,MIX.listGroupData],
   components: {
     familiarity_select: () =>
       import("@/components/common/familiarity_select.vue"),
@@ -67,7 +69,7 @@ export default {
     detail_data: () => import("@/page/detail_data.vue") //数据详情页组件
     //src\page\detail_data.vue
   },
-  mixins: [MIX.listGroupData],
+ 
   props: {},
   data() {
     return {};
