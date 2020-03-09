@@ -68,7 +68,7 @@ export default {
         arrLookup.push({
           $match: {
             "relDoc._data.userId": {
-              $ne: localStorage[PUB.keyLoginUser]
+              $ne: PUB.$sys.userId
             }
           }
         });
@@ -83,7 +83,7 @@ export default {
           {
             $match: {
               "relDoc._data.familiarity": familiarity,
-              "relDoc._data.userId": localStorage[PUB.keyLoginUser]
+              "relDoc._data.userId": PUB.$sys.userId
             }
           }
         );
@@ -113,7 +113,7 @@ export default {
           idKey: this.idKey, //需要传递idKey****
           findJson,
           arrLookup: this.arrLookup,
-          userId: localStorage[PUB.keyLoginUser]
+          userId: PUB.$sys.userId
         }
       });
 
@@ -131,10 +131,10 @@ export default {
         //_id: null,
         _idRel: groupId,
 
-        findJson: { _idRel: groupId, _userId: localStorage[PUB.keyLoginUser] }, //用户名
+        findJson: { _idRel: groupId, _userId: PUB.$sys.userId }, //用户名
         _data: {
           _idRel: groupId,
-          _userId: localStorage[PUB.keyLoginUser],
+          _userId: PUB.$sys.userId,
           score: this.data,
           dataType: "group"
         } //获取列表的数据总量

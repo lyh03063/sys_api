@@ -318,7 +318,7 @@ export default {
           findJson: {
             _idRel: this.dataId,
             dataType: this.doc._dataType,
-            userId: localStorage[PUB.keyLoginUser]
+            userId: PUB.$sys.userId
           } //获取列表的数据总量
         } //传递参数
       });

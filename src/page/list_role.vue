@@ -15,7 +15,9 @@ export default {
     //角色列表修改时触发的函数
     async roleDataChange(doc) {
       //如果修改的是当前的角色，更新当前的权限
-      if (doc.P1 == localStorage[PUB.keyRoleId]) {
+      console.log("doc._id:", doc._id);
+      console.log("PUB.$sys.roleId:", PUB.$sys.roleId);
+      if (doc._id == PUB.$sys.roleId) {
         util.setLocalStorageObj(PUB.keyPower, doc.power); //调用：{设置一个对象到LocalStorage}
         let clickStatus = await this.$confirm(
           "当前用户的角色被修改，需要刷新页面才能生效，是否刷新？"

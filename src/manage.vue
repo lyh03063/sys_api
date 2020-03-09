@@ -4,14 +4,14 @@
     <el-container>
       <el-header class="home-head-box">
         <el-row>
-         <div class="FL MT13 C_fff MR10" v-if="logoUrl">
+          <div class="FL MT13 C_fff MR10" v-if="logoUrl">
             <img class="W200 H36" src="http://www.dmagic.cn/images/IconS/IconS_2578.png" alt />
           </div>
 
-          <div class="FL  MT17 FS24 C_fff">{{systemName}}</div>
+          <div class="FL MT17 FS24 C_fff">{{$sys.name}}</div>
           <div class="FR MT30 C_fff">
             <i class="el-icon-s-custom MR5" title="用户名"></i>
-            {{this.loginUserName}}(管理员)&nbsp;&nbsp;&nbsp;
+            {{$sys.nickName}} ({{$sys.userId}}/{{$sys.roleName}})&nbsp;&nbsp;&nbsp;
             <a
               href="javascript:;"
               class="MR10"
@@ -39,22 +39,18 @@
 </template>
 
 <script>
+
 export default {
-  components: { 
-     NavMenu: () => import("./components/NavMenu/NavMenu"),
+  mixins: [MIX.base],
+  components: {
+    NavMenu: () => import("./components/NavMenu/NavMenu")
   }, //注册组件
   methods: {
-    // //函数：{切换调试模式函数}
-    // toggleDebug() {
-    //   //来自vuex的当前行数据
-    //   let debug = this.$store.state.debug;
-    //   this.$store.commit("setDebug", !debug);
-
-    // },
     logout() {
       //退出登录函数
-      localStorage[PUB.keyIsLogin] = "0";
-      localStorage[PUB.keyLoginUser] = null;
+
+      util.extendLocalStorageObj(PUB._systemId, { isLogin: "0" }); //调用：{拓展一个LocalStorage对象的函数}
+     
       this.$router.push({ path: "/login" }); //跳转到manage
     }
   },
@@ -72,8 +68,6 @@ export default {
   },
   data() {
     //当前用户角色的权限数据
-
-    window.rolePower = util.getLocalStorageObj(PUB.keyPower);
 
     //完整的菜单列表
     let menuListAll = PUB.menuList;
@@ -96,7 +90,7 @@ export default {
           window.rolePower,
           `${groupKey}.${menuIndex}.search`
         );
-        if (true) {
+        if (hasPower) {
           //hasPower
           menuItemNeed.push(menuItemEach);
         }
@@ -114,7 +108,7 @@ export default {
     });
 
     return {
-      logoUrl:PUB.logoUrl,
+      logoUrl: PUB.logoUrl,
       systemName: PUB.systemName,
       // 导航菜单列表
       navMenuList: menuListNeed
@@ -122,9 +116,9 @@ export default {
   },
   created() {
     //*引用当前用户名
-    this.loginUserName = localStorage[PUB.keyLoginUser];
-    document.title=PUB.systemName;//修改浏览器标题栏文字
-   
+    
+    document.title = PUB.systemName; //修改浏览器标题栏文字
+
     document.onkeydown = e => {
       //绑定ctrl+D事件
       var keyCode = e.keyCode || e.which || e.charCode;
@@ -138,7 +132,6 @@ export default {
         return false;
       }
     };
-    
   }
 };
 </script>

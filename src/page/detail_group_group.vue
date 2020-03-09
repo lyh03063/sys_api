@@ -60,11 +60,11 @@ export default {
       let urlList = PUB.listCF.list_familiarity.url.list;
       let ajaxParam = {
         //_id: null,
-        // _userId: localStorage[PUB.keyLoginUser],//用户名
+        // _userId: PUB.$sys.userId,//用户名
         findJson: {
           _idRel: { $in: arrGroupId },
           dataType: "group",
-          _userId: localStorage[PUB.keyLoginUser]
+          _userId: PUB.$sys.userId
         } //获取列表的数据总量
       };
       Object.assign(ajaxParam, PUB.listCF.list_familiarity.paramAddonPublic); //合并公共参数

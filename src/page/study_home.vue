@@ -27,22 +27,37 @@
           route="detail_group_g_card?groupId=5e5f49b5a56e720593572973"
         >演示demo</el-menu-item>
 
+        <el-submenu index="frontAPI">
+          <template slot="title">前端API</template>
+          <el-menu-item index="html_api" route="list_html_api">Html-API</el-menu-item>
+          <el-menu-item index="css_api" route="list_css_api">Css-API</el-menu-item>
+          <el-menu-item index="js_api" route="list_js_api">Javascript-API</el-menu-item>
+        </el-submenu>
         <el-menu-item
           index="thirdPart"
           route="detail_g_card_link?groupId=5e18821555a1e947e7bec88d"
         >第三方资源</el-menu-item>
       </el-menu>
-      <div class="MT20">
-        <a href="#/listHome" class="C_fff">后台首页</a>
+
+      <div class="MT20 C_fff">
+        <i class="el-icon-s-custom MR5" title="用户名"></i>
+        {{$sys.nickName}} ({{$sys.userId}}/{{$sys.roleName}})&nbsp;&nbsp;&nbsp;
+       
       </div>
     </div>
 
-    <router-view :key="groupId"></router-view>
+    <dm_debug_list>
+      <dm_debug_item v-model="activeMenuIndex" text="activeMenuIndex" />
+    </dm_debug_list>
+    <keep-alive>
+      <router-view :key="groupId" style="padding:10px"></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
 export default {
+  mixins: [MIX.base],
   components: {},
   props: {},
   data() {
@@ -50,7 +65,7 @@ export default {
       logoUrl: PUB.logoUrl,
       systemName: PUB.systemName,
       groupId: null,
-      activeMenuIndex: "note",
+      activeMenuIndex: "html_api",
       mapActiveMenu: {
         "5e19d9fff3c94a3971f45595": "note",
         "5e5f49b5a56e720593572973": "demo",

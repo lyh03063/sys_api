@@ -68,7 +68,7 @@ export default {
     return {
       url:'/crossList?page=tangball_admin',
       modifyUrl:'/crossModify?page=tangball_admin',
-      userName:localStorage.tangball_loginUserName,
+      userName:PUB.$sys.userId,
       findJson:{},
       ak47: true,
       ruleForm: {
@@ -149,7 +149,7 @@ export default {
     if (this.$route.query.flag) {
       this.url = "/crossList?page=tangball_franchisee"
       this.modifyUrl = "/crossModify?page=tangball_franchisee"
-      this.userName = localStorage.franchisee_name
+      this.userName = PUB.$sys.userId
       this.findJson = {
               name:this.userName
             }

@@ -1,7 +1,7 @@
 <template>
   <div class="login-page-box">
     <div class="login-bgimg-box"></div>
-    <div class="login-father-box" >
+    <div class="login-father-box">
       <div class="login-box">
         <div class="login-user-img-box">
           <div class="login-user-img el-icon-s-custom"></div>
@@ -47,16 +47,13 @@ export default {
     var validatepassWord = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
-      }
-     
-      else {
+      } else {
         callback(); //通过校验
       }
     };
 
     return {
       systemName: PUB.systemName,
-     
 
       ruleForm: {
         //表单数据.
@@ -88,18 +85,46 @@ export default {
             passWord: this.ruleForm.passWord
           }
         }
-      }); 
+      });
+      let userId = lodash.get(data, `doc.userName`);
+      let roleId = lodash.get(data, `doc.role`); //变量：{角色Id}
+      let nickName = lodash.get(data, `doc.nickName`); //变量：{角色Id}
 
-      let userName = lodash.get(data, `doc.userName`);
-      if (userName) {
+      let sysData = {};
+      sysData.userId = userId;
+      sysData.roleId = roleId;
+      sysData.nickName = nickName;
+
+      if (userId) {
         this.$message.success("登录成功");
-        localStorage[PUB.keyIsLogin] = 1;
-        localStorage[PUB.keyLoginUser] = userName; //存储用户名
-        PUB.userId = userName;
-      
+
+        sysData.isLogin = 1;
+        
+
+        let { data } = await axios({
+          //请求接口
+          method: "post",
+          url: `${PUB.domain}/info/commonDetail`,
+          data: {
+            _dataType: "role",
+            _systemId: PUB._systemId,
+            _id: roleId
+          }
+        });
+
+        let power = lodash.get(data, `doc.power`);
+        let roleName = lodash.get(data, `doc.name`);
+
+        sysData.roleName = roleName;
+        sysData.name = PUB.systemName;
+        sysData.key = PUB.key;
+
+        util.setLocalStorageObj(PUB._systemId, sysData); //调用：{设置一个对象到LocalStorage}
+
+        util.setLocalStorageObj(PUB.keyPower, power); //调用：{设置一个对象到LocalStorage}
 
         await util.timeout(500); //延迟
- 
+
         if (PUB.goUrlAfterLogin) {
           //Q1:{登录后要跳转的地址}存在
           this.$router.push({ path: PUB.goUrlAfterLogin });
@@ -112,7 +137,6 @@ export default {
       }
     },
     submitForm(formName) {
-
       this.$refs.ruleForm.validate(valid => {
         //表单组件执行validate校验方法
         if (valid) {
@@ -124,19 +148,15 @@ export default {
   },
   created() {
     //------------如果已经登录------------
-    if (localStorage[PUB.keyIsLogin] == 1) {
-     
+    if (PUB.$sys.isLogin == 1) {
       setTimeout(() => {
         this.$router.push({ path: "/listHome" });
       }, 10);
       //跳转到后台首页
     }
-    
   },
-  beforeMount() {
-  },
-  mounted() {
-  }
+  beforeMount() {},
+  mounted() {}
 };
 </script>
 
@@ -150,7 +170,6 @@ export default {
 body,
 html {
   height: 100%;
-
 }
 .login-box {
   width: 100%;

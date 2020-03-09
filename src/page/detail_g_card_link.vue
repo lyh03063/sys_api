@@ -86,7 +86,7 @@ export default {
         findJson: {
           _idRel: { $in: arrGroupId },
           dataType: "group",
-          _userId: localStorage[PUB.keyLoginUser]
+          _userId: PUB.$sys.userId
         }
       };
       Object.assign(ajaxParam, PUB.listCF.list_familiarity.paramAddonPublic); //合并公共参数

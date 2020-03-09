@@ -10,8 +10,12 @@
     <dm_loading height="100" v-if="!listData"></dm_loading>
     <div class="big_group" v-for="docBig in listData" :key="docBig._id">
       <dm_pannel class="MB10" :title="docBig.targetDoc.title" type="plain">
-        <template v-slot:more >
-          <a target="_blank" class="FS12" :href="`#/detail_group?groupId=${docBig.targetDoc._id}`">编辑</a>
+        <template v-slot:more>
+          <a
+            target="_blank"
+            class="FS12"
+            :href="`#/detail_group?groupId=${docBig.targetDoc._id}`" v-if="$power('groupDataList.all.modify')"
+          >编辑</a>
         </template>
         <dm_list_flex_res class="MT10" :list="docBig.sonList" #default="{item:docSmall}">
           <el-link
@@ -46,6 +50,7 @@
 
 <script>
 export default {
+  mixins:[MIX.base],
   components: {},
   props: {},
   data() {
@@ -58,6 +63,7 @@ export default {
   },
 
   methods: {
+   
     //函数：{格式化分数函数}
     formatScore(docSmall) {
       let score = lodash.get(this.dictScore, `${docSmall._idRel2}.score`);
@@ -91,7 +97,7 @@ export default {
         findJson: {
           _idRel: { $in: arrGroupId },
           dataType: "group",
-          _userId: localStorage[PUB.keyLoginUser]
+          _userId: PUB.$sys.userId
         }
       };
       Object.assign(ajaxParam, PUB.listCF.list_familiarity.paramAddonPublic); //合并公共参数

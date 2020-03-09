@@ -38,6 +38,7 @@
 
 <script>
 export default {
+  mixins: [MIX.base],
   //用于列表模糊查询的组件
   props: {
     //目标数据的id键***，在关系表中就不是_id了
@@ -113,6 +114,7 @@ export default {
 
         //Q2:熟悉度uuid不存在，新增
       } else {
+        alert(this.$sys.userId)
         let { data } = await axios({
           //请求接口
           method: "post",
@@ -122,7 +124,7 @@ export default {
             _dataType: "familiarity",
             _systemId: PUB._systemId,
             _data: {
-              userId: PUB.userId,
+              userId: this.$sys.userId,
 
               dataType: this.dataType,
               familiarity: value,

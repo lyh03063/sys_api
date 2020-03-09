@@ -9,12 +9,7 @@ import "@/assets/css/util.scss"; //导入公共样式文件
 Vue.use(VueRouter)
 import manage from "@/manage";
 let arrRouteListName = PUB.arrRouteListName
-let arrRouteListPage = arrRouteListName.map((item) => {
-  return {
-    path: `/${item}`,
-    component: () => import(`@/page/${item}`)
-  }
-})
+
 // window.util=util;
 // 3. 创建 router 实例，然后传 `routes` 配置
 const router = new VueRouter({
@@ -27,14 +22,16 @@ const router = new VueRouter({
       component: manage,
       redirect: '/listHome', //跳转
       children: [//子路由
-        ...arrRouteListPage,
+        ...PUB.arrRouteListPage,
       ]
     },
   ]
 })
 router.beforeEach((to, from, next) => {
+
+  let $sys=util.getLocalStorageObj(PUB._systemId); //调用：{从LocalStorage获取一个对象的函数}
   // 如果用户未登录，跳转登录页面
-  if (localStorage[PUB.keyIsLogin] != 1) {
+  if ($sys.isLogin != 1) {
     if (to.path == '/login') {
       next();
     } else {
@@ -98,6 +95,13 @@ const store = new Vuex.Store({//定义Vuex的存储对象
     },
   }
 })
+
+
+console.logs(PUB.listCF.list_html_api);
+
+window.rolePower = util.getLocalStorageObj(PUB.keyPower);
+
+
 Vue.prototype.$store = store//让vue实例中可访问$store
 Vue.prototype.$handelItem = util.handelItem//让vue实例中可访问$handelItem
 import Main from './main.vue'
