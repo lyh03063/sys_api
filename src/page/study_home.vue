@@ -39,10 +39,8 @@
         >第三方资源</el-menu-item>
       </el-menu>
 
-      <div class="MT20 C_fff">
-        <i class="el-icon-s-custom MR5" title="用户名"></i>
-        {{$sys.nickName}} ({{$sys.userId}}/{{$sys.roleName}})&nbsp;&nbsp;&nbsp;
-       
+      <div class="FR MT20 C_fff">
+        <role></role>
       </div>
     </div>
 
@@ -58,7 +56,9 @@
 <script>
 export default {
   mixins: [MIX.base],
-  components: {},
+  components: {
+    role: () => import("@/page/role.vue") //登录角色组件
+  },
   props: {},
   data() {
     return {

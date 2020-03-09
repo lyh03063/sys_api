@@ -7,29 +7,14 @@
           <div class="FL MT13 C_fff MR10" v-if="logoUrl">
             <img class="W200 H36" src="http://www.dmagic.cn/images/IconS/IconS_2578.png" alt />
           </div>
-
-          <div class="FL MT17 FS24 C_fff">{{$sys.name}}</div>
-          <div class="FR MT30 C_fff">
-            <i class="el-icon-s-custom MR5" title="用户名"></i>
-            {{$sys.nickName}} ({{$sys.userId}}/{{$sys.roleName}})&nbsp;&nbsp;&nbsp;
-            <a
-              href="javascript:;"
-              class="MR10"
-              @click="logout"
-              style="color:white;"
-            >
-              <i class="el-icon-right MR5 middle-box"></i>退出登录
-            </a>
-            <router-link to="/modify_password">
-              <i class="el-icon-key MR5 middle-box" style="cursor: pointer;color:white;">修改密码</i>
-            </router-link>
-          </div>
+          <div class="FR MT20 C_fff">
+            <role></role>
+          </div> 
         </el-row>
       </el-header>
     </el-container>
     <el-container>
       <NavMenu :cf="navMenuList"></NavMenu>
-
       <el-main>
         <dm_space height="10"></dm_space>
         <router-view></router-view>
@@ -43,16 +28,10 @@
 export default {
   mixins: [MIX.base],
   components: {
-    NavMenu: () => import("./components/NavMenu/NavMenu")
+    NavMenu: () => import("./components/NavMenu/NavMenu"),
+    role: () => import("@/page/role.vue") //登录角色组件
   }, //注册组件
   methods: {
-    logout() {
-      //退出登录函数
-
-      util.extendLocalStorageObj(PUB._systemId, { isLogin: "0" }); //调用：{拓展一个LocalStorage对象的函数}
-     
-      this.$router.push({ path: "/login" }); //跳转到manage
-    }
   },
   computed: {
     //计算属性
