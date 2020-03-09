@@ -46,7 +46,7 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
 PUB.keyNickName = `${PUB.KeySys}_nickName`;
 
 
-PUB.$sys=util.getLocalStorageObj(PUB._systemId)||{}; //调用：{从LocalStorage获取一个对象的函数}
+PUB.$sys=PUB.$sys||util.getLocalStorageObj(PUB._systemId)||{}; //调用：{从LocalStorage获取一个对象的函数}
 
 MIX.base = {
 
