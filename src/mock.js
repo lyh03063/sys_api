@@ -1,5 +1,5 @@
 import Mock from 'mockjs'
- 
+
 const Random = Mock.Random
 
 
@@ -122,48 +122,48 @@ Mock.mock('/list_sponsor/delete', function (obj) {
 
 // 报名（订单）接口
 Mock.mock('/list_enroll', function () {
-      let list_enroll =
+  let list_enroll =
+  {
+    "code": 0,
+    "message": "操作成功",
+    "page": {
+      "pageIndex": 1,
+      "pageSize": 5,
+      "allCount": 1,
+      "pageCount": 1
+    },
+    "list": [
       {
-        "code": 0,
-        "message": "操作成功",
-        "page": {
-          "pageIndex": 1,
-          "pageSize": 5,
-          "allCount": 1,
-          "pageCount": 1
-        },
-        "list": [
-          {
-            "P1": "1",
-            "memberId ": "12",
-            "matchId": "22",
-            "idCard": "441521200003331151",
-            "time": "2019-06-26",
-            "payStatus": 1,
-            "auditStatus ": 3
-          },
-          {
-            "P1": "2",
-            "memberId ": "13",
-            "matchId": "21",
-            "idCard": "441521200003331152 ",
-            "time": "2019-06-26",
-            "payStatus": 1,
-            "auditStatus ": 2
-          },
-          {
-            "P1": "1",
-            "memberId ": "14",
-            "matchId": "22",
-            "idCard": "441521200003331153",
-            "time": "2019-06-26",
-            "payStatus": 2,
-            "auditStatus ": 1
-          }
-        ]
+        "P1": "1",
+        "memberId ": "12",
+        "matchId": "22",
+        "idCard": "441521200003331151",
+        "time": "2019-06-26",
+        "payStatus": 1,
+        "auditStatus ": 3
+      },
+      {
+        "P1": "2",
+        "memberId ": "13",
+        "matchId": "21",
+        "idCard": "441521200003331152 ",
+        "time": "2019-06-26",
+        "payStatus": 1,
+        "auditStatus ": 2
+      },
+      {
+        "P1": "1",
+        "memberId ": "14",
+        "matchId": "22",
+        "idCard": "441521200003331153",
+        "time": "2019-06-26",
+        "payStatus": 2,
+        "auditStatus ": 1
       }
+    ]
+  }
 
-      return list_enroll
+  return list_enroll
 
 })
 
@@ -209,4 +209,81 @@ Mock.mock('/list_member', function () {
 
   return list_enroll
 
+})
+let dataList = {
+  "code": 0,
+  "message": "返回成功",
+  "dataResult": {
+    "vedio": {
+      "list": [
+        {
+          "_id": "5e3667dae8e4712a0a5a3734",
+          "title": "css table-layout属性"
+        },
+        {
+          "_id": "5e366798e8e4712a0a5a3732",
+          "title": "css vertical-align属性"
+        },
+        {
+          "_id": "5e366708e8e4712a0a5a372f",
+          "title": "css的选择器汇总 "
+        }
+      ],
+      "page": {
+        "pageSize": 3,
+        "pageIndex": 1,
+        "allCount": 29
+      }
+    },
+    "note": {
+      "list": [
+        {
+          "_id": "5e44e85edbde9a3708d168c3",
+          "title": "龙庭官网-css文件抽离",
+          "_dataType": "note"
+        },
+        {
+          "_id": "5e1ed18fc1a88e03949027b3",
+          "title": "进入/离开过渡-CSS 动画",
+          "_dataType": "note"
+        },
+        {
+          "_id": "5e1ed18fc1a88e03949027b2",
+          "title": "进入/离开过渡-CSS 过渡",
+          "_dataType": "note"
+        }
+      ],
+      "page": {
+        "pageSize": 3,
+        "pageIndex": 1,
+        "allCount": 49
+      }
+    },
+    "url": {
+      "list": [
+        {
+          "_id": "5e1944465278a329a0a6a3a3",
+          "_dataType": "url",
+          "title": "CSS选择器手册（w3school）"
+        },
+        {
+          "_id": "5df22a68eb5ade40ad5f7758",
+          "title": "css的transform转换"
+        },
+        {
+          "_id": "5df22a49eb5ade40ad5f7756",
+          "title": "css的overflow相关样式demo"
+        }
+      ],
+      "page": {
+        "pageSize": 3,
+        "pageIndex": 1,
+        "allCount": 12
+      }
+    }
+  }
+}
+
+Mock.mock('/dataList', function () {
+  return dataList
 })

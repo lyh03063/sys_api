@@ -35,6 +35,7 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
 {
   path: '/study_home', component: () => import("@/page/study_home"),
   children: [//子路由
+    { path: 'search_result', component: () => import("@/page/search_result") },
     { path: 'detail_group_g_card', component: () => import("@/page/detail_group_g_card") },
     { path: 'detail_g_card_link', component: () => import("@/page/detail_g_card_link") },
     ...PUB.arrRouteListPageForStudy
