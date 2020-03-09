@@ -3,7 +3,7 @@
     <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
         <i class="el-icon-s-custom MR5" title="用户名"></i>
-        {{$sys.nickName}}1111
+        {{$sys.nickName}}
         <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
