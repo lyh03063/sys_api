@@ -12,7 +12,14 @@
         :key="item.name"
       >
         <div class="DataBox" v-for="doc in dataResult[item.name].list" :key="doc._id">
-          <a class="n-a" :href="'#/detail_data?dataId=' +doc._id" target="_blank">{{doc.title}}</a>
+          <a class="n-a" :href="'#/detail_data?dataId=' +doc._id" target="_blank">
+            <span>{{doc.title.slice(0,doc.title.toLowerCase().indexOf(keywordData.toLowerCase()))}}</span>
+            <span
+              style="color:red"
+            >{{doc.title.slice(doc.title.toLowerCase().indexOf(keywordData.toLowerCase()),doc.title.toLowerCase().indexOf(keywordData.toLowerCase())+keywordData.length)}}
+            </span>
+            <span>{{doc.title.substr(doc.title.toLowerCase().indexOf(keywordData.toLowerCase())+keywordData.length)}}</span>
+          </a>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -38,8 +45,8 @@ export default {
       activeName: null,
       arrTypeShow: [],
       dataResult: null,
-      activeIndex: "全部",
-      input: ""
+      input: "",
+      keywordData:null
     };
   },
   watch: {
@@ -54,8 +61,8 @@ export default {
   methods: {
     //函数：{获取列表函数}
     async getList() {
-      
-      let keyword = this.$route.query.keyword;
+     let keyword = this.$route.query.keyword;
+       this.keywordData=keyword
       let {
         data: { dataResult }
       } = await axios({
@@ -71,16 +78,15 @@ export default {
       this.dataResult = dataResult;
 
       let arr = arrType.map(name => {
-
         return {
           name,
           count: lodash.get(dataResult, `[${name}].page.allCount`, 0)
         };
       });
 
-      this.arrTypeShow = arr.filter(doc => doc.count);//过滤大于0的选项
+      this.arrTypeShow = arr.filter(doc => doc.count); //过滤大于0的选项
 
-      this.activeName = this.arrTypeShow[0].name;//获取第一个有效选项名聚焦
+      this.activeName = this.arrTypeShow[0].name; //获取第一个有效选项名聚焦
       this.ready = true;
     }
   },
