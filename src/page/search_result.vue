@@ -1,13 +1,11 @@
 <template>
-  <div>
+  <div> 
     <dm_debug_list>
       <dm_debug_item v-model="activeName" text="activeName" />
     </dm_debug_list>
 
     <div class v-if="ready">
-      <div class="LH50 TAC H50 C_999" v-if="!activeName" >
-        没有匹配的搜索结果！
-      </div>
+      <div class="LH50 TAC H50 C_999" v-if="!activeName">没有匹配的搜索结果！</div>
       <el-tabs v-model="activeName" v-else>
         <el-tab-pane
           :name="item.name"
@@ -17,11 +15,9 @@
         >
           <div class="DataBox" v-for="doc in dataResult[item.name].list" :key="doc._id">
             <a class="n-a" :href="'#/detail_data?dataId=' +doc._id" target="_blank">
-              <span>{{doc.title.slice(0,doc.title.toLowerCase().indexOf(keywordData.toLowerCase()))}}</span>
-              <span
-                style="color:red"
-              >{{doc.title.slice(doc.title.toLowerCase().indexOf(keywordData.toLowerCase()),doc.title.toLowerCase().indexOf(keywordData.toLowerCase())+keywordData.length)}}</span>
-              <span>{{doc.title.substr(doc.title.toLowerCase().indexOf(keywordData.toLowerCase())+keywordData.length)}}</span>
+              <span>{{getText(doc)}}</span>
+              <span style="color:red">{{getHighLightText(doc)}}</span>
+              <span>{{getEndText(doc)}}</span>
             </a>
           </div>
         </el-tab-pane>
@@ -64,6 +60,22 @@ export default {
     deep: true
   },
   methods: {
+    //函数：{获取第一文本的函数}
+    getText(doc) {
+      this.startIndex = doc.title
+        .toLowerCase()
+        .indexOf(this.keywordData.toLowerCase());
+      return doc.title.slice(0, this.startIndex);
+    },
+    //函数：{获取高亮文本的函数}
+    getHighLightText(doc) {
+      this.endIndex = this.startIndex + this.keywordData.length;
+      return doc.title.slice(this.startIndex, this.endIndex);
+    },
+    //函数：{获取末尾文本的函数}
+    getEndText(doc) {
+      return doc.title.substr(this.endIndex);
+    },
     //函数：{获取列表函数}
     async getList() {
       let keyword = this.$route.query.keyword;
