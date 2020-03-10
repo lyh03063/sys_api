@@ -4,25 +4,30 @@
       <dm_debug_item v-model="activeName" text="activeName" />
     </dm_debug_list>
 
-    <el-tabs v-model="activeName" v-if="ready">
-      <el-tab-pane
-        :name="item.name"
-        :label="`${$dictLable('dataType',item.name)}（${item.count}）`"
-        v-for="item in arrTypeShow"
-        :key="item.name"
-      >
-        <div class="DataBox" v-for="doc in dataResult[item.name].list" :key="doc._id">
-          <a class="n-a" :href="'#/detail_data?dataId=' +doc._id" target="_blank">
-            <span>{{doc.title.slice(0,doc.title.toLowerCase().indexOf(keywordData.toLowerCase()))}}</span>
-            <span
-              style="color:red"
-            >{{doc.title.slice(doc.title.toLowerCase().indexOf(keywordData.toLowerCase()),doc.title.toLowerCase().indexOf(keywordData.toLowerCase())+keywordData.length)}}
-            </span>
-            <span>{{doc.title.substr(doc.title.toLowerCase().indexOf(keywordData.toLowerCase())+keywordData.length)}}</span>
-          </a>
-        </div>
-      </el-tab-pane>
-    </el-tabs>
+    <div class v-if="ready">
+      <div class="LH50 TAC H50 C_999" v-if="!activeName" >
+        没有匹配的搜索结果！
+      </div>
+      <el-tabs v-model="activeName" v-else>
+        <el-tab-pane
+          :name="item.name"
+          :label="`${$dictLable('dataType',item.name)}（${item.count}）`"
+          v-for="item in arrTypeShow"
+          :key="item.name"
+        >
+          <div class="DataBox" v-for="doc in dataResult[item.name].list" :key="doc._id">
+            <a class="n-a" :href="'#/detail_data?dataId=' +doc._id" target="_blank">
+              <span>{{doc.title.slice(0,doc.title.toLowerCase().indexOf(keywordData.toLowerCase()))}}</span>
+              <span
+                style="color:red"
+              >{{doc.title.slice(doc.title.toLowerCase().indexOf(keywordData.toLowerCase()),doc.title.toLowerCase().indexOf(keywordData.toLowerCase())+keywordData.length)}}</span>
+              <span>{{doc.title.substr(doc.title.toLowerCase().indexOf(keywordData.toLowerCase())+keywordData.length)}}</span>
+            </a>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+
     <dm_loading height="200" v-else></dm_loading>
   </div>
 </template>
@@ -46,7 +51,7 @@ export default {
       arrTypeShow: [],
       dataResult: null,
       input: "",
-      keywordData:null
+      keywordData: null
     };
   },
   watch: {
@@ -61,8 +66,8 @@ export default {
   methods: {
     //函数：{获取列表函数}
     async getList() {
-     let keyword = this.$route.query.keyword;
-       this.keywordData=keyword
+      let keyword = this.$route.query.keyword;
+      this.keywordData = keyword;
       let {
         data: { dataResult }
       } = await axios({
@@ -86,7 +91,7 @@ export default {
 
       this.arrTypeShow = arr.filter(doc => doc.count); //过滤大于0的选项
 
-      this.activeName = this.arrTypeShow[0].name; //获取第一个有效选项名聚焦
+      this.activeName = lodash.get(this.arrTypeShow, `[0].name`); //获取第一个有效选项名聚焦
       this.ready = true;
     }
   },

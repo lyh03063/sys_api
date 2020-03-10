@@ -14,7 +14,8 @@
           <a
             target="_blank"
             class="FS12"
-            :href="`#/detail_group?groupId=${docBig.targetDoc._id}`" v-if="$power('groupDataList.all.modify')"
+            :href="`#/detail_group?groupId=${docBig.targetDoc._id}`"
+            v-if="$power('groupDataList.all.modify')"
           >编辑</a>
         </template>
         <dm_list_flex_res class="MT10" :list="docBig.sonList" #default="{item:docSmall}">
@@ -50,7 +51,7 @@
 
 <script>
 export default {
-  mixins:[MIX.base],
+  mixins: [MIX.base],
   components: {},
   props: {},
   data() {
@@ -63,10 +64,9 @@ export default {
   },
 
   methods: {
-   
     //函数：{格式化分数函数}
     formatScore(docSmall) {
-      let score = lodash.get(this.dictScore, `${docSmall._idRel2}.score`,0);
+      let score = lodash.get(this.dictScore, `${docSmall._idRel2}.score`, 0);
       return Number(score);
     },
     //函数：{列表查询后执行的函数}
@@ -80,13 +80,24 @@ export default {
         arrGroupId.push(...arrGroupIdNeed);
       });
 
-      let datalist = await this.getGroupUserScore(arrGroupId);
-      if (datalist && datalist.length) {
+      let datalist = await this.getGroupUserScore(arrGroupId); //调用：{ajax获取的用户学习缓存数据函数}
+      if (!datalist) return;
+      let countG = datalist.length;
+      let scoretotal = 0;
+      if (countG) {
+        //遍历列表，完善分数数据字典
         datalist.forEach(itemEach => {
-          // this.dictScore[itemEach._idRel] = itemEach.score;
-
           this.$set(this.dictScore, itemEach._idRel, itemEach.score);
+
+          let scoreEach = lodash.get(itemEach, `score.score`, 0);
+          scoreEach = parseFloat(scoreEach);
+          scoretotal += scoreEach;
         });
+
+        let scoreAverage=util.money(scoretotal/countG)
+       alert(`总分${scoretotal}；组数：${countG}；平均分：${scoreAverage}`)
+
+
       }
     },
 
