@@ -34,8 +34,6 @@ let arrType = [
   "js_api",
   "url"
 ];
-let startIndex1=null;
-let endIndex=null;
 export default {
   mixins: [MIX.base],
   data() {
