@@ -5,7 +5,7 @@
         <img class="W200 H36" src="http://www.dmagic.cn/images/IconS/IconS_2578.png" alt />
       </div>
 
-      <div class="FL MT17 FS24 C_fff MR50">{{systemName}}</div>
+      <div class="MT17 FS24 C_fff MR50">{{systemName}}</div>
       <el-menu
         :default-active="activeMenuIndex"
         class="el-menu-demo FX1"
@@ -38,6 +38,11 @@
           route="detail_g_card_link?groupId=5e18821555a1e947e7bec88d"
         >第三方资源</el-menu-item>
       </el-menu>
+      <div class="PT10 MR20">
+        <el-input style="width:160px" @keypress.enter.native="searchData"  placeholder="请输入内容" v-model="keyword">
+          <i slot="suffix" class="Cur1 el-input__icon el-icon-search" @click="searchData"></i>
+        </el-input>
+      </div>
 
       <div class="FR MT20 C_fff">
         <role></role>
@@ -57,11 +62,12 @@
 export default {
   mixins: [MIX.base],
   components: {
-      role: () => import("@/components/common/role") //登录角色组件
+    role: () => import("@/components/common/role") //登录角色组件
   },
   props: {},
   data() {
     return {
+      keyword: "",
       logoUrl: PUB.logoUrl,
       systemName: PUB.systemName,
       groupId: null,
@@ -85,17 +91,23 @@ export default {
   },
 
   methods: {
+    //函数：{搜索}
+    searchData() {
+      location.href = `#/study_home/search_result?keyword=${this.keyword}`;
+    },
     //函数：{设置聚焦菜单函数}
     setActiveMenu() {
       this.groupId = this.$route.query.groupId;
       //如果{groupId}存在
       if (this.groupId) {
-        this.activeMenuIndex = this.mapActiveMenu[this.groupId];
+        // this.activeMenuIndex = this.mapActiveMenu[this.groupId];
       }
+      this.activeMenuIndex = this.mapActiveMenu[this.groupId];
     }
   },
   created() {
     this.setActiveMenu(); //调用：{设置聚焦菜单函数}
+    document.title = `前端学习网`; //修改浏览器标题栏文字
   }
 };
 </script>

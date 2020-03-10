@@ -97,7 +97,6 @@ const store = new Vuex.Store({//定义Vuex的存储对象
 })
 
 
-console.logs(PUB.listCF.list_html_api);
 
 window.rolePower = util.getLocalStorageObj(PUB.keyPower);
 

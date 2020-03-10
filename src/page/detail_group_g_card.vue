@@ -66,8 +66,8 @@ export default {
    
     //函数：{格式化分数函数}
     formatScore(docSmall) {
-      let score = lodash.get(this.dictScore, `${docSmall._idRel2}.score`);
-      return util.money(score);
+      let score = lodash.get(this.dictScore, `${docSmall._idRel2}.score`,0);
+      return Number(score);
     },
     //函数：{列表查询后执行的函数}
     async afterSearch() {

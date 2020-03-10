@@ -2,7 +2,7 @@
 
 //#region 基本配置
 window.PUB = window.PUB || {}
-//PUB.domain = "http://localhost:3000"
+PUB.domain__ = "http://localhost:3000"
 PUB.domain = "https://www.dmagic.cn"
 //PUB.domain = 'http://test.dmagic.cn'
 
@@ -72,8 +72,8 @@ MIX.base = {
       return lodash.get(WIN.rolePower, `${powerPath}`);
     },
     //函数：{返回数据字典标签函数}
-    dictLable(key, val) {
-      return $util.getDictLabel(key, val)
+    $dictLable(key, val) {
+      return util.getDictLabel(key, val)
     },
 
   },
@@ -287,13 +287,11 @@ PUB.menuList = [
 
 //调用：{初始化列表权限函数}
 let fnInitList = async function () {
-  console.logs(PUB.arrListName);
   //***循环异步-导入一些本站专用的数据列表配置，注意这里用map不能用forEach
   await Promise.all(PUB.arrListName.map(async itemEach => {//循环：{列表模块名数组}
     await import(`@/assets/js/config/list_${itemEach}.js`);
   }))
 
-  console.log("PUB.listCF.list_html_api:###", PUB.listCF.list_html_api);
 
   //#region 【注意顺序】权限表单项，从菜单遍历拼接！！！
 
@@ -319,7 +317,6 @@ let fnInitList = async function () {
     menuItem.forEach(menuEach_2 => {//循环：{2级菜单}
       let { index: index_2, title } = menuEach_2;
       if (!index_2) return;
-      console.log("title:###", title);
       let objMenu2 = {
         prop: index_2,
         style: styleMenuPowerItem,
@@ -367,7 +364,6 @@ let fnInitList = async function () {
 
 
 
-  console.log("PUB.listCF.list_html_api:", PUB.listCF.list_html_api);
   //#endregion
 
 
@@ -381,7 +377,6 @@ let fnInitList = async function () {
     menuItem.forEach(menuEach_2 => {//循环：{2级菜单}
       let { index: index_2 } = menuEach_2;
       if (!index_2) return;
-      console.log("${index_1}.${index_2}:", `${index_1}.${index_2}`);
 
       lodash.set(PUB.listCF, `${index_2}.powerPath`, `${index_1}.${index_2}`);//设置权限路径
     })

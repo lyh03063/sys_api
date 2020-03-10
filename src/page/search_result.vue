@@ -1,66 +1,87 @@
 <template>
   <div>
-    <el-input class="inquireButton" placeholder="请输入内容" v-model="input" clearable></el-input>
-    <el-button type="primary" icon="el-icon-search" @click="inquireButton()">搜索</el-button>
-    <el-button type="primary" @click="cpp()">数据</el-button>
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      @select="handleSelect"
-    ></el-menu>
-    <el-tabs v-model="activeName">
-      <el-tab-pane :label="item" :name="item" v-for="item in arrType" :key="item">
-        <div class="DataBox" v-for="doc in dataResult[item].list" :key="doc._id">
-          <a :href="'#/detail_data?dataId=' +doc._id" target="_blank">{{doc.title}}</a></div>
+    <dm_debug_list>
+      <dm_debug_item v-model="activeName" text="activeName" />
+    </dm_debug_list>
+
+    <el-tabs v-model="activeName" v-if="ready">
+      <el-tab-pane
+        :name="item.name"
+        :label="`${$dictLable('dataType',item.name)}（${item.count}）`"
+        v-for="item in arrTypeShow"
+        :key="item.name"
+      >
+        <div class="DataBox" v-for="doc in dataResult[item.name].list" :key="doc._id">
+          <a class="n-a" :href="'#/detail_data?dataId=' +doc._id" target="_blank">{{doc.title}}</a>
+        </div>
       </el-tab-pane>
     </el-tabs>
+    <dm_loading height="200" v-else></dm_loading>
   </div>
 </template>
 <script>
+let arrType = [
+  "note",
+  "vedio",
+  "front_demo",
+  "group",
+  "html_api",
+  "css_api",
+  "js_api",
+  "url"
+];
 export default {
   mixins: [MIX.base],
   data() {
     return {
+      ready: false,
       activeName: null,
-      arrType: [],
+      arrTypeShow: [],
       dataResult: null,
       activeIndex: "全部",
       input: ""
     };
   },
+  watch: {
+    $route: function(newUrl, oldUrl) {
+      if (newUrl != oldUrl) {
+        this.getList(); //调用：{获取列表函数}
+      }
+    },
+    immediate: true,
+    deep: true
+  },
   methods: {
-    //切换聚焦
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    //查询按钮
-    inquireButton() {
-      console.log("input", this.input);
-    },
-    cpp() {
-      console.log("测试按钮", "数组");
-    },
-    getList() {
-      //调用的方法
-      axios({
+    //函数：{获取列表函数}
+    async getList() {
+      
+      let keyword = this.$route.query.keyword;
+      let {
+        data: { dataResult }
+      } = await axios({
         method: "post",
-        url: "https://www.dmagic.cn/json/?jsonid=1465",
-        data: {}
-      })
-        .then(response => {
-          let { dataResult } = response.data; //解构赋值
-          this.dataResult = dataResult;
-          console.log("数据调用dataResult", dataResult);
-          for (let K in dataResult) {
-            console.log(K, dataResult[K]);
-            this.arrType.push(K);
-          }
-          this.activeName = this.arrType[0];
-        })
-        .catch(function(error) {
-          alert("异常:" + error);
-        });
+        url: `${PUB.domain}/info/search_info`,
+        data: {
+          _systemId: "sys_api",
+          keyword,
+          arrDateType: arrType
+        }
+      });
+
+      this.dataResult = dataResult;
+
+      let arr = arrType.map(name => {
+
+        return {
+          name,
+          count: lodash.get(dataResult, `[${name}].page.allCount`, 0)
+        };
+      });
+
+      this.arrTypeShow = arr.filter(doc => doc.count);//过滤大于0的选项
+
+      this.activeName = this.arrTypeShow[0].name;//获取第一个有效选项名聚焦
+      this.ready = true;
     }
   },
   //计算属性
@@ -72,18 +93,13 @@ export default {
 };
 </script>
 <style scoped>
-.inquireButton {
-  width: 300px;
-  margin: 0 10px;
-}
 .DataBox {
   width: 100%;
   text-align: left;
-  font-size:15px;
-  height:50px;
-  border-bottom:1px solid #DCDFE6;
-  color:#60627E;
-  line-height:50px;
+  font-size: 15px;
+  height: 50px;
+  border-bottom: 1px solid #dcdfe6;
+  color: #60627e;
+  line-height: 50px;
 }
-
 </style>
