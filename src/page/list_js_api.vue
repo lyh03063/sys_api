@@ -4,12 +4,12 @@
       <template v-slot:slot_column_familiarity="{row}">
         <div class>
           
-          <familiarity_select v-model="row.familiarityDoc" :data="row" dataType="js_api" ></familiarity_select>
+          <familiarity_select v-model="row.familiarityDoc" :data="row" dataType="js_api" :key="row._id" ></familiarity_select>
         </div>
       </template>
       <template v-slot:slot_in_toolbar="{data}">
   
-        <score_panel ref="scorePanel" v-if="data&&data.objParam" :param="data.objParam" :listIndex="cfList.listIndex">
+        <score_panel ref="scorePanel" v-if="data&&data.objParam" :param="data.objParam" :listIndex="cfList.listIndex" scoreKey="js_api">
           <!-- 计分板组件 -->
         </score_panel>
       </template>

@@ -35,6 +35,7 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
 {
   path: '/study_home', component: () => import("@/page/study_home"),
   children: [//子路由
+    { path: 'study_user', component: () => import("@/page/study_user") },
     { path: 'search_result', component: () => import("@/page/search_result") },
     { path: 'detail_group_g_card', component: () => import("@/page/detail_group_g_card") },
     { path: 'detail_g_card_link', component: () => import("@/page/detail_g_card_link") },
@@ -47,7 +48,7 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
 
 
 
-PUB.$sys=PUB.$sys||util.getLocalStorageObj(PUB._systemId)||{}; //调用：{从LocalStorage获取一个对象的函数}
+PUB.$sys = PUB.$sys || util.getLocalStorageObj(PUB._systemId) || {}; //调用：{从LocalStorage获取一个对象的函数}
 
 MIX.base = {
 
@@ -59,10 +60,10 @@ MIX.base = {
   computed: {
     $sys() {
       let sys = util.getLocalStorageObj(PUB._systemId)//调用：{从LocalStorage获取一个对象的函数}
-    
+
       return sys
     },
-    
+
 
   },
 
@@ -92,7 +93,7 @@ MIX.base = {
 
 //#region 列表模块名数组配置
 PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category", "js_api",
-  "js_api_category", "familiarity", "exercises", "front_demo"];
+  "js_api_category", "familiarity", "exercises", "score", "front_demo"];
 //#endregion
 
 
@@ -224,6 +225,11 @@ PUB.menuList = [
         index: "list_group",
         route: "/list_common?type=group",
         title: "分组"
+      },
+      {
+        index: "list_score",
+        route: "/list_common?type=score",
+        title: "记分项"
       },
       {
         index: "list_html_api_category",
@@ -415,10 +421,22 @@ fnInitList()
 //#region 【临时字段，页面配置-注意位置】
 
 
+D_ITEMS.scoreKey = {
+  label: "记分key",
+  prop: "scoreKey",
+};
+COLUMNS.scoreKey = { ...D_ITEMS.scoreKey, width: 120, };
+F_ITEMS.scoreKey = {...D_ITEMS.scoreKey,};
 
 
 
 
+D_ITEMS.aaaa = {
+  label: "记分key",
+  prop: "scoreKey",
+};
+COLUMNS.aaaa = { ...D_ITEMS.aaaa, width: 120, };
+F_ITEMS.aaaa = {...D_ITEMS.aaaa,};
 
 
 
@@ -426,6 +444,52 @@ fnInitList()
 //#endregion
 
 
+//函数：{更新分组的用户学习缓存数据函数}
+FN.updateGroupUserScore = async function ({ groupId, score }) {
+  //变量：{对应的分组id}
+  if (!groupId) return;
+  let urlModify = PUB.listCF.list_familiarity.url.modify;
+  let ajaxParam = {
+    _idRel: groupId,
+    findJson: { _idRel: groupId, _userId: PUB.$sys.userId }, //用户名
+    _data: {
+      _idRel: groupId,
+      _userId: PUB.$sys.userId,
+      score,
+      dataType: "group"
+    }
+  };
+  Object.assign(ajaxParam, PUB.listCF.list_familiarity.paramAddonPublic); //合并公共参数
+  await axios({
+    //请求接口
+    method: "post",
+    url: PUB.domain + urlModify,
+    data: ajaxParam //传递参数
+  });
+}
+
+
+
+//函数：{更新记分项缓存数据函数}
+FN.updateItemScore = async function ({ scoreKey, score }) {
+  //变量：{对应的分组id}
+  if (!scoreKey) return;
+  let urlModify = PUB.listCF.list_score.url.modify;
+  let ajaxParam = {
+    findJson: { scoreKey, _userId: PUB.$sys.userId }, //用户名
+    _data: {
+      _userId: PUB.$sys.userId,
+      score, scoreKey
+    }
+  };
+  Object.assign(ajaxParam, PUB.listCF.list_score.paramAddonPublic); //合并公共参数
+  await axios({
+    //请求接口
+    method: "post",
+    url: PUB.domain + urlModify,
+    data: ajaxParam //传递参数
+  });
+}
 
 
 

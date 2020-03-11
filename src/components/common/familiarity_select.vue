@@ -5,8 +5,6 @@
     @mouseleave.stop="focusId=null"
     class="PSR DPIB"
   >
-  
-
     <el-popover placement="right-start" width="240" trigger="hover">
       <!--候选值列表-->
       <i
@@ -32,7 +30,6 @@
         >{{dictFamiliarity[valueNeed.familiarity]||"未学"}}</span>
       </el-button>
     </el-popover>
-   
   </div>
 </template>
 
@@ -97,6 +94,7 @@ export default {
       this.dataIdFamiliarity =
         this.dataIdFamiliarity || lodash.get(this.valueNeed, `_id`);
 
+      console.log("this.dataIdFamiliarity:####", this.dataIdFamiliarity);
       //Q1:熟悉度uuid存在
       if (this.dataIdFamiliarity) {
         await axios({

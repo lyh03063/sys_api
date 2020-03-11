@@ -3,8 +3,12 @@
     <dm_debug_list>
       <dm_debug_item v-model="listData" text="listData" />
     </dm_debug_list>
-    <h1 class="FS24 TAC">
+    <h1 class="FS24 TAC111">
       {{groupDoc.title}}
+      <span class="FS14">
+        【总分：
+        <span class="C_f30">{{scoreAverage}}</span>】
+      </span>
       <!-- <el-button plain @click="getDataList" size="mini">刷新</el-button> -->
     </h1>
     <dm_loading height="100" v-if="!listData"></dm_loading>
@@ -56,6 +60,7 @@ export default {
   props: {},
   data() {
     return {
+      scoreAverage: "",
       groupId: null,
       groupDoc: {},
       listData: null,
@@ -82,24 +87,36 @@ export default {
 
       let datalist = await this.getGroupUserScore(arrGroupId); //调用：{ajax获取的用户学习缓存数据函数}
       if (!datalist) return;
-      let countG = datalist.length;
+
+      let countG = arrGroupId.length; //3级分组数量
+
       let scoretotal = 0;
+      let allCount = 0;
+
       if (countG) {
         //遍历列表，完善分数数据字典
         datalist.forEach(itemEach => {
           this.$set(this.dictScore, itemEach._idRel, itemEach.score);
 
           let scoreEach = lodash.get(itemEach, `score.score`, 0);
+          let allCountEach = lodash.get(itemEach, `score.allCount`, 0);
+
+          allCount += allCountEach;
+
           scoreEach = parseFloat(scoreEach);
           scoretotal += scoreEach;
         });
 
-        let scoreAverage=util.money(scoretotal/countG)
-       alert(`总分${scoretotal}；组数：${countG}；平均分：${scoreAverage}`)
+        this.scoreAverage = util.money(scoretotal / countG);
 
-
+        //alert(`总分${scoretotal}；组数：${countG}；平均分：${this.scoreAverage}`);
+        this.updateGroupUserScore({
+          groupId: this.groupId,
+          score: { score: this.scoreAverage, allCount }
+        }); //调用：{更新当前分组的用户学习缓存数据函数}
       }
     },
+    updateGroupUserScore: FN.updateGroupUserScore, //函数：{更新当前分组的用户学习缓存数据函数}
 
     //函数：{ajax获取的用户学习缓存数据函数}
     async getGroupUserScore(arrGroupId) {

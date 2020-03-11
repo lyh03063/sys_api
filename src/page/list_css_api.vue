@@ -1,15 +1,19 @@
 <template>
-  <div class="">
+  <div class>
     <dm_list_data ref="listData" :cf="cfList" @after-search="afterSearch">
       <template v-slot:slot_column_familiarity="{row}">
         <div class>
-          
-          <familiarity_select v-model="row.familiarityDoc" :data="row" dataType="css_api" ></familiarity_select>
+          <familiarity_select v-model="row.familiarityDoc" :data="row" data-type="css_api" :key="row._id"></familiarity_select>
         </div>
       </template>
       <template v-slot:slot_in_toolbar="{data}">
-  
-        <score_panel ref="scorePanel" v-if="data&&data.objParam" :param="data.objParam" :listIndex="cfList.listIndex">
+        <score_panel
+          ref="scorePanel"
+          v-if="data&&data.objParam"
+          :param="data.objParam"
+          :listIndex="cfList.listIndex"
+          scoreKey="css_api"
+        >
           <!-- 计分板组件 -->
         </score_panel>
       </template>
@@ -17,13 +21,12 @@
   </div>
 </template>
 <script>
-
 export default {
-   components: {
-    familiarity_select: () =>
-      import("@/components/common/familiarity_select.vue"),
-    score_panel: () => import("@/components/common/score_panel.vue")
-  },
+  components: {
+    familiarity_select: () =>
+      import("@/components/common/familiarity_select.vue"),
+    score_panel: () => import("@/components/common/score_panel.vue")
+  },
   data() {
     return {
       cfList: util.deepCopy(PUB.listCF.list_css_api)
@@ -62,6 +65,4 @@ export default {
 
 
 <style >
-
-
 </style>
