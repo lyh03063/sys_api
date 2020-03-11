@@ -43,7 +43,7 @@ export default {
       arrTypeShow: [],
       dataResult: null,
       input: "",
-      keywordData: null,
+      keywordData: null
     };
   },
   watch: {
@@ -61,7 +61,7 @@ export default {
       this.startIndex = doc.title
         .toLowerCase()
         .indexOf(this.keywordData.toLowerCase());
-      return doc.title.slice(0,this.startIndex)
+      return doc.title.slice(0, this.startIndex);
     },
     //函数：{获取高亮文本的函数}
     getHighLightText(doc) {
@@ -70,7 +70,7 @@ export default {
     },
     //函数：{获取末尾文本的函数}
     getEndText(doc) {
-      return doc.title.substr(this.endIndex)
+      return doc.title.substr(this.endIndex);
     },
     //函数：{获取列表函数}
     async getList() {
