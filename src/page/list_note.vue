@@ -3,7 +3,7 @@
     <dm_list_data ref="listData" :cf="cfList" @after-search="afterSearch">
       <template v-slot:slot_column_familiarity="{row}">
         <div class>
-          <familiarity_select v-model="row.familiarityDoc" :data="row" data-type="note"></familiarity_select>
+          <familiarity_select v-model="row.familiarityDoc" :data="row" data-type="note" :key="row._id"></familiarity_select>
         </div>
       </template>
       <template v-slot:slot_in_toolbar="{data}">

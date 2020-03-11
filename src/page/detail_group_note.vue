@@ -27,6 +27,7 @@
             :data="row"
             data-type="note"
             idKey="_idRel2"
+            :key="row._id"
           ></familiarity_select>
         </div>
       </template>

@@ -26,6 +26,8 @@
 export default {
   //用于列表模糊查询的组件
   props: {
+    //需要更新的记分项key
+    scoreKey: {},
     idKey: {
       default: "_id"
     },
@@ -49,7 +51,7 @@ export default {
   methods: {
     //函数：{按熟悉度过滤数据函数}
     filterData(familiarity) {
-      if (this.focusId == familiarity) return;//防止重复点击
+      if (this.focusId == familiarity) return; //防止重复点击
       this.focusId = familiarity;
       let arrLookup = [
         {
@@ -119,34 +121,25 @@ export default {
 
       this.data = data;
 
-      this.updateGroupUserScore(); //调用：{更新当前分组的用户学习缓存数据函数}
-    },
-    //函数：{更新当前分组的用户学习缓存数据函数}
-    async updateGroupUserScore() {
-      //变量：{对应的分组id}
+      /*
+     ***对于分组数据列表来说groupId存在
+     对于Html-API列表等场景来说groupId不存在
+     */
       let groupId = lodash.get(this.param, `findJson._idRel`);
-      if (!groupId) return;
-      let urlModify = PUB.listCF.list_familiarity.url.modify;
-      let ajaxParam = {
-        //_id: null,
-        _idRel: groupId,
+      if (groupId) {
+        this.updateGroupUserScore({ groupId, score: this.data }); //调用：{更新当前分组的用户学习缓存数据函数}
+      } else {
+        console.log("findJson:", findJson);
 
-        findJson: { _idRel: groupId, _userId: PUB.$sys.userId }, //用户名
-        _data: {
-          _idRel: groupId,
-          _userId: PUB.$sys.userId,
-          score: this.data,
-          dataType: "group"
-        } //获取列表的数据总量
-      };
-      Object.assign(ajaxParam, PUB.listCF.list_familiarity.paramAddonPublic); //合并公共参数
-      let response = await axios({
-        //请求接口
-        method: "post",
-        url: PUB.domain + urlModify,
-        data: ajaxParam //传递参数
-      });
-    }
+        util.clearObj(findJson); //调用：{清除对象中的空属性（null,undefined,空格等）}
+        let isEmpty = !util.isNotEmptyObj(findJson); //调用：{判断是否为非空对象的函数}
+        //如果是空对象
+        if (isEmpty) {
+          FN.updateItemScore({ scoreKey: this.scoreKey, score: this.data }); //调用：{更新记分项缓存数据函数}
+        }
+      }
+    },
+    updateGroupUserScore: FN.updateGroupUserScore //函数：{更新当前分组的用户学习缓存数据函数}
   },
   async created() {
     // this.ajaxGetScore(); //调用：{ajax获取分数函数}

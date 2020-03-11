@@ -1,25 +1,29 @@
 <template>
-  <div>
+  <div> 
     <dm_debug_list>
       <dm_debug_item v-model="activeName" text="activeName" />
     </dm_debug_list>
 
-    <el-tabs v-model="activeName" v-if="ready">
-      <el-tab-pane
-        :name="item.name"
-        :label="`${$dictLable('dataType',item.name)}（${item.count}）`"
-        v-for="item in arrTypeShow"
-        :key="item.name"
-      >
-        <div class="DataBox" v-for="doc in dataResult[item.name].list" :key="doc._id">
-          <a class="n-a" :href="'#/detail_data?dataId=' +doc._id" target="_blank">
-            <span>{{getText(doc)}}</span>
-            <span style="color:red">{{getHighLightText(doc)}}</span>
-            <span>{{getEndText(doc)}}</span>
-          </a>
-        </div>
-      </el-tab-pane>
-    </el-tabs>
+    <div class v-if="ready">
+      <div class="LH50 TAC H50 C_999" v-if="!activeName">没有匹配的搜索结果！</div>
+      <el-tabs v-model="activeName" v-else>
+        <el-tab-pane
+          :name="item.name"
+          :label="`${$dictLable('dataType',item.name)}（${item.count}）`"
+          v-for="item in arrTypeShow"
+          :key="item.name"
+        >
+          <div class="DataBox" v-for="doc in dataResult[item.name].list" :key="doc._id">
+            <a class="n-a" :href="'#/detail_data?dataId=' +doc._id" target="_blank">
+              <span>{{getText(doc)}}</span>
+              <span style="color:red">{{getHighLightText(doc)}}</span>
+              <span>{{getEndText(doc)}}</span>
+            </a>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+
     <dm_loading height="200" v-else></dm_loading>
   </div>
 </template>
@@ -99,7 +103,7 @@ export default {
 
       this.arrTypeShow = arr.filter(doc => doc.count); //过滤大于0的选项
 
-      this.activeName = this.arrTypeShow[0].name; //获取第一个有效选项名聚焦
+      this.activeName = lodash.get(this.arrTypeShow, `[0].name`); //获取第一个有效选项名聚焦
       this.ready = true;
     }
   },

@@ -3,7 +3,7 @@
     <dm_list_data ref="listData" :cf="cfList" @after-search="afterSearch">
       <template v-slot:slot_column_familiarity="{row}">
         <div class>
-          <familiarity_select v-model="row.familiarityDoc" :data="row" data-type="html_api"></familiarity_select>
+          <familiarity_select v-model="row.familiarityDoc" :data="row" data-type="html_api" :key="row._id"></familiarity_select>
         </div>
       </template>
       <template v-slot:slot_in_toolbar="{data}">
@@ -12,6 +12,7 @@
           v-if="data&&data.objParam"
           :param="data.objParam"
           :listIndex="cfList.listIndex"
+          scoreKey="html_api"
         >
           <!-- 计分板组件 -->
         </score_panel>

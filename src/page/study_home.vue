@@ -15,7 +15,7 @@
         text-color="#fff"
         active-text-color="#ffd04b"
       >
-        <!-- <el-menu-item index="home" route="listHome">后台首页</el-menu-item> -->
+       <el-menu-item index="study_user" route="study_user">我的</el-menu-item>
 
         <el-menu-item index="note" route="detail_group_g_card?groupId=5e19d9fff3c94a3971f45595">知识点</el-menu-item>
         <el-menu-item
@@ -72,11 +72,16 @@ export default {
       systemName: PUB.systemName,
       groupId: null,
       activeMenuIndex: "html_api",
+      //用于菜单聚焦的数据字典
       mapActiveMenu: {
         "5e19d9fff3c94a3971f45595": "note",
         "5e5f49b5a56e720593572973": "demo",
         "5e5f5b85a56e720593572a90": "vedio",
-        "5e18821555a1e947e7bec88d": "thirdPart"
+        "5e18821555a1e947e7bec88d": "thirdPart",
+        "/study_home/list_css_api": "css_api",
+        "/study_home/list_html_api": "html_api",
+        "/study_home/list_js_api": "js_api",
+        "/study_home/study_user": "study_user"
       }
     };
   },
@@ -97,12 +102,17 @@ export default {
     },
     //函数：{设置聚焦菜单函数}
     setActiveMenu() {
+      console.log("this.$route:", this.$route);
       this.groupId = this.$route.query.groupId;
       //如果{groupId}存在
       if (this.groupId) {
         // this.activeMenuIndex = this.mapActiveMenu[this.groupId];
+        this.activeMenuIndex = this.mapActiveMenu[this.groupId];
+      }else{
+        let key=this.$route.path;
+        this.activeMenuIndex =this.mapActiveMenu[key]
       }
-      this.activeMenuIndex = this.mapActiveMenu[this.groupId];
+      
     }
   },
   created() {
