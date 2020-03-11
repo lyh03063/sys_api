@@ -34,6 +34,14 @@
         :dataType="doc._dataType"
         v-if="doc._dataType"
       ></familiarity_select>
+      <el-button
+      :type="[collectBottonAuto?'warning':'']"
+        size="mini"
+        style="margin:0 10px;"
+        :icon="collectBotton"
+        @click="collectAuto()"
+        circle
+      ></el-button>
       <div class="C_999 DPIB FR MT6" style="display:flex">
         <span class="keyword_box">关键词：{{doc.keyword}}</span>
         <el-button plain @click="showDialogEdit" size="mini" style="width:60px">编辑</el-button>
@@ -75,8 +83,7 @@
         @cancel="isShowDialogEdit = false"
       ></dm_dynamic_form>
     </el-dialog>
-    <div class="float_bar " v-if="countReldata>0&&isShowFloatBar">
-      
+    <div class="float_bar" v-if="countReldata>0&&isShowFloatBar">
       <ul>
         <li>
           <a href="javascript:;" @click="scrollView('top')">详情</a>
@@ -90,7 +97,9 @@
           </li>
         </template>
       </ul>
-      <a class="btn-hide MT15"  href="javascript:;" @click="isShowFloatBar=false" > <i class="el-icon-close">隐藏</i> </a>
+      <a class="btn-hide MT15" href="javascript:;" @click="isShowFloatBar=false">
+        <i class="el-icon-close">隐藏</i>
+      </a>
     </div>
 
     <el-collapse v-model="activeNames" class="n-el-collapse">
@@ -134,7 +143,9 @@ export default {
   },
   data() {
     return {
-      isShowFloatBar:true,
+      collectBottonAuto:false,//收藏按钮是否聚焦
+      collectBotton: "el-icon-star-off",//收藏按钮图案
+      isShowFloatBar: true,
       activeNames: [], //激活的折叠面板
       familiarityDoc: {},
       dataId: null,
@@ -183,8 +194,7 @@ export default {
         (n, doc) => n + (doc["list"].length || 0),
         0
       );
-      return total
-
+      return total;
     },
     arrCards() {
       let arr = [
@@ -245,6 +255,15 @@ export default {
   },
 
   methods: {
+    //函数：{收藏按钮点击的函数}
+    collectAuto() {
+      if(this.collectBottonAuto){
+        this.collectBotton = "el-icon-star-off";
+      }else{
+        this.collectBotton = "el-icon-star-on";
+      }
+       this.collectBottonAuto=!this.collectBottonAuto
+    },
     //函数：{滚动到指定位置的函数}
     scrollView(type) {
       //让指定元素进入视口
@@ -436,17 +455,15 @@ export default {
   margin-bottom: 10px;
 }
 
-.btn-hide{
+.btn-hide {
   border-radius: 5px;
   color: #666;
   display: block;
- text-align: center;
+  text-align: center;
   height: 22px;
   line-height: 22px;
-  background: #F7F8FA;
+  background: #f7f8fa;
   cursor: pointer;
   font-size: 12px;
-
-
 }
 </style>
