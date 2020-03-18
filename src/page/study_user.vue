@@ -22,12 +22,16 @@
           
         </el-col>
       </el-row>
+      <collect></collect>
     </div>
   </div>
 </template>
 <script>
 export default {
   mixins: [MIX.base],
+  components: {
+    collect: () => import("@/page/study_collect.vue") 
+  },
   data() {
     return {
       ready: false,

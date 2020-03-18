@@ -1,11 +1,11 @@
 <template>
-  <div> 
+  <div>
     <dm_debug_list>
       <dm_debug_item v-model="activeName" text="activeName" />
     </dm_debug_list>
 
     <div class v-if="ready">
-      <div class="LH50 TAC H50 C_999" v-if="!activeName">没有匹配的搜索结果！</div>
+      <div class="collectBox" v-if="!activeName">收藏夹空空如也</div>
       <el-tabs v-model="activeName" v-else>
         <el-tab-pane
           :name="item.name"
@@ -15,15 +15,12 @@
         >
           <div class="DataBox" v-for="doc in dataResult[item.name].list" :key="doc._id">
             <a class="n-a" :href="'#/detail_data?dataId=' +doc._id" target="_blank">
-              <span>{{getText(doc)}}</span>
-              <span style="color:red">{{getHighLightText(doc)}}</span>
-              <span>{{getEndText(doc)}}</span>
+              {{doc.title}}
             </a>
           </div>
         </el-tab-pane>
       </el-tabs>
     </div>
-
     <dm_loading height="200" v-else></dm_loading>
   </div>
 </template>
@@ -47,39 +44,22 @@ export default {
       arrTypeShow: [],
       dataResult: null,
       input: "",
-      keywordData: null
     };
   },
-  watch: {
-    $route: function(newUrl, oldUrl) {
-      if (newUrl != oldUrl) {
-        this.getList(); //调用：{获取列表函数}
-      }
-    },
-    immediate: true,
-    deep: true
-  },
+//   watch: {
+//     $route: function(newUrl, oldUrl) {
+//       if (newUrl != oldUrl) {
+//         this.getList(); //调用：{获取列表函数}
+//       }
+//     },
+//     immediate: true,
+//     deep: true
+//   },
   methods: {
-    //函数：{获取第一文本的函数}
-    getText(doc) {
-      this.startIndex = doc.title
-        .toLowerCase()
-        .indexOf(this.keywordData.toLowerCase());
-      return doc.title.slice(0, this.startIndex);
-    },
-    //函数：{获取高亮文本的函数}
-    getHighLightText(doc) {
-      this.endIndex = this.startIndex + this.keywordData.length;
-      return doc.title.slice(this.startIndex, this.endIndex);
-    },
-    //函数：{获取末尾文本的函数}
-    getEndText(doc) {
-      return doc.title.substr(this.endIndex);
-    },
+   
     //函数：{获取列表函数}
     async getList() {
-      let keyword = this.$route.query.keyword;
-      this.keywordData = keyword;
+      let keyword = "三元";
       let {
         data: { dataResult }
       } = await axios({
@@ -102,11 +82,11 @@ export default {
       });
 
       this.arrTypeShow = arr.filter(doc => doc.count); //过滤大于0的选项
+      
 
       this.activeName = lodash.get(this.arrTypeShow, `[0].name`); //获取第一个有效选项名聚焦
+        
       this.ready = true;
-      console.log("activeName",this.activeName);
-      console.log("arrTypeShow",this.arrTypeShow)
     }
   },
   //计算属性
@@ -126,5 +106,8 @@ export default {
   border-bottom: 1px solid #dcdfe6;
   color: #60627e;
   line-height: 50px;
+}
+.collectBox{
+    color: #999999;
 }
 </style>
