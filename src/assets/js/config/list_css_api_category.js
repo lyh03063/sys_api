@@ -1,12 +1,12 @@
 let _dataType = "css_api_category",
   _systemId = PUB._systemId;
- 
-  PUB.listCF.list_css_api_category= {
+
+PUB.listCF.list_css_api_category = {
   idKey: "_id", //键名
   pageSize: 20,
   listIndex: "list_css_api_category", //vuex对应的字段~
   focusMenu: true, //进行菜单聚焦
- 
+
   breadcrumb: [
     { value: "首页", path: "#/listHome" },
     { value: "Css-API分类" }
@@ -22,16 +22,15 @@ let _dataType = "css_api_category",
     _systemId,
     _dataType
   },
-  //-------列配置数组-------
-  columns: [COLUMNS.title_fixed, COLUMNS.desc, COLUMNS.category],
-  //-------筛选表单字段数组-------
-  searchFormItems: [F_ITEMS.title_search],
   //-------详情字段数组-------
-  detailItems: [D_ITEMS.title, D_ITEMS.desc,D_ITEMS.category],
+  detailItems: ["title", "desc", "category"],
+  //-------列配置数组-------
+  columns: ["title_fixed", "desc", "category"],
+  //-------筛选表单字段数组-------
+  searchFormItems: ["title_search"],
   //-------新增、修改表单字段数组-------
-  formItems: [
-    F_ITEMS.title,
-    F_ITEMS.desc,
-   
-  ]
+  formItems: ["title", "desc"],
+
 }
+//调用：{改造列表字段配置形式的函数（字符串转对象）}
+util.reformCFListItem(PUB.listCF.list_css_api_category)

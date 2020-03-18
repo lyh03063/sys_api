@@ -36,23 +36,18 @@ PUB.listCF.list_js_api = {
     _systemId,
     _dataType
   },
-  //-------列配置数组-------
-  columns: [COLUMNS.title_fixed_w150_edit,COLUMNS.keyword_edit,  COLUMNS.desc, COLUMNS.category, COLUMNS.familiarity_select,  COLUMNS.importance,
-  COLUMNS.difficulty, COLUMNS.english, 
-   COLUMNS.cateIdOld],
-  //-------筛选表单字段数组-------
-  searchFormItems: [F_ITEMS.title_search, F_ITEMS.js_api_category,F_ITEMS.importance, F_ITEMS.difficulty, ],
-  //-------详情字段数组-------
-  detailItems: [D_ITEMS._id, D_ITEMS.title,D_ITEMS.keyword,  D_ITEMS.desc, D_ITEMS.detail, D_ITEMS.category,  D_ITEMS.importance,
-  D_ITEMS.difficulty, D_ITEMS.english,
-  D_ITEMS.cateIdOld],
-  //-------新增、修改表单字段数组-------
-  formItems: [
-    F_ITEMS.title,
-    F_ITEMS.link,
-    F_ITEMS.keyword, F_ITEMS.js_api_category, F_ITEMS.desc,
-    F_ITEMS.detail, F_ITEMS.importance,
-    F_ITEMS.difficulty, F_ITEMS.english,
-    
-  ]
+
+
+   //-------详情字段数组-------
+   detailItems: ["_id", "title", "keyword", "desc", "detail", "category", "importance", "difficulty", "english", "cateIdOld"],
+   //-------列配置数组-------
+   columns: ["title_fixed_w150_edit", "keyword_edit", "desc", "category", "familiarity_select", "importance", "difficulty", "english", "cateIdOld"],
+   //-------筛选表单字段数组-------
+   searchFormItems: ["title_search", "js_api_category", "importance", "difficulty"],
+   //-------新增、修改表单字段数组-------
+   formItems: ["title", "link", "keyword", "js_api_category", "desc", "detail", "importance", "difficulty", "english"],
+ 
+  
 }
+//调用：{改造列表字段配置形式的函数（字符串转对象）}
+util.reformCFListItem(PUB.listCF.list_js_api)

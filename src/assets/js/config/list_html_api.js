@@ -37,22 +37,16 @@ PUB.listCF.list_html_api = {
     _systemId,
     _dataType
   },
-  //-------列配置数组-------
-  columns: [COLUMNS.title_fixed_w150_edit,COLUMNS.keyword_edit,  COLUMNS.desc, COLUMNS.category, COLUMNS.familiarity_select, COLUMNS.html_display, COLUMNS.importance,
-  COLUMNS.difficulty, COLUMNS.english, COLUMNS.html_version,
-   COLUMNS.selfClose, COLUMNS.cateIdOld, COLUMNS.demoList],
-  //-------筛选表单字段数组-------
-  searchFormItems: [F_ITEMS.title_search, F_ITEMS.html_api_category, F_ITEMS.html_display, F_ITEMS.importance, F_ITEMS.difficulty, F_ITEMS.html_version, F_ITEMS.selfClose],
+
+
   //-------详情字段数组-------
-  detailItems: [D_ITEMS._id, D_ITEMS.title,D_ITEMS.keyword,  D_ITEMS.desc, D_ITEMS.detail, D_ITEMS.category, D_ITEMS.html_display, D_ITEMS.importance,
-  D_ITEMS.difficulty, D_ITEMS.english,
-  D_ITEMS.html_version, D_ITEMS.selfClose, D_ITEMS.demoList, D_ITEMS.cateIdOld],
+  detailItems: ["_id", "title", "keyword", "desc", "detail", "category", "html_display", "importance", "difficulty", "english", "html_version", "selfClose", "demoList", "cateIdOld"],
+  //-------列配置数组-------
+  columns: ["title_fixed_w150_edit", "keyword_edit", "desc", "category", "familiarity_select", "html_display", "importance", "difficulty", "english", "html_version", "selfClose", "cateIdOld", "demoList"],
+  //-------筛选表单字段数组-------
+  searchFormItems: ["title_search", "html_api_category", "html_display", "importance", "difficulty", "html_version", "selfClose"],
   //-------新增、修改表单字段数组-------
-  formItems: [
-    F_ITEMS.title,
-    F_ITEMS.keyword, F_ITEMS.html_api_category, F_ITEMS.desc,
-    F_ITEMS.detail, F_ITEMS.html_display, F_ITEMS.importance,
-    F_ITEMS.difficulty, F_ITEMS.english, F_ITEMS.html_version,
-     F_ITEMS.selfClose, F_ITEMS.demoList
-  ]
+  formItems: ["title", "keyword", "html_api_category", "desc", "detail", "html_display", "importance", "difficulty", "english", "html_version", "selfClose", "demoList"],
+
 }
+util.reformCFListItem(PUB.listCF.list_html_api)

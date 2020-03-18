@@ -9,7 +9,7 @@ PUB.listCF.list_score = {
   focusMenu: true, //进行菜单聚焦
   breadcrumb: [
     { value: "首页", path: "#/listHome" },
-    { value: "前端习题" }
+    { value: "记分项" }
   ],
   ...PUB.listCFCommon2,//展开公共配置
   objParamAddon: {
@@ -21,12 +21,15 @@ PUB.listCF.list_score = {
     _systemId,
     _dataType
   },
-  //-------列配置数组-------
-  columns: [COLUMNS.scoreKey, COLUMNS.score, COLUMNS._userId],
-  //-------筛选表单字段数组-------
-  searchFormItems: [F_ITEMS.scoreKey,  F_ITEMS._userId],
+
   //-------详情字段数组-------
-  detailItems: [D_ITEMS._id,D_ITEMS.scoreKey, D_ITEMS.score, D_ITEMS._userId],
+  detailItems: ["_id", "scoreKey", "score", "_userId"],
+  //-------列配置数组-------
+  columns: ["scoreKey", "score", "_userId"],
+  //-------筛选表单字段数组-------
+  searchFormItems: ["scoreKey", "_userId"],
   //-------新增、修改表单字段数组-------
-  formItems: [F_ITEMS.scoreKey, F_ITEMS._userId]
+  formItems: ["scoreKey", "_userId"],
 }
+//调用：{改造列表字段配置形式的函数（字符串转对象）}
+util.reformCFListItem(PUB.listCF.list_score)

@@ -21,17 +21,17 @@ PUB.listCF.list_exercises = {
     _systemId,
     _dataType
   },
-  //-------列配置数组-------
-  columns: [COLUMNS.title_fixed, COLUMNS.desc, COLUMNS.category],
-  //-------筛选表单字段数组-------
-  searchFormItems: [F_ITEMS.title_search],
-  //-------详情字段数组-------
-  detailItems: [D_ITEMS.title, D_ITEMS.desc, D_ITEMS.category,D_ITEMS.detail,],
-  //-------新增、修改表单字段数组-------
-  formItems: [
-    F_ITEMS.title,
-    F_ITEMS.desc,
-    F_ITEMS.detail,
 
-  ]
+  //-------详情字段数组-------
+  detailItems: ["title", "desc", "category", "detail"],
+  //-------列配置数组-------
+  columns: ["title_fixed", "desc", "category"],
+  //-------筛选表单字段数组-------
+  searchFormItems: ["title_search"],
+  //-------新增、修改表单字段数组-------
+  formItems: ["title", "desc", "detail"],
 }
+
+
+//调用：{改造列表字段配置形式的函数（字符串转对象）}
+util.reformCFListItem(PUB.listCF.list_exercises)

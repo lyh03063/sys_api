@@ -8,7 +8,6 @@ import "@/assets/js/config.js";
 import "@/assets/css/util.scss"; //导入公共样式文件
 Vue.use(VueRouter)
 import manage from "@/manage";
-let arrRouteListName = PUB.arrRouteListName
 
 // window.util=util;
 // 3. 创建 router 实例，然后传 `routes` 配置

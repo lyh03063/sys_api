@@ -37,22 +37,19 @@ PUB.listCF.list_css_api = {
     _systemId,
     _dataType
   },
-  //-------列配置数组-------
-  columns: [COLUMNS.title_fixed_w150, COLUMNS.keyword_edit, COLUMNS.desc, COLUMNS.category, COLUMNS.familiarity_select, COLUMNS.importance,
-  COLUMNS.difficulty,
-  COLUMNS.link],
-  //-------筛选表单字段数组-------
-  searchFormItems: [F_ITEMS.title_search, F_ITEMS.css_api_category, F_ITEMS.importance, F_ITEMS.difficulty,],
-  //-------详情字段数组-------
-  detailItems: [D_ITEMS._id, D_ITEMS.title, D_ITEMS.keyword, D_ITEMS.desc, D_ITEMS.detail, D_ITEMS.category, D_ITEMS.importance,
-  D_ITEMS.difficulty,
-  ],
-  //-------新增、修改表单字段数组-------
-  formItems: [
-    F_ITEMS.title,
-    F_ITEMS.keyword, F_ITEMS.css_api_category, F_ITEMS.desc,
-    F_ITEMS.detail, F_ITEMS.importance,
-    F_ITEMS.difficulty,
 
-  ]
+
+  //-------详情字段数组-------
+  detailItems: ["_id", "title", "keyword", "desc", "detail", "category", "importance"],
+  //-------列配置数组-------
+  columns: ["title_fixed_w150", "keyword_edit", "desc", "category", "familiarity_select", "importance"],
+  //-------筛选表单字段数组-------
+  searchFormItems: ["aaaa", "title_search", "css_api_category", "difficulty"],
+  //-------新增、修改表单字段数组-------
+  formItems: ["title", "keyword", "css_api_category", "desc", "detail", "importance", "difficulty"],
+
+
+
 }
+//调用：{改造列表字段配置形式的函数（字符串转对象）}
+util.reformCFListItem(PUB.listCF.list_css_api)

@@ -35,6 +35,7 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
 {
   path: '/study_home', component: () => import("@/page/study_home"),
   children: [//子路由
+    { path: 'detail_group', component: () => import("@/page/detail_group") },
     { path: 'study_user', component: () => import("@/page/study_user") },
     { path: 'search_result', component: () => import("@/page/search_result") },
     { path: 'detail_group_g_card', component: () => import("@/page/detail_group_g_card") },
@@ -43,6 +44,10 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
   ]
 },]
 //#endregion
+
+
+
+
 
 
 
@@ -93,7 +98,7 @@ MIX.base = {
 
 //#region 列表模块名数组配置
 PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category", "js_api",
-  "js_api_category", "familiarity", "exercises", "score", "front_demo"];
+  "js_api_category", "familiarity", "exercises", "score", "front_demo", "task"];
 //#endregion
 
 
@@ -141,22 +146,79 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
       _dataType
     },
 
+    //-------详情字段数组-------
+    detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
-    columns: [COLUMNS.title_fixed, COLUMNS._id, COLUMNS.desc, COLUMNS.link, COLUMNS.sort],
-
+    columns: ["title_fixed", "_id", "desc", "link", "sort"],
     //-------筛选表单字段数组-------
     searchFormItems: [],
-    //-------详情字段数组-------
-    detailItems: [D_ITEMS.title, D_ITEMS.desc, D_ITEMS.countData, D_ITEMS._id, D_ITEMS._idRel, D_ITEMS._idRel2, D_ITEMS.sort],
     //-------新增、修改表单字段数组-------
-    formItems: [F_ITEMS._idRel, F_ITEMS._idRel2, F_ITEMS.sort,]
+    formItems: ["_idRel", "_idRel2", "sort"],
+
+
 
   }
-
+  util.reformCFListItem(PUB.listCF.detail_group_front_demo)
 }
 //#endregion
 
+//#region 分组下的任务列表页
+{
+  let _dataType = "relation";
 
+
+  PUB.listCF.detail_group_task = {
+    isShowBreadcrumb: false, //面包屑
+    isShowSearchForm: false, //查询表单-
+    idKey: "_id", //键名
+    pageSize: 20,
+    listIndex: "detail_group_task", //vuex对应的字段~
+    focusMenu: true, //进行菜单聚焦
+
+    // ...PUB.listCFCommon,//展开公共配置
+    ...PUB.listCFCommon3, //展开公共配置
+    singleBtns: PUB.singleBtns_copy_detail_sort,
+    batchBtns: {
+      addon: [
+        { uiType: "slot", slot: "slot_btn_select" },
+        util.cfList.bBtns.add,
+        util.cfList.bBtns.delete,
+
+      ],
+    },
+    sortJsonDefault: {
+      "sort": -1
+    },
+    findJsonDefault: {
+
+    },
+    objParamAddon: {
+      findJson: {},
+
+      _systemId,
+      _dataType
+    },
+    //公共的附加参数，针对所有接口
+    paramAddonPublic: {
+      _systemId,
+      _dataType
+    },
+    //-------详情字段数组-------
+    detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
+    //-------列配置数组-------
+    columns: ["title_fixed", "_id", "desc", "link", "sort"],
+    //-------筛选表单字段数组-------
+    searchFormItems: [],
+    //-------新增、修改表单字段数组-------
+    formItems: ["_idRel", "_idRel2", "sort"],
+
+
+
+  }
+  util.reformCFListItem(PUB.listCF.detail_group_task)
+
+}
+//#endregion
 
 
 //#region 菜单列表
@@ -250,6 +312,19 @@ PUB.menuList = [
         index: "list_note_category",
         route: "/list_common?type=note_category",
         title: "笔记分类"
+      }
+    ]
+  },
+
+  {
+    index: "projectManage",
+    icon: "el-icon-document",
+    title: "任务系统",
+    menuItem: [
+      {
+        index: "list_task",
+        route: "/list_common?type=task",
+        title: "任务"
       }
     ]
   },
@@ -426,17 +501,25 @@ D_ITEMS.scoreKey = {
   prop: "scoreKey",
 };
 COLUMNS.scoreKey = { ...D_ITEMS.scoreKey, width: 120, };
-F_ITEMS.scoreKey = {...D_ITEMS.scoreKey,};
+F_ITEMS.scoreKey = { ...D_ITEMS.scoreKey, };
 
 
-
+F_ITEMS.personCharge = {
+  ...D_ITEMS.personCharge, type: "select",
+  ajax: {
+    param: { _systemId, _dataType: "admin" },
+    url: "/info/getCommonList",
+    keyLabel: "nickName",
+    keyValue: "userName"
+  }
+};
 
 D_ITEMS.aaaa = {
   label: "记分key",
   prop: "scoreKey",
 };
 COLUMNS.aaaa = { ...D_ITEMS.aaaa, width: 120, };
-F_ITEMS.aaaa = {...D_ITEMS.aaaa,};
+F_ITEMS.aaaa = { ...D_ITEMS.aaaa, };
 
 
 

@@ -19,7 +19,7 @@
         <!--候选值列表-->
         <el-link
           type="primary"
-          :href="`#/detail_group?groupId=${docG._idRel}`"
+          :href="`#/study_home/detail_group?groupId=${docG._idRel}`"
           v-for="docG in doc.arrGroup"
           :key="docG.relationId"
         >{{docG.title}}</el-link>

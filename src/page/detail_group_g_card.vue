@@ -18,7 +18,7 @@
           <a
             target="_blank"
             class="FS12"
-            :href="`#/detail_group?groupId=${docBig.targetDoc._id}`"
+            :href="`#/study_home/detail_group?groupId=${docBig.targetDoc._id}`"
             v-if="$power('groupDataList.all.modify')"
           >编辑</a>
         </template>
@@ -26,7 +26,7 @@
           <el-link
             class="small_group_link"
             type="primary"
-            :href="`#/detail_group?groupId=${docSmall.targetDoc._id}`"
+            :href="`#/study_home/detail_group?groupId=${docSmall.targetDoc._id}`"
             target="_blank"
           >
             <el-card shadow="hover" :body-style="{ padding: '10px' }">

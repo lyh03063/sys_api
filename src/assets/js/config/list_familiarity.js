@@ -1,7 +1,7 @@
 
 let _dataType = "familiarity",
   _systemId = PUB._systemId;
-  PUB.listCF.list_familiarity= {
+PUB.listCF.list_familiarity = {
   idKey: "_id", //键名
   pageSize: 20,
   listIndex: "list_familiarity", //vuex对应的字段~
@@ -25,24 +25,17 @@ let _dataType = "familiarity",
     _systemId,
     _dataType
   },
-  //-------列配置数组-------
-  columns: [COLUMNS.familiarity,COLUMNS.score, COLUMNS.dataType, COLUMNS.dataId, COLUMNS._userId,COLUMNS.userId,COLUMNS._idRel,COLUMNS.studyTime ],
-  //-------筛选表单字段数组-------
-  searchFormItems: [F_ITEMS.dataId, F_ITEMS.userId,F_ITEMS._userId,F_ITEMS._idRel,],
+
+
   //-------详情字段数组-------
-  detailItems: [
-    D_ITEMS.familiarity,
-    D_ITEMS.dataType,
-    D_ITEMS.dataId,
-    
-    D_ITEMS.userId,D_ITEMS.studyTime
-  ],
+  detailItems: ["familiarity", "dataType", "dataId", "userId", "studyTime"],
+  //-------列配置数组-------
+  columns: ["familiarity", "score", "dataType", "dataId", "_userId", "userId", "_idRel", "studyTime"],
+  //-------筛选表单字段数组-------
+  searchFormItems: ["dataId", "userId", "_userId", "_idRel"],
   //-------新增、修改表单字段数组-------
-  formItems: [
-    F_ITEMS.familiarity,
-    F_ITEMS.dataType,
-    F_ITEMS.dataId,
-    F_ITEMS.userId,
-    F_ITEMS._userId,
-  ]
+  formItems: ["familiarity", "dataType", "dataId", "userId", "_userId"],
+
 }
+//调用：{改造列表字段配置形式的函数（字符串转对象）}
+util.reformCFListItem(PUB.listCF.list_familiarity)

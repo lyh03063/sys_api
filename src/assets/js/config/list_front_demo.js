@@ -21,19 +21,11 @@ PUB.listCF.list_front_demo = {
     _systemId,
     _dataType
   },
-  //-------列配置数组-------
-  columns: [COLUMNS.title_fixed_edit,COLUMNS._id,COLUMNS.keyword_edit,COLUMNS.link, COLUMNS.desc, COLUMNS.category],
-  //-------筛选表单字段数组-------
-  searchFormItems: [F_ITEMS.title_search],
-  //-------详情字段数组-------
-  detailItems: [D_ITEMS.title,D_ITEMS.keyword,D_ITEMS.link, D_ITEMS.desc, D_ITEMS.category, D_ITEMS.detail,D_ITEMS._id,],
-  //-------新增、修改表单字段数组-------
-  formItems: [
-    F_ITEMS.title,
-    F_ITEMS.link,
-    F_ITEMS.keyword,
-    F_ITEMS.desc,
-    F_ITEMS.detail,
-
-  ]
+ 
+  "detailItems": ["title", "keyword", "link", "desc", "category", "detail", "_id"],
+  "columns": ["title_fixed_edit", "_id", "keyword_edit", "link", "desc", "category"],
+  "searchFormItems": ["title_search"],
+  "formItems": ["title", "link", "keyword", "desc", "detail"]
 }
+//调用：{改造列表字段配置形式的函数（字符串转对象）}
+util.reformCFListItem(PUB.listCF.list_front_demo)

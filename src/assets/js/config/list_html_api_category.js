@@ -21,16 +21,16 @@ let _dataType = "html_api_category",
     _systemId,
     _dataType
   },
-  //-------列配置数组-------
-  columns: [COLUMNS.title_fixed, COLUMNS.desc, COLUMNS.category],
-  //-------筛选表单字段数组-------
-  searchFormItems: [F_ITEMS.title_search],
+  
+  
   //-------详情字段数组-------
-  detailItems: [D_ITEMS.title, D_ITEMS.desc,D_ITEMS.category],
-  //-------新增、修改表单字段数组-------
-  formItems: [
-    F_ITEMS.title,
-    F_ITEMS.desc,
-   
-  ]
+detailItems:["title","desc","category"],
+//-------列配置数组-------
+columns:["title_fixed","desc","category"],
+//-------筛选表单字段数组-------
+searchFormItems:["title_search"],
+//-------新增、修改表单字段数组-------
+formItems:["title","desc"],
+
 }
+util.reformCFListItem(PUB.listCF.list_html_api_category)
