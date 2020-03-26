@@ -83,7 +83,7 @@ export default {
 
     this.cfList.formItems.push(note_linkList);
 
-    //笔记的相关demo网址
+    //笔记的相关笔记网址
     let note_noteList = {
       ...D_ITEMS.note_noteList,
       type: "select_list_data",

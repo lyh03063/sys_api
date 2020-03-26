@@ -3,8 +3,6 @@
     <div class="TAC">
       <h1 class="FS24">欢迎使用{{systemName}}</h1>
 
-      
-
       <div class="big_group" v-for="docBig in listData" :key="docBig._id">
         <h2 class="big_group_title">{{docBig.targetDoc.title}}</h2>
 
@@ -28,6 +26,8 @@
           </el-col>
         </el-row>
       </div>
+
+      <el-button plain @click="updateGroupAndCount" size="mini">更新分组数据</el-button>
     </div>
   </div>
 </template>
@@ -55,6 +55,30 @@ export default {
         { title: "产品14", price: 25 }
       ]
     };
+  },
+  methods: {
+    async updateGroupAndCount() {
+      let clickStatus = await this.$confirm(
+        "确定操作,将需要10到30秒时间？"
+      ).catch(() => {});
+      if (clickStatus != "confirm") return;
+      //开始loding
+      const loading = this.$loading({
+        lock: true,
+        text: "执行中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
+      let {data} = await axios({
+        method: "post",
+        url: `${PUB.domain}/info/updateGroupAndCount`,
+        data: {}
+      });
+
+      loading.close(); //关闭loding
+
+      this.$message.success(`操作成功,更新了${data.length}条数据`);
+    }
   },
   async created() {
     let {

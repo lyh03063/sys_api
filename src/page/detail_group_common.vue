@@ -8,10 +8,25 @@
 
     <!-- <dm_dynamic_form :cf="cfFormSearch" v-model="formDataSearch" @submit="searchList"></dm_dynamic_form> -->
 
-    <dm_list_data ref="listData" :cf="cfList" v-if="ready" @single-btn-click="singleEvent" @after-search="updateGroupCountData">
+    <dm_list_data
+      ref="listData"
+      :cf="cfList"
+      v-if="ready"
+      @single-btn-click="singleEvent"
+      @after-search="updateGroupCountData"
+    >
       <!--自定义详情弹窗插槽-->
       <template v-slot:customDetail="{detailData}">
         <detail_data :propDataId="detailData._idRel2"></detail_data>
+      </template>
+      <!--任务-完成度列插槽组件-->
+      <template v-slot:slot_column_complete="{row}">
+        <el-progress
+          :text-inside="true"
+          :stroke-width="16"
+          :percentage="(row.complete||0)*100"
+          status="success"
+        ></el-progress>
       </template>
 
       <!--分组数据选择列表按钮插槽-->
@@ -35,18 +50,19 @@ export default {
   components: {
     detail_data: () => import("@/page/detail_data.vue") //数据详情页组件
   },
-  mixins: [MIX.base,MIX.listGroupData],
+  mixins: [MIX.base, MIX.listGroupData],
   props: {},
-  
+
   data() {
     return {};
   },
   methods: {},
-  async created() {}
+  async created() {
+    
+  }
 };
 </script>
 
 
 <style scoped>
-
 </style>

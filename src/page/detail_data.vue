@@ -35,7 +35,7 @@
         v-if="doc._dataType"
       ></familiarity_select>
       <el-button
-      :type="[collectBottonAuto?'warning':'']"
+        :type="collectBottonAuto?'warning':''"
         size="mini"
         style="margin:0 10px;"
         :icon="collectBotton"
@@ -51,6 +51,16 @@
     <!-- <h1>{{dataTypeLabel}}详情</h1> -->
     <div class="detail_box">
       <div class v-html="doc._detail"></div>
+
+      <dm_pannel
+        class="MB20"
+        :title="doc.title"
+        type="plain"
+        v-for="(doc,i) in arrRelNote"
+        :key="i"
+      >
+        <div class="MT20" v-html="doc._detail"></div>
+      </dm_pannel>
 
       <div class v-if="doc._dataType=='vedio'">
         <video width="760" height="440" controls :src="srcVedio"></video>
@@ -143,8 +153,10 @@ export default {
   },
   data() {
     return {
-      collectBottonAuto:false,//收藏按钮是否聚焦
-      collectBotton: "el-icon-star-off",//收藏按钮图案
+      arrRelNote: [], //关联笔记的数组
+      relNoteDetail: "", //关联笔记的详情html
+      collectBottonAuto: false, //收藏按钮是否聚焦
+      collectBotton: "el-icon-star-off", //收藏按钮图案
       isShowFloatBar: true,
       activeNames: [], //激活的折叠面板
       familiarityDoc: {},
@@ -231,14 +243,6 @@ export default {
       return arr;
     },
 
-    // title() {
-    //   let { title, desc } = this.doc;
-    //   if (desc) {
-    //     title += `：${desc}`;
-    //   }
-    //   return title;
-    // },
-
     srcVedio() {
       let src = lodash.get(this.doc, `vedio[0].url`);
 
@@ -257,12 +261,12 @@ export default {
   methods: {
     //函数：{收藏按钮点击的函数}
     collectAuto() {
-      if(this.collectBottonAuto){
+      if (this.collectBottonAuto) {
         this.collectBotton = "el-icon-star-off";
-      }else{
+      } else {
         this.collectBotton = "el-icon-star-on";
       }
-       this.collectBottonAuto=!this.collectBottonAuto
+      this.collectBottonAuto = !this.collectBottonAuto;
     },
     //函数：{滚动到指定位置的函数}
     scrollView(type) {
@@ -343,6 +347,39 @@ export default {
       });
       this.familiarityDoc = data.doc;
     },
+
+    //函数：{ajax获取关联笔记详情函数}-多篇按顺序拼接
+    async ajaxGetRelNoteDetail() {
+      if (!this.doc.relNoteList) return;
+
+      let htmlDetail = "";
+      let arrRelNote = [];
+      //循环异步
+      for await (const noteEach of this.doc.relNoteList) {
+        let { _id } = noteEach;
+
+        let { data } = await axios({
+          //请求接口
+          method: "post",
+
+          url: `${PUB.domain}/info/commonDetail`,
+          data: {
+            _systemId: PUB._systemId,
+            _id
+          } //传递参数
+        });
+        console.log("data:#########", data);
+
+        let { title, _detail } = data.doc;
+        htmlDetail += _detail;
+
+        arrRelNote.push({ title, _detail });
+      }
+      this.arrRelNote = arrRelNote;
+
+      this.relNoteDetail = htmlDetail;
+    },
+
     //函数：{初始化函数}
 
     async init() {
@@ -360,11 +397,17 @@ export default {
 
       this.ajaxGetFamiliarity(); //调用：{ajax获取当前数据的熟悉度}
 
+      this.ajaxGetRelNoteDetail(); //调用：{ajax获取关联笔记详情函数}
+
       let { title, keyword, _dataType } = this.doc;
       // let keyword = this.doc.keyword;
 
       this.dataTypeLabel = lodash.get(DYDICT.dataType, `${_dataType}.label`);
-      document.title = `${title}-${this.dataTypeLabel}`; //修改浏览器标题栏文字
+     
+      //如果hash值是当前页面为主（不是嵌套在其他路由下）
+      if (location.hash.startsWith(`#/detail_data?`)) {
+         document.title = `${title}-${this.dataTypeLabel}`; //修改浏览器标题栏文字
+      }
 
       /*****************根据数据类型修改编辑按钮的表单配置-START*****************/
       this.cfFormEdit.paramAddonInit._dataType = _dataType; //设置类型参数
@@ -399,7 +442,6 @@ export default {
   async created() {
     this.dataId = this.$route.query.dataId;
     this.dataId = this.dataId || this.propDataId; //如果地址没有(非页面级组件)，从属性中获取数据id
-
     this.init(); //函数：{初始化函数}
   }
 };

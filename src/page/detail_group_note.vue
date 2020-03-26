@@ -6,6 +6,7 @@
       <dm_debug_item v-model="arrSelect2" text="arrSelect2" />
     </dm_debug_list>
 
+<div class="" ></div>
     <dm_dynamic_form :cf="cfFormSearch" v-model="formDataSearch" @submit="searchList"></dm_dynamic_form>
 
     <dm_list_data
@@ -32,13 +33,12 @@
         </div>
       </template>
       <!--分组数据选择列表按钮插槽-->
-      <template v-slot:slot_btn_select  v-if="$power('groupDataList.all.modify')">
+      <template v-slot:slot_btn_select v-if="$power('groupDataList.all.modify')">
         <dm_select_list_data
           class="DPIB MR10"
           v-model="arrSelect2"
           :cf="cfSelectList2"
           @select="afterSelect"
-         
         ></dm_select_list_data>
       </template>
       <!--计分板和筛选按钮插槽-->
@@ -62,7 +62,7 @@
 
 <script>
 export default {
- mixins: [MIX.base,MIX.listGroupData],
+  mixins: [MIX.base, MIX.listGroupData],
   components: {
     familiarity_select: () =>
       import("@/components/common/familiarity_select.vue"),
@@ -70,7 +70,7 @@ export default {
     detail_data: () => import("@/page/detail_data.vue") //数据详情页组件
     //src\page\detail_data.vue
   },
- 
+
   props: {},
   data() {
     return {};
@@ -78,11 +78,12 @@ export default {
 
   methods: {},
 
-   created() {}
+  created() {
+   
+  }
 };
 </script>
 
 
 <style scoped>
-
 </style>

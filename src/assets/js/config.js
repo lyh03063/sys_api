@@ -42,7 +42,22 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
     { path: 'detail_g_card_link', component: () => import("@/page/detail_g_card_link") },
     ...PUB.arrRouteListPageForStudy
   ]
-},]
+},
+{
+  path: '/group_home/:gid', component: () => import("@/page/group_home"),
+  children: [//子路由
+    { path: 'detail_group', component: () => import("@/page/detail_group") },
+    { path: 'study_user', component: () => import("@/page/study_user") },
+    { path: 'search_result', component: () => import("@/page/search_result") },
+    { path: 'detail_group_g_card', component: () => import("@/page/detail_group_g_card") },
+    { path: 'detail_g_card_link', component: () => import("@/page/detail_g_card_link") },
+    ...PUB.arrRouteListPageForStudy
+  ]
+},
+
+
+
+]
 //#endregion
 
 
@@ -65,6 +80,8 @@ MIX.base = {
   computed: {
     $sys() {
       let sys = util.getLocalStorageObj(PUB._systemId)//调用：{从LocalStorage获取一个对象的函数}
+      sys.env = PUB.domain == "https://www.dmagic.cn" ? "pro" : "dev";
+
 
       return sys
     },
@@ -178,6 +195,9 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
     // ...PUB.listCFCommon,//展开公共配置
     ...PUB.listCFCommon3, //展开公共配置
     singleBtns: PUB.singleBtns_copy_detail_sort,
+    dynamicDict: [
+      DYDICT.personCharge,
+  ],
     batchBtns: {
       addon: [
         { uiType: "slot", slot: "slot_btn_select" },
@@ -206,7 +226,7 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
-    columns: ["title_fixed", "_id", "desc", "link", "sort"],
+    columns: ["title_fixed",  "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime", "sort"],
     //-------筛选表单字段数组-------
     searchFormItems: [],
     //-------新增、修改表单字段数组-------
@@ -506,6 +526,7 @@ F_ITEMS.scoreKey = { ...D_ITEMS.scoreKey, };
 
 F_ITEMS.personCharge = {
   ...D_ITEMS.personCharge, type: "select",
+  multiple: true, //多选
   ajax: {
     param: { _systemId, _dataType: "admin" },
     url: "/info/getCommonList",

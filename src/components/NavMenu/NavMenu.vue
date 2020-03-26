@@ -1,5 +1,11 @@
 <template>
   <div :class="['out-box',{'collapse':isCollapse}]">
+    
+<dm_debug_list>
+      <dm_debug_item v-model="cf" text="cf"/>
+
+    </dm_debug_list>
+
     <el-aside class :style="[isCollapse?open:close]">
       <div
         class="C_fff TAR PR10 bar"
@@ -39,7 +45,7 @@
             </template>
 
             <el-menu-item
-              style="padding-left:77px;"
+              style="padding-left:37px;"
               :index="item.index"
               :route="item.route"
               v-for="item in menuEach.menuItem"
@@ -79,6 +85,7 @@ export default {
     return {
       open: {
         width: "80px",
+        "min-width": "80px",
         transition: "0.5s"
       },
       close: {
@@ -97,9 +104,11 @@ export default {
 <style scoped>
 .out-box {
   background: rgb(84, 92, 100);
-  width: 201px;
-  height: 100%;
+  min-width: 201px;
+  height: calc(100vh - 60px );
   transition: 0.5s;
+ overflow-y: auto;
+ overflow-x: hidden;
 }
 
 .out-box >>> .el-menu {
@@ -108,6 +117,7 @@ export default {
 
 .out-box.collapse {
   width: 60px;
+    min-width: 60px;
 }
 ul {
   margin: 0;

@@ -18,10 +18,26 @@
           ></el-progress>
         </el-col>
         <el-col style="width:80px">
-          <a    :href="doc.link"><el-button type="primary" size="mini">去学习</el-button></a>
-          
+          <a :href="doc.link">
+            <el-button type="primary" size="mini">去学习</el-button>
+          </a>
         </el-col>
       </el-row>
+
+      <dm_pannel class="MB20" title="我的任务" type="plain">
+        <dm_list_data :cf="cfListMyTask" class="MT15">
+          <!--任务-完成度列插槽组件-->
+          <template v-slot:slot_column_complete="{row}" >
+            <el-progress
+              :text-inside="true"
+              :stroke-width="16"
+              :percentage="(row.complete||0)*100"
+              status="success"
+            ></el-progress>
+          </template>
+        </dm_list_data>
+      </dm_pannel>
+
       <collect></collect>
     </div>
   </div>
@@ -30,10 +46,11 @@
 export default {
   mixins: [MIX.base],
   components: {
-    collect: () => import("@/page/study_collect.vue") 
+    collect: () => import("@/page/study_collect.vue")
   },
   data() {
     return {
+      cfListMyTask: null,
       ready: false,
       customColors: "#67C23A",
       arrObjScore: [
@@ -42,28 +59,29 @@ export default {
           name: "知识点",
           score: 0,
           allCount: 0,
-          link:"#/study_home/detail_group_g_card?groupId=5e19d9fff3c94a3971f45595"
+          link:
+            "#/study_home/detail_group_g_card?groupId=5e19d9fff3c94a3971f45595"
         },
         {
           scoreKey: "html_api",
           name: "Html API",
           score: 0,
           allCount: 0,
-          link:"#/study_home/list_html_api"
+          link: "#/study_home/list_html_api"
         },
         {
           scoreKey: "css_api",
           name: "Css API",
           score: 0,
           allCount: 0,
-          link:"#/study_home/list_css_api"
+          link: "#/study_home/list_css_api"
         },
         {
           scoreKey: "js_api",
           name: "Javascript API",
           score: 0,
           allCount: 0,
-          link:"#/study_home/list_js_api"
+          link: "#/study_home/list_js_api"
         }
       ]
     };
@@ -87,7 +105,7 @@ export default {
           _dataType: "familiarity",
           _systemId: PUB._systemId,
           findJson: {
-            _userId: PUB.$sys.userId, 
+            _userId: PUB.$sys.userId,
             _idRel: "5e19d9fff3c94a3971f45595"
           }
         } //传递参数
@@ -95,7 +113,7 @@ export default {
       let doc = data.doc;
       let { score } = doc;
       if (!score) return;
-      score.allCount=540;
+      score.allCount = 540;
       Object.assign(this.dictScore[`note`], score); //合并对象
     },
     //函数：{获取其他分数函数}
@@ -142,6 +160,10 @@ export default {
 
     //在创建后调用一次消息列表接口接口
     this.init();
+
+    let cfListMyTask = lodash.cloneDeep(PUB.listCF.list_task_my);
+    cfListMyTask.objParamAddon.findJson = { personCharge: this.$sys.userId };
+    this.cfListMyTask = { ...cfListMyTask };
   }
 };
 </script>

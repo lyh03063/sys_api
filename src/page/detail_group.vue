@@ -12,13 +12,12 @@
     <template class v-if="ready">
       <!--动态组件-->
       <component :is="componentName" :groupId="groupId" v-if="isSpecial"></component>
-      <detail_group_common :groupId="groupId"  :data-type="groupDoc.dataType" v-else></detail_group_common>
+      <detail_group_common :groupId="groupId" :data-type="groupDoc.dataType" v-else></detail_group_common>
     </template>
   </div>
 </template>
 
 <script>
-
 //变量：{模块导入对象}
 let objDetailGroupMoudles = {};
 
@@ -27,10 +26,6 @@ PUB.arrGroupMoudlesSpe.forEach(itemEach => {
   objDetailGroupMoudles[`detail_group_${itemEach}`] = () =>
     import(`@/page/detail_group_${itemEach}`);
 });
-
-
-
-
 
 //这个不能动态import，晕死！！！！！！！！！！！！！！！
 //可能是显式地使用detail_group_common标签
@@ -73,7 +68,11 @@ export default {
       });
       this.groupDoc = data.doc;
       this.componentName = `detail_group_${this.groupDoc.dataType}`;
-      document.title = this.groupDoc.title; //修改浏览器标题栏文字
+      //如果hash值是当前页面为主（不是嵌套在其他路由下）
+      if (location.hash.startsWith(`#/detail_group?`)) {
+        document.title = this.groupDoc.title; //修改浏览器标题栏文字
+      }
+
       this.ready = true;
     }
   },

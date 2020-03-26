@@ -1,6 +1,6 @@
 <template>
   <div id="app" style>
-    <div class="float-tips" v-if="!isProEnvConfig">非生产</div>
+    <div class="float-tips" v-if="$sys.env=='dev'">非生产</div>
     <el-container>
       <el-header class="home-head-box">
         <el-row>
@@ -13,7 +13,7 @@
         </el-row>
       </el-header>
     </el-container>
-    <el-container>
+    <el-container class="main-box">
       <NavMenu :cf="navMenuList"></NavMenu>
       <el-main>
         <dm_space height="10"></dm_space>
@@ -32,16 +32,7 @@ export default {
   }, //注册组件
   methods: {},
   computed: {
-    //计算属性
-    isProEnvConfig() {
-      return PUB.domain == "https://www.dmagic.cn";
-    },
-
-    activeMenuIndex() {
-      //
-      //当前激活的菜单index
-      return this.$store.state.activeMenuIndex; //从vuex的store里面读取值
-    }
+   
   },
   data() {
     //当前用户角色的权限数据
@@ -144,6 +135,11 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
   padding: 5px;
   text-align: center;
   z-index: 999;
+}
+.main-box{
+  height: calc(100vh - 60px );
+  transition: 0.5s;
+ 
 }
 </style>
 

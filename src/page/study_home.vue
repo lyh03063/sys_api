@@ -1,5 +1,6 @@
 <template>
   <div>
+      <div class="float-tips" v-if="$sys.env=='dev'">非生产</div>
     <div class="DPF head">
       <div class="MT13 C_fff MR10" v-if="logoUrl">
         <img class="W200 H36" src="http://www.dmagic.cn/images/IconS/IconS_2578.png" alt />
