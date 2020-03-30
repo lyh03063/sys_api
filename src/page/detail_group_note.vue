@@ -6,7 +6,7 @@
       <dm_debug_item v-model="arrSelect2" text="arrSelect2" />
     </dm_debug_list>
 
-<div class="" ></div>
+    <div class></div>
     <dm_dynamic_form :cf="cfFormSearch" v-model="formDataSearch" @submit="searchList"></dm_dynamic_form>
 
     <dm_list_data
@@ -57,6 +57,8 @@
         </score_panel>
       </template>
     </dm_list_data>
+    <!-- 编辑实体数据弹窗 -->
+    <dm_dialog_edit :cf="cfEditDialogEntity" @after-modify="$refs.listData.getDataList()"></dm_dialog_edit>
   </div>
 </template>
 
@@ -73,13 +75,15 @@ export default {
 
   props: {},
   data() {
-    return {};
+    return {
+     
+    };
   },
 
   methods: {},
 
   created() {
-   
+    
   }
 };
 </script>

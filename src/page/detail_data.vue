@@ -44,7 +44,8 @@
       ></el-button>
       <div class="C_999 DPIB FR MT6" style="display:flex">
         <span class="keyword_box">关键词：{{doc.keyword}}</span>
-        <el-button plain @click="showDialogEdit" size="mini" style="width:60px">编辑</el-button>
+
+        <el-button plain @click="cfEditDialog.visible=true" size="mini" style="width:60px">编辑</el-button>
       </div>
     </div>
 
@@ -75,24 +76,9 @@
       </template>
     </div>
 
-    <!--编辑数据弹窗-->
-    <el-dialog
-      custom-class="n-el-dialog"
-      width="95%"
-      title="编辑数据弹窗"
-      :close-on-press-escape="false"
-      :close-on-click-modal="false"
-      :append-to-body="true"
-      v-bind:visible.sync="isShowDialogEdit"
-      v-if="isShowDialogEdit"
-    >
-      <dm_dynamic_form
-        :cf="cfFormEdit"
-        v-model="formDataEdit"
-        @submit="modifyData"
-        @cancel="isShowDialogEdit = false"
-      ></dm_dynamic_form>
-    </el-dialog>
+    <!-- 编辑实体数据弹窗 -->
+    <dm_dialog_edit :cf="cfEditDialog" @after-modify="init" v-if="ready"></dm_dialog_edit>
+
     <div class="float_bar" v-if="countReldata>0&&isShowFloatBar">
       <ul>
         <li>
@@ -153,6 +139,18 @@ export default {
   },
   data() {
     return {
+      ready: false,//是否准备完毕
+      //编辑数据弹窗配置
+      cfEditDialog: {
+        listType: "common", //通用型列表-影响urlModify
+        cfFormModify: {
+          paramAddonInit: {
+            _id: "5e78bb5444ba565370025aa5",
+            _systemId: PUB._systemId,
+            _dataType: "url"
+          }
+        }
+      },
       arrRelNote: [], //关联笔记的数组
       relNoteDetail: "", //关联笔记的详情html
       collectBottonAuto: false, //收藏按钮是否聚焦
@@ -161,32 +159,6 @@ export default {
       activeNames: [], //激活的折叠面板
       familiarityDoc: {},
       dataId: null,
-      isShowDialogEdit: false, //是否显示编辑数据弹窗
-      //编辑数据表单数据
-      formDataEdit: {},
-      cfFormEdit: {
-        labelWidth: "150px",
-        idKey: "_id",
-        paramAddonInit: {
-          _systemId: PUB._systemId,
-          _dataType: "note"
-        },
-        col_span: 24,
-        urlInit: "/info/commonDetail",
-        formItems: PUB.listCF.list_note.formItems,
-        btns: [
-          {
-            text: "修改",
-            event: "submit",
-            type: "primary",
-            validate: true
-          },
-          {
-            text: "取消",
-            event: "cancel"
-          }
-        ]
-      }, //编辑数据表单配置
       doc: {},
       dataTypeLabel: "", //数据类型标签
       noteListByKeyword: [], //关键词匹配的笔记列表
@@ -273,30 +245,7 @@ export default {
       //让指定元素进入视口
       document.querySelector(`#id_floor_${type}`).scrollIntoView(true);
     },
-    //函数：{显示编辑数据弹窗函数}
-    showDialogEdit() {
-      this.formDataEdit._id = this.dataId; //编辑数据表单数据补充数据id
-      this.isShowDialogEdit = true;
-    },
-    //函数：{提交编辑数据函数}
-    async modifyData() {
-      let urlModify = PUB.listCF.list_note.url.modify;
-      let ajaxParam;
-      ajaxParam = {
-        _id: this.dataId,
-        _data: this.formDataEdit
-      };
-      Object.assign(ajaxParam, this.cfFormEdit.paramAddonInit); //合并公共参数
-      let response = await axios({
-        //请求接口
-        method: "post",
-        url: PUB.domain + urlModify,
-        data: ajaxParam //传递参数
-      });
-      this.$message.success("修改成功");
-      this.isShowDialogEdit = false;
-      this.init(); //函数：{初始化函数}
-    },
+
     //函数：{ajax获取关联笔记列表}
     async ajaxGetNoteList() {
       let param = { ...this.paramByKeyword, _dataType: "note" };
@@ -403,17 +352,19 @@ export default {
       // let keyword = this.doc.keyword;
 
       this.dataTypeLabel = lodash.get(DYDICT.dataType, `${_dataType}.label`);
-     
+
       //如果hash值是当前页面为主（不是嵌套在其他路由下）
       if (location.hash.startsWith(`#/detail_data?`)) {
-         document.title = `${title}-${this.dataTypeLabel}`; //修改浏览器标题栏文字
+        document.title = `${title}-${this.dataTypeLabel}`; //修改浏览器标题栏文字
       }
 
-      /*****************根据数据类型修改编辑按钮的表单配置-START*****************/
-      this.cfFormEdit.paramAddonInit._dataType = _dataType; //设置类型参数
-      let formItems = lodash.get(PUB.listCF, `list_${_dataType}.formItems`); //获取类型对应的表单项
-      this.cfFormEdit.formItems = formItems; //设置对应的表单项
-      /*****************根据数据类型修改编辑按钮的表单配置-END*****************/
+      /*****************根据数据类型修改弹窗编辑数据组件配置-START*****************/
+
+      this.cfEditDialog.cfFormModify.paramAddonInit._dataType = _dataType;
+      this.cfEditDialog.cfFormModify.paramAddonInit._id = this.doc._id;
+
+      /*****************根据数据类型修改弹窗编辑数据组件配置-END*****************/
+      this.ready = true;
 
       //根据关键词请求关联数据的ajax固定参数
       this.paramByKeyword = {

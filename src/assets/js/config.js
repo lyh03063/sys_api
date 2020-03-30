@@ -197,7 +197,7 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
     singleBtns: PUB.singleBtns_copy_detail_sort,
     dynamicDict: [
       DYDICT.personCharge,
-  ],
+    ],
     batchBtns: {
       addon: [
         { uiType: "slot", slot: "slot_btn_select" },
@@ -226,7 +226,7 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
-    columns: ["title_fixed",  "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime", "sort"],
+    columns: ["title_fixed", "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime", "sort"],
     //-------筛选表单字段数组-------
     searchFormItems: [],
     //-------新增、修改表单字段数组-------
@@ -594,6 +594,13 @@ FN.updateItemScore = async function ({ scoreKey, score }) {
     data: ajaxParam //传递参数
   });
 }
+
+
+
+
+
+
+
 
 
 
