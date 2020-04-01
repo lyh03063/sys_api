@@ -13,6 +13,7 @@
       :cf="cfList"
       v-if="ready"
       @single-btn-click="singleEvent"
+      @bacth-btn-click="bacthEvent"
       @after-search="updateGroupCountData"
     >
       <!--自定义详情弹窗插槽-->
@@ -42,6 +43,8 @@
     </dm_list_data>
     <!-- 编辑实体数据弹窗 -->
     <dm_dialog_edit :cf="cfEditDialogEntity" @after-modify="$refs.listData.getDataList()"></dm_dialog_edit>
+    <!-- 新增实体数据弹窗 -->
+    <dm_dialog_add :cf="cfAddDialogEntity" @after-add="afterAddEntity"></dm_dialog_add>
   </div>
 </template>
 
@@ -56,11 +59,28 @@ export default {
   props: {},
 
   data() {
-    return {};
+    return {
+      cfAddDialogEntity: {
+        listType: "common", //通用型列表-影响urlAdd
+        cfFormAdd: { paramAddonInit: { _systemId: "sys_api", _dataType: this.dataType } }
+      }
+    };
   },
-  methods: {},
+  methods: {
+    bacthEvent(actionType, doc) {
+      if (actionType == "add_entity") {//如果{事件类型}是新增实体
+        this.cfAddDialogEntity.visible = true;//打开弹窗
+      }
+    },
+    async afterAddEntity(doc) {
+      //{"_data":[{"sort":9994,"_idRel":"5e8054307ef6c773fcf6aab7","_idRel2":"5e84a91320a342107c0ad655"}],"_systemId":"sys_api","_dataType":"relation"}
+      this.ajaxGroupAddData([doc])
+
+
+    }
+  },
   async created() {
-    
+
   }
 };
 </script>

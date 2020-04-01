@@ -31,6 +31,8 @@
 </template>
 
 <script>
+let obj = [{ name: "张三" }, { name: "李四" }, { name: "王五" }];
+
 export default {
   components: {},
   mixins: [MIX.listGroupData],
@@ -95,9 +97,7 @@ export default {
         //使用$project重新组装，此时targetDoc是数组形式
         {
           $project: {
-            _id: 1,
-            _idRel: 1,
-            _idRel2: 1,
+            _id: 1,_idRel: 1, _idRel2: 1,
             sort: "$_data.sort", //序号获取
             targetDoc: "$relDoc2._data"
           }
@@ -121,7 +121,7 @@ export default {
       ];
     }
   },
-  async created() {}
+  async created() { }
 };
 </script>
 

@@ -179,6 +179,16 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
 }
 //#endregion
 
+
+util.cfList.bBtns.addEntity={
+  text: "新增并引用",
+  eventType: "add_entity",
+  cfElBtn: {
+      type: "primary",
+  }
+}
+
+
 //#region 分组下的任务列表页
 {
   let _dataType = "relation";
@@ -201,6 +211,7 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
     batchBtns: {
       addon: [
         { uiType: "slot", slot: "slot_btn_select" },
+        util.cfList.bBtns.addEntity,
         util.cfList.bBtns.add,
         util.cfList.bBtns.delete,
 
