@@ -1,5 +1,3 @@
-
-
 //#region 基本配置
 window.PUB = window.PUB || {}
 PUB.domain__ = "http://localhost:3000"
@@ -25,8 +23,6 @@ PUB.arrRouteListPageForStudy = PUB.arrRouteListName.map((item) => {
     component: () => import(`@/page/${item}`)
   }
 })
-
-
 //附加的一级路由
 PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/detail_group") },
 { path: '/detail_data', component: () => import("@/page/detail_data") },
@@ -54,9 +50,6 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
     ...PUB.arrRouteListPageForStudy
   ]
 },
-
-
-
 ]
 //#endregion
 
@@ -71,24 +64,17 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
 PUB.$sys = PUB.$sys || util.getLocalStorageObj(PUB._systemId) || {}; //调用：{从LocalStorage获取一个对象的函数}
 
 MIX.base = {
-
   data() {
     return {
-
     };
   },
   computed: {
     $sys() {
       let sys = util.getLocalStorageObj(PUB._systemId)//调用：{从LocalStorage获取一个对象的函数}
       sys.env = PUB.domain == "https://www.dmagic.cn" ? "pro" : "dev";
-
-
       return sys
     },
-
-
   },
-
   methods: {
     //函数：{根据权限路径返回当前用户权限的函数}
     $power(powerPath) {
@@ -98,71 +84,32 @@ MIX.base = {
     $dictLable(key, val) {
       return util.getDictLabel(key, val)
     },
-
   },
   async created() {
-
   }
 }
 //#endregion
-
-
-
-
-
 //#region 列表模块名数组配置 
-
-
 //#region 列表模块名数组配置
 PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category", "js_api",
   "js_api_category", "familiarity", "exercises", "score", "front_demo", "task"];
 //#endregion
-
-
-
 //#endregion
 //#region 分组下的demo列表页
 {
   let _dataType = "relation";
-
-
   PUB.listCF.detail_group_front_demo = {
-    isShowBreadcrumb: false, //面包屑
-    isShowSearchForm: false, //查询表单-
-    idKey: "_id", //键名
-    pageSize: 20,
+    ...PUB.cfListGPublic,
     listIndex: "detail_group_front_demo", //vuex对应的字段~
-    focusMenu: true, //进行菜单聚焦
 
-    // ...PUB.listCFCommon,//展开公共配置
-    ...PUB.listCFCommon3, //展开公共配置
-    singleBtns: PUB.singleBtns_copy_detail_sort,
-    batchBtns: {
+    singleBtns: {
       addon: [
-        { uiType: "slot", slot: "slot_btn_select" },
-        util.cfList.bBtns.add,
-        util.cfList.bBtns.delete,
-
-      ],
+        ...PUB.singleBtns_list_group_data.addon,
+        util.cfList.sBtns.link
+      ]
     },
-    sortJsonDefault: {
-      "sort": -1
-    },
-    findJsonDefault: {
-
-    },
-    objParamAddon: {
-      findJson: {},
-
-      _systemId,
-      _dataType
-    },
-    //公共的附加参数，针对所有接口
-    paramAddonPublic: {
-      _systemId,
-      _dataType
-    },
-
+    objParamAddon: { findJson: {}, _systemId, _dataType },
+    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
@@ -171,69 +118,21 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
     searchFormItems: [],
     //-------新增、修改表单字段数组-------
     formItems: ["_idRel", "_idRel2", "sort"],
-
-
-
   }
   util.reformCFListItem(PUB.listCF.detail_group_front_demo)
 }
 //#endregion
 
 
-util.cfList.bBtns.addEntity={
-  text: "新增并引用",
-  eventType: "add_entity",
-  cfElBtn: {
-      type: "primary",
-  }
-}
-
-
 //#region 分组下的任务列表页
 {
   let _dataType = "relation";
-
-
   PUB.listCF.detail_group_task = {
-    isShowBreadcrumb: false, //面包屑
-    isShowSearchForm: false, //查询表单-
-    idKey: "_id", //键名
-    pageSize: 20,
+    ...PUB.cfListGPublic,
     listIndex: "detail_group_task", //vuex对应的字段~
-    focusMenu: true, //进行菜单聚焦
-
-    // ...PUB.listCFCommon,//展开公共配置
-    ...PUB.listCFCommon3, //展开公共配置
-    singleBtns: PUB.singleBtns_copy_detail_sort,
-    dynamicDict: [
-      DYDICT.personCharge,
-    ],
-    batchBtns: {
-      addon: [
-        { uiType: "slot", slot: "slot_btn_select" },
-        util.cfList.bBtns.addEntity,
-        util.cfList.bBtns.add,
-        util.cfList.bBtns.delete,
-
-      ],
-    },
-    sortJsonDefault: {
-      "sort": -1
-    },
-    findJsonDefault: {
-
-    },
-    objParamAddon: {
-      findJson: {},
-
-      _systemId,
-      _dataType
-    },
-    //公共的附加参数，针对所有接口
-    paramAddonPublic: {
-      _systemId,
-      _dataType
-    },
+    objParamAddon: { findJson: {}, _systemId, _dataType },
+    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    dynamicDict: [DYDICT.personCharge,],
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
@@ -242,14 +141,11 @@ util.cfList.bBtns.addEntity={
     searchFormItems: [],
     //-------新增、修改表单字段数组-------
     formItems: ["_idRel", "_idRel2", "sort"],
-
-
-
   }
   util.reformCFListItem(PUB.listCF.detail_group_task)
-
 }
 //#endregion
+
 
 
 //#region 菜单列表
@@ -346,7 +242,6 @@ PUB.menuList = [
       }
     ]
   },
-
   {
     index: "projectManage",
     icon: "el-icon-document",
@@ -394,26 +289,17 @@ PUB.menuList = [
   }
 ];
 //#endregion
-
-
-
 //调用：{初始化列表权限函数}
 let fnInitList = async function () {
   //***循环异步-导入一些本站专用的数据列表配置，注意这里用map不能用forEach
   await Promise.all(PUB.arrListName.map(async itemEach => {//循环：{列表模块名数组}
     await import(`@/assets/js/config/list_${itemEach}.js`);
   }))
-
-
   //#region 【注意顺序】权限表单项，从菜单遍历拼接！！！
-
   let cfFormForPower = { labelWidth: "150px", formItems: [] }
-
   PUB.menuList.forEach(menuEach_1 => {//循环：{1级菜单}
     let { index: index_1, menuItem, title } = menuEach_1;
-
     let { formItems } = cfFormForPower
-
     let objMenu1 = {
       label: title,
       prop: index_1,
@@ -424,7 +310,6 @@ let fnInitList = async function () {
         formItems: []
       }
     }
-
     if (!menuItem) return;
     menuItem.forEach(menuEach_2 => {//循环：{2级菜单}
       let { index: index_2, title } = menuEach_2;
@@ -436,11 +321,8 @@ let fnInitList = async function () {
       }
       objMenu1.cfForm.formItems.push(objMenu2)
     })
-
     formItems.push(objMenu1)
-
   })
-
   //【】加入分组数据列表的权限选项*****
   cfFormForPower.formItems.push(
     {
@@ -460,42 +342,24 @@ let fnInitList = async function () {
       }
     }
   )
-
   let rolePower = {
     ...D_ITEMS.rolePower,
     default: {},
     cfForm: cfFormForPower
   };
-
-
-
-
   //****这里通过合并而不是直接赋值，来影响引进引用了F_ITEMS.rolePower的列表页配置
   Object.assign(F_ITEMS.rolePower, rolePower);//合并对象
-
-
-
-
   //#endregion
-
-
-
-
   //#region 【注意位置】菜单项批量添加权限路径
-
   PUB.menuList.forEach(menuEach_1 => {//循环：{1级菜单}
     let { index: index_1, menuItem } = menuEach_1;
     if (!menuItem) return;
     menuItem.forEach(menuEach_2 => {//循环：{2级菜单}
       let { index: index_2 } = menuEach_2;
       if (!index_2) return;
-
       lodash.set(PUB.listCF, `${index_2}.powerPath`, `${index_1}.${index_2}`);//设置权限路径
     })
-
   })
-
-
   //变量：{分组数据列表页面配置名称数组}
   let arrGroupName = ["detail_group_front_demo", "detail_group_note", "detail_group_url", "detail_group_vedio", "aaaa", "aaaa", "aaaa",]
   //*** */
@@ -503,27 +367,10 @@ let fnInitList = async function () {
     if (!PUB.listCF[nameEach]) return;
     PUB.listCF[nameEach].powerPath = `groupDataList.all`//设置权限路径
   })
-
-
-
   //#endregion
-
-
-
-
-
 }
 
 fnInitList()
-
-
-
-
-
-
-
-
-
 //#region 【临时字段，页面配置-注意位置】
 
 
@@ -552,13 +399,7 @@ D_ITEMS.aaaa = {
 };
 COLUMNS.aaaa = { ...D_ITEMS.aaaa, width: 120, };
 F_ITEMS.aaaa = { ...D_ITEMS.aaaa, };
-
-
-
-
 //#endregion
-
-
 //函数：{更新分组的用户学习缓存数据函数}
 FN.updateGroupUserScore = async function ({ groupId, score }) {
   //变量：{对应的分组id}
@@ -582,9 +423,6 @@ FN.updateGroupUserScore = async function ({ groupId, score }) {
     data: ajaxParam //传递参数
   });
 }
-
-
-
 //函数：{更新记分项缓存数据函数}
 FN.updateItemScore = async function ({ scoreKey, score }) {
   //变量：{对应的分组id}

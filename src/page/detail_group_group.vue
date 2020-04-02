@@ -25,8 +25,10 @@
         ></dm_select_list_data>
       </template>
     </dm_list_data>
-    <!-- 编辑实体数据弹窗 -->
+     <!-- 编辑实体数据弹窗 -->
     <dm_dialog_edit :cf="cfEditDialogEntity" @after-modify="$refs.listData.getDataList()"></dm_dialog_edit>
+    <!-- 新增实体数据弹窗 -->
+    <dm_dialog_add :cf="cfAddDialogEntity" @after-add="afterAddEntity" v-if="readyAddDialogEntity"></dm_dialog_add>
   </div>
 </template>
 
