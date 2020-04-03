@@ -5,11 +5,17 @@
       <el-header class="home-head-box">
         <el-row>
           <div class="FL MT13 C_fff MR10 FS24">{{groupDoc.title}}</div>
-         
+
           <div class="FR MT20 C_fff">
             <role></role>
           </div>
-           <div class="FR MT20 MR30" ><a  target="_blank" style="color:#fff"  :href="`#/detail_group?groupId=${$route.params.gid}`">编辑导航</a></div>
+          <div class="FR MT20 MR30">
+            <a
+              target="_blank"
+              style="color:#fff"
+              :href="`#/detail_group?groupId=${$route.params.gid}`"
+            >编辑导航</a>
+          </div>
         </el-row>
       </el-header>
     </el-container>
@@ -48,7 +54,7 @@ export default {
     };
   },
   watch: {
-    $route: function(newUrl, oldUrl) {
+    $route: function (newUrl, oldUrl) {
       this.setActiveMenu(); //调用：{设置聚焦菜单函数}
     },
     immediate: true,
@@ -109,6 +115,28 @@ export default {
       });
       this.groupDoc = data.doc;
       document.title = this.groupDoc.title; //修改浏览器标题栏文字
+
+
+      const changeFavicon = link => {
+        let $favicon = document.querySelector('link[rel="icon"]');
+        // If a <link rel="icon"> element already exists,
+        // change its href to the given link.
+        if ($favicon !== null) {
+          $favicon.href = link;
+          // Otherwise, create a new element and append it to <head>.
+        } else {
+          $favicon = document.createElement("link");
+          $favicon.rel = "icon";
+          $favicon.href = link;
+          document.head.appendChild($favicon);
+        }
+      };
+
+
+
+      if (this.groupDoc.iconSrc) {//如果{000}000
+        changeFavicon(this.groupDoc.iconSrc)
+      }
     }
   },
   async created() {

@@ -148,6 +148,12 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
 
 
 
+
+
+
+
+
+
 //#region 菜单列表
 //完整的菜单列表
 PUB.menuList = [
@@ -374,31 +380,17 @@ fnInitList()
 //#region 【临时字段，页面配置-注意位置】
 
 
-D_ITEMS.scoreKey = {
-  label: "记分key",
-  prop: "scoreKey",
-};
-COLUMNS.scoreKey = { ...D_ITEMS.scoreKey, width: 120, };
-F_ITEMS.scoreKey = { ...D_ITEMS.scoreKey, };
 
 
-F_ITEMS.personCharge = {
-  ...D_ITEMS.personCharge, type: "select",
-  multiple: true, //多选
-  ajax: {
-    param: { _systemId, _dataType: "admin" },
-    url: "/info/getCommonList",
-    keyLabel: "nickName",
-    keyValue: "userName"
-  }
-};
 
-D_ITEMS.aaaa = {
-  label: "记分key",
-  prop: "scoreKey",
-};
-COLUMNS.aaaa = { ...D_ITEMS.aaaa, width: 120, };
-F_ITEMS.aaaa = { ...D_ITEMS.aaaa, };
+
+
+
+
+
+
+
+
 //#endregion
 //函数：{更新分组的用户学习缓存数据函数}
 FN.updateGroupUserScore = async function ({ groupId, score }) {

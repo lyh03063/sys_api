@@ -11,15 +11,19 @@ PUB.listCF.list_task = {
     dynamicDict: [
         DYDICT.personCharge,
     ],
+    //新增修改表单的配置
+    cfForm: {
+        col_span: 12, //控制显示一行多列
+    },
     breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "任务" }],
     ...PUB.listCFCommon2,//展开公共配置
     objParamAddon: { _systemId, _dataType },
     //公共的附加参数，针对所有接口
     paramAddonPublic: { _systemId, _dataType },
-    detailItems: ["_id", "title", "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime"],
+    detailItems: ["_id", "title", "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime", "detail"],
     columns: ["_id", "title_fixed_edit", "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime"],
     searchFormItems: ["title", "taskType", "prior", "personCharge",],
-    formItems: ["title", "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime", "relNoteList"],
+    formItems: ["title", "taskType_radio", "prior_radio", "complete", "personCharge", "predictTime", "actualTime", "detail", "relNoteList"],
 
 }
 PUB.listCF.list_task_my = lodash.cloneDeep(PUB.listCF.list_task);

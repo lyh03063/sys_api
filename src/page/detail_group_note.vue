@@ -14,6 +14,7 @@
       :cf="cfList"
       v-if="ready"
       @after-search="afterSearch"
+      @bacth-btn-click="bacthEvent"
       @single-btn-click="singleEvent"
     >
       <!--自定义详情弹窗插槽-->
