@@ -117,25 +117,11 @@ export default {
       document.title = this.groupDoc.title; //修改浏览器标题栏文字
 
 
-      const changeFavicon = link => {
-        let $favicon = document.querySelector('link[rel="icon"]');
-        // If a <link rel="icon"> element already exists,
-        // change its href to the given link.
-        if ($favicon !== null) {
-          $favicon.href = link;
-          // Otherwise, create a new element and append it to <head>.
-        } else {
-          $favicon = document.createElement("link");
-          $favicon.rel = "icon";
-          $favicon.href = link;
-          document.head.appendChild($favicon);
-        }
-      };
 
 
 
-      if (this.groupDoc.iconSrc) {//如果{000}000
-        changeFavicon(this.groupDoc.iconSrc)
+      if (this.groupDoc.iconSrc) {//如果{icon地址}存在
+        util.changeFavicon(this.groupDoc.iconSrc)//函数：{改变网页标题图标的函数}
       }
     }
   },

@@ -22,8 +22,8 @@ PUB.listCF.list_task = {
     paramAddonPublic: { _systemId, _dataType },
     detailItems: ["_id", "title", "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime", "detail"],
     columns: ["_id", "title_fixed_edit", "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime"],
-    searchFormItems: ["title", "taskType", "prior", "personCharge",],
-    formItems: ["title", "taskType_radio", "prior_radio", "complete", "personCharge", "predictTime", "actualTime", "detail", "relNoteList"],
+    searchFormItems: ["title_search", "taskType", "prior", "personCharge",],
+    formItems: ["title", "taskType_radio", "prior_radio", "complete", "personCharge", "predictTime", "actualTime", "detail_new", "relNoteList"],
 
 }
 PUB.listCF.list_task_my = lodash.cloneDeep(PUB.listCF.list_task);

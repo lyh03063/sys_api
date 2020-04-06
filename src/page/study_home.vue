@@ -119,6 +119,7 @@ export default {
   created() {
     this.setActiveMenu(); //调用：{设置聚焦菜单函数}
     document.title = `前端学习网`; //修改浏览器标题栏文字
+     util.changeFavicon(`http://qn-dmagic.dmagic.cn/icon_study.png`)//函数：{改变网页标题图标的函数}
   }
 };
 </script>
