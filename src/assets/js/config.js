@@ -97,6 +97,50 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
 //#endregion
 
 
+//#region 【临时字段，页面配置-注意位置】
+
+
+COLUMNS.complete_com = {
+  ...D_ITEMS.complete, width: 80,
+  component: "com_complete",
+};
+
+// 注册一个全局组件-针对完成度列
+Vue.component('com_complete', {
+  template: `
+  <div class="" >
+            <el-progress
+              :text-inside="true"
+              :stroke-width="16"
+              :percentage="(doc.complete||0)*100"
+              status="success"
+              @click.native="fnClick"
+            ></el-progress>
+  </div>
+  `,
+  props: ["doc"],//接收属性
+  methods:{
+    fnClick(){
+      console.log(`完成度fnClick`);
+    }
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+//#endregion
+
+
 
 
 
@@ -141,7 +185,7 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
-    columns: ["title_fixed", "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime", "sort"],
+    columns: ["title_fixed", "taskType", "prior", "complete_com", "personCharge", "predictTime", "actualTime", "sort"],
     //-------筛选表单字段数组-------
     searchFormItems: [],
     //-------新增、修改表单字段数组-------
@@ -382,21 +426,7 @@ let fnInitList = async function () {
 }
 
 fnInitList()
-//#region 【临时字段，页面配置-注意位置】
 
-
-
-
-
-
-
-
-
-
-
-
-
-//#endregion
 //函数：{更新分组的用户学习缓存数据函数}
 FN.updateGroupUserScore = async function ({ groupId, score }) {
   //变量：{对应的分组id}

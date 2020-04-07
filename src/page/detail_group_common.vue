@@ -21,15 +21,7 @@
       <template v-slot:customDetail="{detailData}">
         <detail_data :propDataId="detailData._idRel2"></detail_data>
       </template>
-      <!--任务-完成度列插槽组件-->
-      <template v-slot:slot_column_complete="{row}">
-        <el-progress
-          :text-inside="true"
-          :stroke-width="16"
-          :percentage="(row.complete||0)*100"
-          status="success"
-        ></el-progress>
-      </template>
+     
 
       <!--分组数据选择列表按钮插槽-->
       <template v-slot:slot_btn_select>
