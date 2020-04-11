@@ -97,13 +97,12 @@ PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category
 //#endregion
 
 
-//#region 【临时字段，页面配置-注意位置】
 
 
-COLUMNS.complete_com = {
-  ...D_ITEMS.complete, width: 80,
-  component: "com_complete",
-};
+
+
+
+
 
 // 注册一个全局组件-针对完成度列
 Vue.component('com_complete', {
