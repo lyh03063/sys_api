@@ -56,7 +56,9 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
 
 
 
-
+PUB.arrGroupMoudlesSpe = [
+  // "group"
+]
 
 
 
@@ -89,67 +91,240 @@ MIX.base = {
   }
 }
 //#endregion
-//#region 列表模块名数组配置 
+
 //#region 列表模块名数组配置
-PUB.arrListName = ["html_api", "html_api_category", "css_api", "css_api_category", "js_api",
-  "js_api_category", "familiarity", "exercises", "score", "front_demo", "task"];
+PUB.arrListName = [
+  "html_api", "html_api_category", "css_api", "css_api_category", "js_api", "js_api_category", "familiarity",
+  "exercises", "score", "front_demo", "task", "file", "image", "person",
+  "resume"
+];
 //#endregion
-//#endregion
+
+
+
+COLUMNS.familiarity_select = {
+  ...D_ITEMS.familiarity,
+  width: 120,
+  component: "com_note_familiarity_select",
+  cfColumn: { "class-name": "table_cell_visible" } //补充特殊单元格类名，进行特殊控制！
+};
 
 
 
 
 
 
-
-
-
-// 注册一个全局组件-针对完成度列
-Vue.component('com_complete', {
-  template: `
-  <div class="" >
-            <el-progress
-              :text-inside="true"
-              :stroke-width="16"
-              :percentage="(doc.complete||0)*100"
-              status="success"
-              @click.native="fnClick"
-            ></el-progress>
-  </div>
-  `,
-  props: ["doc"],//接收属性
-  methods:{
-    fnClick(){
-      console.log(`完成度fnClick`);
-    }
+//#region 公司名
+{
+  let prop = "companyName"
+  let objBase = {
+    label: "公司名",
+    prop: prop,
   }
-})
+  D_ITEMS[prop] = {
+    ...objBase,
+  };
+  COLUMNS[prop] = { ...objBase, width: 190, };
+  F_ITEMS[prop] = { ...objBase, type: "input" };
+  F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+
+//#endregion
+
+//#region 头像上传2
+{
+  let prop = "avatarImg", objBase = { label: "头像上传", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 70, };
+  F_ITEMS[prop] = {
+      ...objBase, type: "upload_single",
+      cfItem: {
+          isAvatar: true,//头像
+          //两层配置结构，为了更好拓展
+          "cfUpload": {},
+      }
+  };
+}
 
 
 
+//#region 职位名称
+{
+  let prop = "positionName", objBase = { label: "职位名称", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 100, };
+  F_ITEMS[prop] = { ...objBase, type: "input" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
 
+//#region 在职时间段
+{
+  let prop = "onJobPeriod", objBase = { label: "在职时间段", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 120, };
+  F_ITEMS[prop] = { ...objBase, type: "input" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
 
-
-
-
-
-
-
-
-
+//#region 工作内容描述
+{
+  let prop = "descJob", objBase = { label: "工作内容描述", prop: "descJob", }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 170, };
+  F_ITEMS[prop] = { ...objBase, type: "textarea" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
 //#endregion
 
 
 
+//#region 学校名称
+{
+  let prop = "schoolName", objBase = { label: "学校名称", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 170, };
+  F_ITEMS[prop] = { ...objBase, type: "input" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
+
+
+//#region 在校时间段
+{
+  let prop = "inSchoolPeriod", objBase = { label: "在校时间段", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 120, };
+  F_ITEMS[prop] = {
+    ...objBase, type: "time_period",
+    cfItem: {
+      keyStart: "start",
+      keyEnd: "end",
+      //两层配置结构，为了更好拓展
+      "cfDataPicker": {
+        "type": "monthrange",
+        "picker-options": {},
+      },
+    }
+  };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
+
+
+//#region 学历，
+{
+  let prop = "diploma", objBase = { label: "学历", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 70, };
+  F_ITEMS[prop] = { ...objBase, type: "input" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
+
+
+//#region 专业名称
+{
+  let prop = "professionalName", objBase = { label: "专业名称", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 130, };
+  F_ITEMS[prop] = { ...objBase, type: "input" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
+
+
+
+//#region 分组下的分组列表页
+{
+  let _dataType = "relation";
+  let listIndex = "detail_group_group"
+  PUB.listCF[listIndex] = {
+    ...PUB.cfListGPublic,
+    listIndex, //vuex对应的字段~
+    //列表单项操作按钮的配置
+    singleBtns: {
+      addon: [
+        ...PUB.singleBtns_list_group_data.addon,
+        util.cfList.sBtns.linkGroup
+      ]
+    },
+    objParamAddon: { findJson: {}, _systemId, _dataType },
+    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    dynamicDict: [DYDICT.note_category], //dynamicDict动态数据字典配置
+    //-------详情字段数组-------
+    detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
+    //-------列配置数组-------
+    columns: ["title_fixed", "countData", "myScore", "group_dataType", "desc", "sort"],
+    //-------筛选表单字段数组-------
+    searchFormItems: ["title_search",],
+    //-------新增、修改表单字段数组-------
+    formItems: ["_idRel", "_idRel2", "sort"],
+  }
+  //#endregion
+  util.reformCFListItem(PUB.listCF[listIndex])
+  //需要补充的拆解字段****
+  PUB.$projectAddon[listIndex] = {
+    dataType: "$targetDoc.dataType",
+    countData: "$targetDoc.countData"
+  }
+}
+//#endregion
+
+//#region 分组下的笔记列表页
+{
+
+  let _dataType = "relation";
+  let listIndex = "detail_group_note"
+  PUB.listCF[listIndex] = {
+    ...PUB.cfListGPublic,
+    listIndex, //vuex对应的字段~
+    //批量操作按钮的配置
+    batchBtns: {
+      addon: [
+        ...PUB.cfListGPublic.batchBtns.addon,
+        // { uiType: "slot", slot: "slot_in_toolbar" },
+        { uiType: "component", component: "com_score_panel", ref: "score_panel" },
+      ],
+    },
+    //列表单项操作按钮的配置
+    // singleBtns: PUB.singleBtns_copy_detail_sort,
+    singleBtns: {
+      addon: [
+        ...PUB.singleBtns_list_group_data.addon,
+      ]
+    },
+    objParamAddon: { findJson: {}, _systemId, _dataType },
+    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    //dynamicDict动态数据字典配置
+    dynamicDict: [DYDICT.note_category],
+    //-------详情字段数组-------
+    detailItems: ["title", "detail", "desc", "category", "importance", "_id", "_idRel", "_idRel2", "sort"],
+    //-------列配置数组-------
+    columns: ["title_fixed", "familiarity_select", "importance", "difficulty", "category_multiple", "sort"],
+    //-------筛选表单字段数组-------
+    searchFormItems: ["title_search", "importance", "difficulty",],
+    //-------新增、修改表单字段数组-------
+    formItems: ["_idRel", "_idRel2", "sort"],
+  }
+  util.reformCFListItem(PUB.listCF[listIndex])
+  //需要补充的拆解字段****
+  PUB.$projectAddon[listIndex] = {
+    importance: "$targetDoc.importance", difficulty: "$targetDoc.difficulty"
+  }
+
+}
+//#endregion
 
 
 //#region 分组下的demo列表页
 {
+  let listIndex = "detail_group_front_demo"
   let _dataType = "relation";
-  PUB.listCF.detail_group_front_demo = {
-    ...PUB.cfListGPublic,
-    listIndex: "detail_group_front_demo", //vuex对应的字段~
-
+  PUB.listCF[listIndex] = {
+    ...PUB.cfListGPublic, listIndex, //vuex对应的字段~
+    //列表单项操作按钮的配置
     singleBtns: {
       addon: [
         ...PUB.singleBtns_list_group_data.addon,
@@ -163,21 +338,25 @@ Vue.component('com_complete', {
     //-------列配置数组-------
     columns: ["title_fixed", "_id", "desc", "link", "sort"],
     //-------筛选表单字段数组-------
-    searchFormItems: [],
+    searchFormItems: ["title_search",],
     //-------新增、修改表单字段数组-------
     formItems: ["_idRel", "_idRel2", "sort"],
   }
-  util.reformCFListItem(PUB.listCF.detail_group_front_demo)
+  util.reformCFListItem(PUB.listCF[listIndex])
 }
 //#endregion
 
 
+
+
+
 //#region 分组下的任务列表页
 {
+  let listIndex = "detail_group_task"
   let _dataType = "relation";
-  PUB.listCF.detail_group_task = {
-    ...PUB.cfListGPublic,
-    listIndex: "detail_group_task", //vuex对应的字段~
+  PUB.listCF[listIndex] = {
+    ...PUB.cfListGPublic, listIndex, //vuex对应的字段~
+    //列表单项操作按钮的配置
     objParamAddon: { findJson: {}, _systemId, _dataType },
     paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
     dynamicDict: [DYDICT.personCharge,],
@@ -186,13 +365,130 @@ Vue.component('com_complete', {
     //-------列配置数组-------
     columns: ["title_fixed", "taskType", "prior", "complete_com", "personCharge", "predictTime", "actualTime", "sort"],
     //-------筛选表单字段数组-------
-    searchFormItems: [],
+    searchFormItems: ["title_search", "prior", "personCharge",],
     //-------新增、修改表单字段数组-------
     formItems: ["_idRel", "_idRel2", "sort"],
   }
-  util.reformCFListItem(PUB.listCF.detail_group_task)
+  util.reformCFListItem(PUB.listCF[listIndex])
+  //需要补充的拆解字段****
+  PUB.$projectAddon[listIndex] = {
+    taskType: "$targetDoc.taskType", prior: "$targetDoc.prior", complete: "$targetDoc.complete",
+    personCharge: "$targetDoc.personCharge", predictTime: "$targetDoc.predictTime", actualTime: "$targetDoc.actualTime",
+  }
 }
 //#endregion
+
+
+
+
+
+
+//#region 分组下的文件列表页
+{
+  let listIndex = "detail_group_file"
+  let _dataType = "relation";
+  PUB.listCF[listIndex] = {
+    ...PUB.cfListGPublic, listIndex, //vuex对应的字段~
+    //列表单项操作按钮的配置
+    singleBtns: {
+      addon: [
+        ...PUB.singleBtns_list_group_data.addon,
+        util.cfList.sBtns.download, util.cfList.sBtns.openFile,
+      ]
+    },
+
+    objParamAddon: { findJson: {}, _systemId, _dataType },
+    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    //-------详情字段数组-------
+    detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
+    //-------列配置数组-------
+    columns: ["title_fixed", "file", "sort"],
+    //-------筛选表单字段数组-------
+    searchFormItems: ["title_search",],
+    //-------新增、修改表单字段数组-------
+    formItems: ["_idRel", "_idRel2", "sort"],
+  }
+  util.reformCFListItem(PUB.listCF[listIndex])
+  //需要补充的拆解字段****
+  PUB.$projectAddon[listIndex] = {
+    file: "$targetDoc.file",
+  }
+
+}
+//#endregion
+
+
+//#region 分组下的图片列表页
+{
+  let listIndex = "detail_group_image"
+  let _dataType = "relation";
+  PUB.listCF[listIndex] = {
+    ...PUB.cfListGPublic, listIndex, //vuex对应的字段~
+    //列表单项操作按钮的配置
+    singleBtns: {
+      addon: [
+        ...PUB.singleBtns_list_group_data.addon,
+        util.cfList.sBtns.download,
+        util.cfList.sBtns.openFile,
+      ]
+    },
+    listIndex: "detail_group_image", //vuex对应的字段~
+    objParamAddon: { findJson: {}, _systemId, _dataType },
+    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    //-------详情字段数组-------
+    detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
+    //-------列配置数组-------
+    columns: ["imagePreview", "title", "file", "sort"],
+    //-------筛选表单字段数组-------
+    searchFormItems: ["title_search",],
+    //-------新增、修改表单字段数组-------
+    formItems: ["_idRel", "_idRel2", "sort"],
+  }
+  util.reformCFListItem(PUB.listCF[listIndex])
+  //需要补充的拆解字段****
+  PUB.$projectAddon[listIndex] = {
+    file: "$targetDoc.file",
+  }
+
+}
+//#endregion
+
+//#region 分组下的人员列表页
+{
+  let listIndex = "detail_group_person"
+  let _dataType = "relation";
+  PUB.listCF[listIndex] = {
+    ...PUB.cfListGPublic, listIndex, //vuex对应的字段~
+    //列表单项操作按钮的配置
+    singleBtns: {
+      addon: [
+        ...PUB.singleBtns_list_group_data.addon,
+      ]
+    },
+    objParamAddon: { findJson: {}, _systemId, _dataType },
+    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    //-------详情字段数组-------
+    detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
+    //-------列配置数组-------
+    columns: ["trueName", "phone", "sort"],
+    //-------筛选表单字段数组-------
+    searchFormItems: ["trueName_search", "phone"],
+    //-------新增、修改表单字段数组-------
+    formItems: ["_idRel", "_idRel2", "sort"],
+
+
+  }
+  //需要补充的拆解字段****
+  PUB.$projectAddon[listIndex] = {
+    trueName: "$targetDoc.trueName", phone: "$targetDoc.phone",
+  }
+
+
+  util.reformCFListItem(PUB.listCF[listIndex])
+}
+//#endregion
+
+
 
 
 
@@ -270,6 +566,16 @@ PUB.menuList = [
         title: "分组"
       },
       {
+        index: "list_file",
+        route: "/list_common?type=file",
+        title: "文件"
+      },
+      {
+        index: "list_image",
+        route: "/list_common?type=image",
+        title: "图片库"
+      },
+      {
         index: "list_score",
         route: "/list_common?type=score",
         title: "记分项"
@@ -297,6 +603,23 @@ PUB.menuList = [
     ]
   },
   {
+    index: "crm",
+    icon: "el-icon-document",
+    title: "客户管理",
+    menuItem: [
+      {
+        index: "list_person",
+        route: "/list_common?type=person",
+        title: "人员"
+      },
+      {
+        index: "list_company",
+        route: "/list_common?type=company",
+        title: "企业"
+      },
+    ]
+  },
+  {
     index: "projectManage",
     icon: "el-icon-document",
     title: "任务系统",
@@ -305,6 +628,33 @@ PUB.menuList = [
         index: "list_task",
         route: "/list_common?type=task",
         title: "任务"
+      }
+    ]
+  },
+  {
+    index: "resumeSystem",
+    icon: "el-icon-document",
+    title: "简历系统",
+    menuItem: [
+      {
+        index: "list_resume",
+        route: "/list_common?type=resume",
+        title: "简历"
+      },
+      {
+        index: "list_resume_project_experience",
+        route: "/list_common?type=resume_project_experience",
+        title: "简历-项目经历"
+      },
+      {
+        index: "list_resume_work_experience",
+        route: "/list_common?type=resume_work_experience",
+        title: "简历-工作经历"
+      },
+      {
+        index: "list_resume_education_experience",
+        route: "/list_common?type=resume_education_experience",
+        title: "简历-教育经历"
       }
     ]
   },
@@ -469,6 +819,268 @@ FN.updateItemScore = async function ({ scoreKey, score }) {
     data: ajaxParam //传递参数
   });
 }
+
+
+
+
+//#region MIX混入
+
+MIX.listGroupData = {
+  props: {
+    groupDoc: {},
+    groupId: {},
+    dataType: {
+      default: "note"
+    },//数据类型
+
+  },
+  data() {
+    return {
+      readyAddDialogEntity: true,//是否准备好新增实体的弹窗组件-用于复制时重现初始化
+      cfAddDialogEntity: {
+        copyId: "5e84ae2520a342107c0ad688",
+        tipsAfterAdd: false,
+        listType: "common", //通用型列表-影响urlAdd
+        cfFormAdd: { paramAddonInit: { _systemId: "sys_api", _dataType: this.dataType } }
+      },
+      //编辑实体数据弹窗配置
+      cfEditDialogEntity: {
+        listType: "common", //通用型列表-影响urlModify
+        cfFormModify: {
+          paramAddonInit: { _id: "", _systemId: PUB._systemId, _dataType: this.dataType }
+        }
+      },
+      arrSelect2: [],
+      cfSelectList2: {
+        hideCollection: true,
+        dataName: lodash.get(DYDICT, `dataType.${this.dataType}.label`),
+        valueKey: "_id",
+        labelKey: "title",
+        pageName: "tangball_article",
+        multiple: true, //多选
+        //需要保留的集合字段
+        selectJson: { _id: 1, title: 1 },
+        cfList: util.deepCopy(PUB.listCF[`list_${this.dataType}`])
+      },
+      //查询表单配置-默认数据
+      cfFormSearch: {
+        inline: true, "labelWidth": "auto", size: "mini", formItems: [F_ITEMS.importance],
+        btns: [{ text: "查询", event: "submit", type: "primary", size: "mini" }]
+      },
+      formDataSearch: {},
+      ready: false,
+      cfList: util.deepCopy(PUB.listCF[`detail_group_${this.dataType}`]),
+      arrLookupScore: null, //计分板需要联合查询配置数组-
+      //----------分组列表用到----------
+      dictScore: {} //用户的分组分数数据字典
+    };
+  },
+  computed: {
+    //用于监听变化
+    arrLookup: function () {
+      return this.$store.state.arrLookup[this.cfList.listIndex];
+    }
+  },
+  methods: {
+    //***函数：{处理列表内部组件事件的函数}
+    handleListEventIn(param) {
+      if (param.eventType == "filterDataByFamiliarity") {//如果{事件类型}是根据熟悉度过滤数据
+        this.searchList()
+      }
+    },
+    //函数：{单条数据操作事件}-临时
+    async singleEvent(actionType, doc) {
+      let arrNeedRefresh = ["up", "down", "top", "bottom"]
+      if (arrNeedRefresh.includes(actionType)) {//如果是排序类操作
+        await util.ajaxGroupDataSort(actionType, doc);
+        this.$refs.listData.getDataList(); //列表更新
+      }
+      let { _idRel2 } = doc
+      if (actionType == "edit_entity") {//如果是编辑实体数据
+
+        this.cfEditDialogEntity.cfFormModify.paramAddonInit._id = _idRel2//***修改数据id
+        this.cfEditDialogEntity.visible = true;//打开弹窗
+      } else if (actionType == "copy_entity") {
+        console.log(`doc._id:${doc._id}`);
+        this.cfAddDialogEntity.copyId = _idRel2;
+        this.readyAddDialogEntity = false;
+        await this.$nextTick();//延迟到视图更新
+        this.readyAddDialogEntity = true;
+
+
+
+        this.cfAddDialogEntity.visible = true;//打开弹窗
+
+      }
+    },
+    bacthEvent(actionType, doc) {
+      if (actionType == "add_entity") {//如果{事件类型}是新增实体
+        this.cfAddDialogEntity.visible = true;//打开弹窗
+      }
+    },
+    async afterAddEntity(doc) {
+      this.ajaxGroupAddData([doc])//调用：{000函数}
+    },
+    //函数：{选择并添加数据后的ajax操作函数}
+    afterSelect: FN.ajaxGroupAddSelectData,
+    ajaxGroupAddData: FN.ajaxGroupAddSelectData,//函数：{添加数据到分组的ajax操作函数}
+    //函数：{初始化处理arrLookup数组函数}
+    initArrLookup: FN.initArrLookup,
+    //函数：{查询表单提交的回调函数}
+    async searchList() {
+      this.initArrLookup(this.cfList.listIndex); //调用：{初始化处理arrLookup数组函数}
+      await this.$nextTick(); //延迟到视图更新
+      this.$refs.listData.getDataList(); //列表更新
+      this.toSetArrLookupScore()//调用：{设置获取分数的ArrLookup的函数}
+    },
+
+    //函数：***{设置获取分数的ArrLookup的函数}
+    async toSetArrLookupScore() {
+      //计分板子组件，注意定位后是一个数组，取第一个元素//层层定位-繁琐
+      let com_score_panel = lodash.get(this, `$refs.listData.$refs.score_panel[0]`);//*** */
+      if (!com_score_panel) return
+      com_score_panel.setArrLookupScore(this.arrLookupScore)//调用：{设置ArrLookupScore函数}
+    },
+    //函数：{列表查询后的回调函数}--兼容带计分板和不带计分板的情形
+    async afterSearch() {
+      //计分板子组件，注意定位后是一个数组，取第一个元素
+      let com_score_panel = lodash.get(this, `$refs.listData.$refs.score_panel[0]`);
+      if (com_score_panel) {//Q1：{计分板子组件}存在
+        // let com_score_panel = this.$refs.listData.$refs.score_panel[0];//目标子组件，注意定位后是一个数组，取第一个元素
+        console.log("com_score_panel:", com_score_panel);
+        let comTarget2 = com_score_panel.$refs.scorePanel//真正的计分组件
+        //设置id数组
+        comTarget2.ajaxGetScore(); //调用：{ajax获取分数函数}
+        if (comTarget2.focusId == undefined) {
+          //如果没有筛选熟悉度（这里的触发机制还需进一步优化，没有必要一直调用）
+          this.updateGroupCountData(); //调用：{更新当前分组的数据量的函数}
+        }
+      } else {//Q2：{计分板子组件}不存在
+        this.updateGroupCountData(); //调用：{更新当前分组的数据量的函数}
+      }
+
+    },
+    //函数：{更新当前分组的数据量的函数}
+    async updateGroupCountData() {
+      let urlModify = PUB.listCF.list_group.url.modify;
+      let ajaxParam = {
+        _id: this.groupId, _data: { countData: this.$refs.listData.allCount } //获取列表的数据总量
+      };
+      Object.assign(ajaxParam, PUB.listCF.list_group.paramAddonPublic); //合并公共参数
+      let response = await axios({
+        //请求接口
+        method: "post", url: PUB.domain + urlModify,
+        data: ajaxParam //传递参数
+      });
+    },
+    //函数：{增加排除当前分组数据的查询条件的函数}
+    async excludeCurrGroup() {
+      let { cfList } = this.cfSelectList2;
+      cfList.objParamAddon = cfList.objParamAddon || {};
+      cfList.objParamAddon.findJson = cfList.objParamAddon.findJson || {};
+      let findjsonAdd = {
+        "$or": [{
+          "_data.arrGroup": {
+            "$elemMatch": {
+              "_idRel": {
+                "$ne": this.groupId//不属于当前分组
+              }
+            }
+          }
+        }, {
+          "_data.arrGroup": {
+            "$exists": false//分组不存在
+          }
+        }, {
+          "_data.countGroup": 0//分组数为0
+        }]
+      }
+
+      cfList.objParamAddon.findJson = { ...cfList.objParamAddon.findJson, ...findjsonAdd };
+    },
+
+  },
+  async created() {
+
+    /****************************针对group类型进行函数改造/添加-START****************************/
+    if (this.dataType == "group") {//如果{数据类型}是分组
+      //函数：{列表查询后执行的函数}
+      this.afterSearch = async (list) => {
+        let arrGroupId = list.map(doc => doc._idRel2);//变量：{分组id数组}
+        let datalist = await this.getGroupUserScore(arrGroupId);//调用：{ajax获取的用户学习缓存数据函数}
+        if (datalist && datalist.length) {
+          datalist.forEach(itemEach => {
+            this.$set(this.dictScore, itemEach._idRel, itemEach.score);
+          });
+        }
+      }
+      //函数：{ajax获取的用户学习缓存数据函数}
+      this.getGroupUserScore = async (arrGroupId) => {
+        let urlList = PUB.listCF.list_familiarity.url.list;
+        let ajaxParam = {
+          findJson: {
+            _idRel: { $in: arrGroupId }, dataType: "group", _userId: PUB.$sys.userId
+          }
+        };
+        //获取列表的数据总量
+        Object.assign(ajaxParam, PUB.listCF.list_familiarity.paramAddonPublic); //合并公共参数
+        let {
+          data: { list }
+        } = await axios({
+          //请求接口
+          method: "post",
+          url: PUB.domain + urlList,
+          data: ajaxParam //传递参数
+        });
+        return list;
+      }
+
+    }
+    /****************************针对group类型进行函数改造/添加-END****************************/
+
+
+    this.excludeCurrGroup()//调用：{增加排除当前分组数据的查询条件的函数}
+
+    /****************************弱化新增按钮-START****************************/
+    let { addon } = this.cfList.batchBtns;
+    let itemAdd = addon.find(doc => doc.eventType == "add");
+    Object.assign(itemAdd, { text: "新增关联Id", cfElBtn: {} }); //合并对象-
+
+    /****************************弱化新增按钮-END****************************/
+
+
+    this.cfList.customDetail = true; //开启自定义详情弹窗
+    this.$set(this.cfList.objParamAddon.findJson, "_idRel", this.groupId);
+    this.initArrLookup(this.cfList.listIndex); //调用：{初始化处理arrLookup数组函数}
+
+
+
+    this.ready = true;
+    //补充熟悉度ajax配置（动态数据字典）,注意要传_idRel2
+    window.setFamiliarityAjaxCF(this.cfList, "_idRel2");
+
+
+    /****************************补充编辑实体数据按钮-START****************************/
+    let sBtnEditEntity = { eventType: "edit_entity", text: "编辑", };
+    this.cfList.singleBtns.addon.push(sBtnEditEntity);
+    /****************************补充编辑实体数据按钮-END****************************/
+    //***从cfList中获取到需要的查询条件字段******
+    this.cfFormSearch.formItems = this.cfList.searchFormItems
+
+
+
+
+  },
+  mounted() {
+    //注意此方法要等待组件加载好
+    this.toSetArrLookupScore()//调用：{设置获取分数的ArrLookup的函数}
+  }
+}
+//#endregion
+
+
+
+
 
 
 

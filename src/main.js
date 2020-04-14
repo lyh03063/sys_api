@@ -4,6 +4,9 @@ Vue.prototype.$lodash = lodash//让vue实例中可访问$store
 window.axios = axios;
 import moment from "moment";
 window.moment = moment;
+
+import "@/components/registComponents.js";//引入注册全局组件
+
 import "@/assets/js/config.js";
 import "@/assets/css/util.scss"; //导入公共样式文件
 Vue.use(VueRouter)

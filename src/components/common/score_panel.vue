@@ -2,7 +2,10 @@
   <span>
     <dm_debug_list>
       <dm_debug_item v-model="param" text="param" />
-    </dm_debug_list>总分：
+    </dm_debug_list>
+     <!-- <div class="" >listIndex:{{listIndex}}</div> -->
+    总分：
+   
     <span class="C_f30 FWB">{{data.score}}</span>
     &nbsp;&nbsp;
     <span class="C_999">
@@ -36,7 +39,7 @@ export default {
     dataType: {}, //对应数据类型
     //单独的arrLookup***
     arrLookup: {
-      default: function() {
+      default: function () {
         return [];
       }
     }

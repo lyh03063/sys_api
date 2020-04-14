@@ -11,7 +11,7 @@
 
     <template class v-if="ready">
       <!--动态组件-->
-      <component :is="componentName" :groupId="groupId" v-if="isSpecial"></component>
+      <component :is="componentName" :groupId="groupId" :data-type="groupDoc.dataType" v-if="isSpecial"></component>
       <detail_group_common :groupId="groupId" :data-type="groupDoc.dataType" v-else></detail_group_common>
     </template>
   </div>

@@ -8,20 +8,28 @@
     </dm_debug_list>
 
     <!-- <dm_dynamic_form :cf="cfFormSearch" v-model="formDataSearch" @submit="searchList"></dm_dynamic_form> -->
+    <!--独立的查询表单-->
+    <div class="n-boder-box PT18 PL10 PR10 MB10" v-if="cfFormSearch.formItems.length" >
 
+         <dm_dynamic_form :cf="cfFormSearch" v-model="formDataSearch" @submit="searchList"></dm_dynamic_form>
+    </div>
+ 
+    <!--数据列表-->
     <dm_list_data
       ref="listData"
       :cf="cfList"
       v-if="ready"
       @single-btn-click="singleEvent"
       @bacth-btn-click="bacthEvent"
-      @after-search="updateGroupCountData"
+      @after-search="afterSearch"
+      @list-event-in="handleListEventIn"
     >
+     <!--分数列插槽-->
+      <template v-slot:slot_column_score="{row}">{{$lodash.get(dictScore, `${row._idRel2}.score`)}}</template>
       <!--自定义详情弹窗插槽-->
       <template v-slot:customDetail="{detailData}">
         <detail_data :propDataId="detailData._idRel2"></detail_data>
       </template>
-     
 
       <!--分组数据选择列表按钮插槽-->
       <template v-slot:slot_btn_select>
@@ -53,14 +61,14 @@ export default {
 
   data() {
     return {
-     
+
     };
   },
   methods: {
-    
+
   },
   async created() {
-   
+
 
   }
 };
@@ -68,4 +76,5 @@ export default {
 
 
 <style scoped>
+
 </style>
