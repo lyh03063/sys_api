@@ -9,11 +9,10 @@
 
     <!-- <dm_dynamic_form :cf="cfFormSearch" v-model="formDataSearch" @submit="searchList"></dm_dynamic_form> -->
     <!--独立的查询表单-->
-    <div class="n-boder-box PT18 PL10 PR10 MB10" v-if="cfFormSearch.formItems.length" >
-
-         <dm_dynamic_form :cf="cfFormSearch" v-model="formDataSearch" @submit="searchList"></dm_dynamic_form>
+    <div class="n-boder-box PT18 PL10 PR10 MB10" v-if="cfFormSearch.formItems.length">
+      <dm_dynamic_form :cf="cfFormSearch" v-model="formDataSearch" @submit="searchList"></dm_dynamic_form>
     </div>
- 
+
     <!--数据列表-->
     <dm_list_data
       ref="listData"
@@ -24,7 +23,7 @@
       @after-search="afterSearch"
       @list-event-in="handleListEventIn"
     >
-     <!--分数列插槽-->
+      <!--分数列插槽-->
       <template v-slot:slot_column_score="{row}">{{$lodash.get(dictScore, `${row._idRel2}.score`)}}</template>
       <!--自定义详情弹窗插槽-->
       <template v-slot:customDetail="{detailData}">
@@ -69,6 +68,19 @@ export default {
   },
   async created() {
 
+  
+
+    //关系表补充公共参数
+    Object.assign(PUB.listCF.list_relation.paramAddonPublic, PUB._paramAjaxAddon);//合并对象
+    // Object.assign(PUB.listCF.list_relation.objParamAddon, PUB._paramAjaxAddon);//合并对象
+
+
+
+
+    // PUB._paramAjaxAddon = {
+    //   _systemId: "sys_longting"
+    // }
+
 
   }
 };
@@ -76,5 +88,4 @@ export default {
 
 
 <style scoped>
-
 </style>

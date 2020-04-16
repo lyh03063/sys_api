@@ -34,6 +34,8 @@
         </keep-alive>
       </div>
     </div>
+
+    <div class="PSF B0 L0 BC_fff W200 H20 LH_20 C_999 FS12 PL10  " >系统编号：{{systemId}}</div>
   </div>
 </template>
 
@@ -47,6 +49,7 @@ export default {
   props: {},
   data() {
     return {
+      systemId:null,//系统Id
       routerKey: "key1",
       listMenu: null,
       groupDoc: {},
@@ -57,7 +60,7 @@ export default {
     $route: function (newUrl, oldUrl) {
       this.setActiveMenu(); //调用：{设置聚焦菜单函数}
     },
-    immediate: true,
+    // immediate: true,
     deep: true
   },
 
@@ -96,7 +99,7 @@ export default {
         method: "post",
         url: `${PUB.domain}/info/getCommonGroupList`,
         data: {
-          _systemId: PUB._systemId,
+          _systemId: "$all",
           groupId: this.groupId,
           arrType: ["group"]
         }
@@ -110,11 +113,12 @@ export default {
         url: `${PUB.domain}/info/commonDetail`,
         data: {
           _id: this.groupId,
-          _systemId: PUB._systemId
+          _systemId: "$all"
         } //传递参数
       });
       this.groupDoc = data.doc;
       document.title = this.groupDoc.title; //修改浏览器标题栏文字
+      this.systemId=this.groupDoc._systemId;
 
 
 
@@ -127,7 +131,7 @@ export default {
   },
   async created() {
     this.groupId = this.$route.params.gid;
-    this.getGroupDoc(); //调用：{获取分组详情函数}
+   await this.getGroupDoc(); //调用：{获取分组详情函数}
     await this.getDataList(); //调用：{ajax获取列表函数}
     this.setActiveMenu(); //调用：{设置聚焦菜单函数}-要等菜单加载完
   }

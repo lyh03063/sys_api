@@ -60,6 +60,9 @@ export default {
     //补充熟悉度ajax配置（动态数据字典）
     window.setFamiliarityAjaxCF(this.cfList);
 
+
+    FN.listCFaddItemSystemId(this.cfList)//调用：{补充_systemId列表字段配置函数}
+
     //笔记的相关demo网址
     let note_linkList = {
       ...D_ITEMS.note_linkList,

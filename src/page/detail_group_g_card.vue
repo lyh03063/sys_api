@@ -129,6 +129,7 @@ export default {
         }
       };
       Object.assign(ajaxParam, PUB.listCF.list_familiarity.paramAddonPublic); //合并公共参数
+      ajaxParam._systemId=PUB._systemId
       let {
         data: { list }
       } = await axios({

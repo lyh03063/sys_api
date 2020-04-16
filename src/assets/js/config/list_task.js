@@ -19,7 +19,7 @@
         paramAddonPublic: { _systemId, _dataType },
         detailItems: ["_id", "title", "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime", "detail"],
         columns: ["_id", "title_fixed_edit", "taskType", "prior", "complete_com", "personCharge", "predictTime", "actualTime"],
-        searchFormItems: ["title_search", "taskType", "prior", "personCharge",],
+        searchFormItems: ["title_search","complete_search", "taskType", "prior", "personCharge",],
         formItems: ["title", "taskType_radio", "prior_radio", "complete", "personCharge", "predictTime", "actualTime", "detail_new", "relNoteList"],
   
     }
@@ -41,7 +41,7 @@
         isShowBreadcrumb: false,//面包屑
         detailItems: ["_id", "title", "taskType", "prior", "complete", "predictTime", "actualTime"],
         columns: ["_id", "title_fixed_edit", "taskType", "prior", "complete_com", "predictTime", "actualTime"],
-        searchFormItems: ["title", "taskType", "prior",],
+        searchFormItems: ["title","complete_search", "taskType", "prior",],
     }
 
 

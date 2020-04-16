@@ -1,7 +1,7 @@
 //#region 基本配置
 window.PUB = window.PUB || {}
-PUB.domain__ = "http://localhost:3000"
-PUB.domain = "https://www.dmagic.cn"
+PUB.domain = "http://localhost:3000"
+PUB.domain__ = "https://www.dmagic.cn"
 //PUB.domain = 'http://test.dmagic.cn'
 
 
@@ -96,10 +96,16 @@ MIX.base = {
 PUB.arrListName = [
   "html_api", "html_api_category", "css_api", "css_api_category", "js_api", "js_api_category", "familiarity",
   "exercises", "score", "front_demo", "task", "file", "image", "person",
-  "resume"
+  "resume", "goods"
 ];
 //#endregion
 
+
+
+
+
+
+//#region 临时字段
 
 
 COLUMNS.familiarity_select = {
@@ -108,9 +114,6 @@ COLUMNS.familiarity_select = {
   component: "com_note_familiarity_select",
   cfColumn: { "class-name": "table_cell_visible" } //补充特殊单元格类名，进行特殊控制！
 };
-
-
-
 
 
 
@@ -137,15 +140,15 @@ COLUMNS.familiarity_select = {
   D_ITEMS[prop] = { ...objBase, };
   COLUMNS[prop] = { ...objBase, width: 70, };
   F_ITEMS[prop] = {
-      ...objBase, type: "upload_single",
-      cfItem: {
-          isAvatar: true,//头像
-          //两层配置结构，为了更好拓展
-          "cfUpload": {},
-      }
+    ...objBase, type: "upload_single",
+    cfItem: {
+      isAvatar: true,//头像
+      //两层配置结构，为了更好拓展
+      "cfUpload": {},
+    }
   };
 }
-
+//#endregion
 
 
 //#region 职位名称
@@ -234,6 +237,183 @@ COLUMNS.familiarity_select = {
 }
 //#endregion
 
+//#region 完成度-查询
+{
+  let prop = "complete_search", objBase = { label: "完成度", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 130, };
+  F_ITEMS[prop] = { ...objBase, component: "com_item_complete_search" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
+
+
+
+//#region 系统编号-暂时废弃
+{
+  let prop = "systemId", objBase = { label: "系统编号", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 100, };
+  F_ITEMS[prop] = { ...objBase, type: "input" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
+
+//#region 系统Id
+{
+  let prop = "_systemId", objBase = { label: "系统Id", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 100, edit: true };
+  F_ITEMS[prop] = { ...objBase, type: "input" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
+
+
+//#endregion
+
+//#region 网址列表页
+
+
+{
+  let _dataType = "url";
+  let listIndex = `list_${_dataType}`
+  PUB.listCF[listIndex] = {
+    idKey: "_id", //键名
+    pageSize: 20,
+    listIndex, //vuex对应的字段~
+    focusMenu: true, //进行菜单聚焦
+    breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "网址" }],
+    ...PUB.listCFCommon3,//展开公共配置
+    //objParamAddon列表接口的附加参数
+    // singleBtns:PUB.singleBtns_copy_link_sort,
+    objParamAddon: { _dataType },
+    //公共的附加参数，针对所有接口
+    paramAddonPublic: { _dataType },
+
+    //-------详情字段数组-------
+    detailItems: ["title", "desc", "link"],
+    //-------列配置数组-------
+    columns: ["title_fixed", "_id", "desc", "link"],
+    //-------筛选表单字段数组-------
+    searchFormItems: ["title_search"],
+    //-------新增、修改表单字段数组-------
+    formItems: ["title", "link", "desc", "album"],
+  }
+  //调用：{改造列表字段配置形式的函数（字符串转对象）}
+  util.reformCFListItem(PUB.listCF[listIndex])
+
+}
+
+//#endregion
+
+
+
+
+
+//#region 分组列表页
+{
+  let _dataType = "group";
+  let listIndex = `list_${_dataType}`
+  PUB.listCF[listIndex] = {
+    idKey: "_id", //键名
+    pageSize: 20,
+    listIndex, //vuex对应的字段~
+    focusMenu: true, //进行菜单聚焦
+    breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "分组" }],
+    ...PUB.listCFCommon,//展开公共配置
+    //列表单项操作按钮的配置
+    singleBtns: {
+      addon: [
+        ...util.cfList.sBtns.arrAllBtns,
+        {
+          uiType: "link",
+          text: "分组详情",
+          target: "_blank",
+          url: "#/detail_group?groupId=" //这里要配置好参数名，内部会把参数加进来
+        }
+      ]
+    },
+    objParamAddon: { _dataType },
+    //公共的附加参数，针对所有接口
+    paramAddonPublic: { _dataType },
+
+    //-------详情字段数组-------
+    detailItems: ["_id", "title", "alias", "desc", "group_dataType"],
+    //-------列配置数组-------
+    columns: ["title_fixed", "_id", "alias", "desc", "group_dataType"],
+    //-------筛选表单字段数组-------
+    searchFormItems: ["title_search", "group_dataType", "alias"],
+    //-------新增、修改表单字段数组-------
+    formItems: ["title", "alias", "group_dataType", "iconSrc", "desc"],
+  }
+  //调用：{改造列表字段配置形式的函数（字符串转对象）}
+  util.reformCFListItem(PUB.listCF[listIndex])
+
+}
+//#endregion
+
+
+
+
+
+
+//#region 笔记列表页
+{
+  let _dataType = "note";
+  let listIndex = `list_${_dataType}`
+  PUB.listCF[listIndex] = {
+    idKey: "_id", //键名
+    pageSize: 20,
+    listIndex, //vuex对应的字段~
+    focusMenu: true, //进行菜单聚焦
+    breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "笔记" }],
+    ...PUB.listCFCommon2,//展开公共配置
+    //批量操作按钮的配置
+    batchBtns: {
+      addon: [
+        util.cfList.bBtns.add,
+        util.cfList.bBtns.delete,
+        { uiType: "slot", slot: "slot_in_toolbar" }
+      ],
+    },
+    //dynamicDict动态数据字典配置
+    dynamicDict: [
+      DYDICT.note_category
+    ],
+    //objParamAddon列表接口的附加参数//传入联表查询参数
+    objParamAddon: { _dataType, arrLookup: [] },
+    //公共的附加参数，针对所有接口
+    paramAddonPublic: { _dataType },
+
+    //操作列配置
+    columnOperate: {
+      "min-width": 210
+    },
+
+
+    //-------详情字段数组-------
+    detailItems: ["title", "keyword", "detail", "desc", "category", "importance", "difficulty", "_id", "demoList", "note_linkList", "note_noteList"],
+    //-------列配置数组-------
+    columns: ["_id", "title_fixed_edit", "countGroup", "keyword_edit", "familiarity_select", "importance_edit", "difficulty_edit", "category_multiple", "demoList"],
+    //-------筛选表单字段数组-------
+    searchFormItems: ["title_search", "note_category", "importance", "difficulty", "countGroup"],
+    //-------新增、修改表单字段数组-------
+    formItems: ["title", "link", "importance_radio", "difficulty_radio", "keyword", "note_category", "desc", "detail_paste", "_systemId"],
+  }
+  //调用：{改造列表字段配置形式的函数（字符串转对象）}
+  util.reformCFListItem(PUB.listCF[listIndex])
+
+}
+
+
+//#endregion
+
+
+
+
+
+
 
 
 //#region 分组下的分组列表页
@@ -250,8 +430,8 @@ COLUMNS.familiarity_select = {
         util.cfList.sBtns.linkGroup
       ]
     },
-    objParamAddon: { findJson: {}, _systemId, _dataType },
-    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    objParamAddon: { findJson: {}, _dataType },
+    paramAddonPublic: { _dataType },//公共的附加参数，针对所有接口
     dynamicDict: [DYDICT.note_category], //dynamicDict动态数据字典配置
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
@@ -271,6 +451,8 @@ COLUMNS.familiarity_select = {
   }
 }
 //#endregion
+
+
 
 //#region 分组下的笔记列表页
 {
@@ -295,8 +477,8 @@ COLUMNS.familiarity_select = {
         ...PUB.singleBtns_list_group_data.addon,
       ]
     },
-    objParamAddon: { findJson: {}, _systemId, _dataType },
-    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    objParamAddon: { findJson: {}, _dataType },
+    paramAddonPublic: { _dataType },//公共的附加参数，针对所有接口
     //dynamicDict动态数据字典配置
     dynamicDict: [DYDICT.note_category],
     //-------详情字段数组-------
@@ -331,8 +513,8 @@ COLUMNS.familiarity_select = {
         util.cfList.sBtns.link
       ]
     },
-    objParamAddon: { findJson: {}, _systemId, _dataType },
-    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    objParamAddon: { findJson: {}, _dataType },
+    paramAddonPublic: { _dataType },//公共的附加参数，针对所有接口
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
@@ -357,15 +539,15 @@ COLUMNS.familiarity_select = {
   PUB.listCF[listIndex] = {
     ...PUB.cfListGPublic, listIndex, //vuex对应的字段~
     //列表单项操作按钮的配置
-    objParamAddon: { findJson: {}, _systemId, _dataType },
-    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    objParamAddon: { findJson: {}, _dataType },
+    paramAddonPublic: { _dataType },//公共的附加参数，针对所有接口
     dynamicDict: [DYDICT.personCharge,],
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
     columns: ["title_fixed", "taskType", "prior", "complete_com", "personCharge", "predictTime", "actualTime", "sort"],
     //-------筛选表单字段数组-------
-    searchFormItems: ["title_search", "prior", "personCharge",],
+    searchFormItems: ["title_search", "complete_search", "prior", "personCharge",],
     //-------新增、修改表单字段数组-------
     formItems: ["_idRel", "_idRel2", "sort"],
   }
@@ -397,8 +579,8 @@ COLUMNS.familiarity_select = {
       ]
     },
 
-    objParamAddon: { findJson: {}, _systemId, _dataType },
-    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    objParamAddon: { findJson: {}, _dataType },
+    paramAddonPublic: { _dataType },//公共的附加参数，针对所有接口
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
@@ -433,8 +615,8 @@ COLUMNS.familiarity_select = {
       ]
     },
     listIndex: "detail_group_image", //vuex对应的字段~
-    objParamAddon: { findJson: {}, _systemId, _dataType },
-    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    objParamAddon: { findJson: {}, _dataType },
+    paramAddonPublic: { _dataType },//公共的附加参数，针对所有接口
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
@@ -465,8 +647,8 @@ COLUMNS.familiarity_select = {
         ...PUB.singleBtns_list_group_data.addon,
       ]
     },
-    objParamAddon: { findJson: {}, _systemId, _dataType },
-    paramAddonPublic: { _systemId, _dataType },//公共的附加参数，针对所有接口
+    objParamAddon: { findJson: {}, _dataType },
+    paramAddonPublic: { _dataType },//公共的附加参数，针对所有接口
     //-------详情字段数组-------
     detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
     //-------列配置数组-------
@@ -490,10 +672,73 @@ COLUMNS.familiarity_select = {
 
 
 
+//#region 分组下的网址列表页
+{
+  let _dataType = "relation";
+  let listIndex = "detail_group_url"
+  PUB.listCF[listIndex] = {
+    ...PUB.cfListGPublic,
+    listIndex, //vuex对应的字段~
+    singleBtns: {
+      addon: [
+        ...PUB.singleBtns_list_group_data.addon,
+        util.cfList.sBtns.link
+      ]
+    },
+    objParamAddon: { findJson: {}, _dataType },
+    paramAddonPublic: { _dataType },//公共的附加参数，针对所有接口
+    //dynamicDict动态数据字典配置
+    dynamicDict: [DYDICT.note_category],
+    //-------详情字段数组-------
+    detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
+    //-------列配置数组-------
+    columns: ["title_fixed", "_id", "desc", "link", "sort"],
+    //-------筛选表单字段数组-------
+    searchFormItems: ["title_search",],
+    //-------新增、修改表单字段数组-------
+    formItems: ["_idRel", "_idRel2", "sort"],
+  }
+  util.reformCFListItem(PUB.listCF[listIndex])
+}
+//#endregion
 
 
 
+//#region 分组下的商品列表页
+{
+  let _dataType = "relation";
 
+
+  PUB.listCF.detail_group_goods = {
+    ...PUB.cfListGPublic,
+    listIndex: "detail_group_goods", //vuex对应的字段~
+    singleBtns: PUB.singleBtns_copy_detail_sort,
+
+
+    objParamAddon: {
+      findJson: {},
+      _dataType
+    },
+    //公共的附加参数，针对所有接口
+    paramAddonPublic: {
+      _dataType
+    },
+
+    //-------详情字段数组-------
+    detailItems: ["title", "desc", "countData", "_id", "_idRel", "_idRel2", "sort"],
+    //-------列配置数组-------
+    columns: ["title_fixed", "_id", "desc", "link", "sort"],
+    //-------筛选表单字段数组-------
+    searchFormItems: [],
+    //-------新增、修改表单字段数组-------
+    formItems: ["_idRel", "_idRel2", "sort"],
+
+
+
+  }
+  util.reformCFListItem(PUB.listCF.detail_group_goods)
+}
+//#endregion
 
 
 
@@ -821,8 +1066,135 @@ FN.updateItemScore = async function ({ scoreKey, score }) {
 }
 
 
+//函数：{初始化处理arrLookup数组函数}
+FN.initArrLookup = async function (listIndex) {
+  let $projectAddon = {};
+  if (listIndex) {
+    $projectAddon = PUB.$projectAddon[listIndex] || {}
+  }
+  //****列表查询arrLookup数组由3部分组成：固定的查询，计分板的筛选参数，上方表单的筛选参数
+  let arrLookupFromScore = this.arrLookup || []; //来自计分板筛选的arrLookup
+  let formDataSearch = lodash.cloneDeep(this.formDataSearch); //深拷贝
+  util.clearObj(formDataSearch); //调用：{清除对象中的空属性（null,undefined,空格等）}
+  let isValid = util.isNotEmptyObj(formDataSearch); //调用：{判断是否为非空对象的函数}
+  let arrLookupSearch = [];
+  if (isValid) {
+    //如果是非空对象
+    arrLookupSearch.push({
+      $match: {
+        ...formDataSearch //**** */
+      }
+    });
+  }
+
+  //补充联合查询参数，很复杂！！！！
+
+  //固定的查询部分
+  let arrLookupFixed = [
+    {
+      //联合目标数据表
+      $lookup: {
+        from: "sheet232",
+        localField: "_idRel2",
+        foreignField: "_id",
+        as: "relDoc2"
+      }
+    },
+    //使用$project重新组装，此时targetDoc是数组形式
+    {
+      $project: {
+        _id: 1,
+        _idRel: 1,
+        _idRel2: 1,
+        sort: "$_data.sort", //序号获取
+        targetDoc: "$relDoc2._data"
+      }
+    },
+    //将targetDoc展开
+    {
+      $unwind: "$targetDoc"
+    },
+    //使用$project重新组装
+    {
+      $project: {
+        _id: 1,
+        _idRel: 1,
+        _idRel2: 1,
+        sort: 1, //序号获取
+        title: "$targetDoc.title",
+        link: "$targetDoc.link",//链接地址
+        category: "$targetDoc.category",
+        ...$projectAddon,//附加的属性***
+
+      }
+    }
+  ];
+
+  let arrLookup = [
+    ...arrLookupFixed,
+    ...arrLookupFromScore,
+    ...arrLookupSearch
+  ];
+  this.$set(this.cfList.objParamAddon, "arrLookup", arrLookup);
+
+  //****计分板统计分数需要的arrLookup数组由2部分组成：固定的查询，上方表单的筛选参数
+  this.arrLookupScore = [...arrLookupFixed, ...arrLookupSearch];
+  console.log(" this.arrLookupScore:###", this.arrLookupScore);
 
 
+}
+
+//函数：{分组追加选中数据列表的函数}
+FN.ajaxGroupAddSelectData = async function (arr) {
+  let { tableData } = this.$refs.listData;
+  let docLast = tableData.slice(0); //第一个元素
+  let sortStart = lodash.get(docLast, `[0].sort`, 9999);
+  let arrDataAdd = arr.map(doc => {
+    return {
+      sort: ++sortStart,
+      _idRel: this.groupId,
+      _idRel2: doc._id
+    };
+  });
+  // return;
+
+  let urlAdd = PUB.listCF.list_relation.url.add;
+  let ajaxParam = {
+    _data: arrDataAdd
+  };
+  Object.assign(ajaxParam, PUB.listCF.list_relation.paramAddonPublic); //合并公共参数
+  let response = await axios({
+    //请求接口
+    method: "post",
+    url: PUB.domain + urlAdd,
+    data: ajaxParam //传递参数
+  });
+
+  this.$message.success("添加数据成功");
+  this.arrSelect2 = []; //清除该数组，否则越积越多
+  this.$refs.listData.getDataList(); //列表更新
+}
+
+//#region listCFaddItemSystemId:列表组件配置补充_systemId列表字段配置函数-用于总后台
+FN.listCFaddItemSystemId = function (cfList) {
+  let map = {
+    columns: "COLUMNS", searchFormItems: "F_ITEMS", detailItems: "D_ITEMS", formItems: "F_ITEMS",
+  }
+  let arrNeed = ["columns", "searchFormItems", "detailItems", "formItems",]
+  arrNeed.forEach(prop => {//循环：{需要处理的字段名数组}
+    let arrItemsForThis = cfList[prop]
+    let varName = map[prop]//公共变量名
+    if (!arrItemsForThis) return;
+    let existsItem = arrItemsForThis.find(doc => doc.prop == "_systemId")
+    if(existsItem)return//如果_systemId字段已存在，不再添加了
+    arrItemsForThis.push(window[varName]._systemId)
+  })
+};
+//#endregion
+
+
+
+//#endregion
 //#region MIX混入
 
 MIX.listGroupData = {
@@ -837,17 +1209,18 @@ MIX.listGroupData = {
   data() {
     return {
       readyAddDialogEntity: true,//是否准备好新增实体的弹窗组件-用于复制时重现初始化
+      //新增实体数据弹窗配置
       cfAddDialogEntity: {
-        copyId: "5e84ae2520a342107c0ad688",
+        // copyId: "5e84ae2520a342107c0ad688",
         tipsAfterAdd: false,
         listType: "common", //通用型列表-影响urlAdd
-        cfFormAdd: { paramAddonInit: { _systemId: "sys_api", _dataType: this.dataType } }
+        cfFormAdd: { paramAddonInit: { _dataType: this.dataType } }
       },
       //编辑实体数据弹窗配置
       cfEditDialogEntity: {
         listType: "common", //通用型列表-影响urlModify
         cfFormModify: {
-          paramAddonInit: { _id: "", _systemId: PUB._systemId, _dataType: this.dataType }
+          paramAddonInit: { _id: "", _dataType: this.dataType }
         }
       },
       arrSelect2: [],
@@ -973,7 +1346,7 @@ MIX.listGroupData = {
         data: ajaxParam //传递参数
       });
     },
-    //函数：{增加排除当前分组数据的查询条件的函数}
+    //**函数：{增加排除当前分组数据的查询条件的函数}-暂时不用，体验不大好，
     async excludeCurrGroup() {
       let { cfList } = this.cfSelectList2;
       cfList.objParamAddon = cfList.objParamAddon || {};
@@ -1001,6 +1374,7 @@ MIX.listGroupData = {
 
   },
   async created() {
+
 
     /****************************针对group类型进行函数改造/添加-START****************************/
     if (this.dataType == "group") {//如果{数据类型}是分组
@@ -1039,7 +1413,7 @@ MIX.listGroupData = {
     /****************************针对group类型进行函数改造/添加-END****************************/
 
 
-    this.excludeCurrGroup()//调用：{增加排除当前分组数据的查询条件的函数}
+    // this.excludeCurrGroup()//调用：{增加排除当前分组数据的查询条件的函数}
 
     /****************************弱化新增按钮-START****************************/
     let { addon } = this.cfList.batchBtns;

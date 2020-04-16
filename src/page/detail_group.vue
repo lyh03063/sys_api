@@ -11,9 +11,15 @@
 
     <template class v-if="ready">
       <!--动态组件-->
-      <component :is="componentName" :groupId="groupId" :data-type="groupDoc.dataType" v-if="isSpecial"></component>
+      <component
+        :is="componentName"
+        :groupId="groupId"
+        :data-type="groupDoc.dataType"
+        v-if="isSpecial"
+      ></component>
       <detail_group_common :groupId="groupId" :data-type="groupDoc.dataType" v-else></detail_group_common>
     </template>
+    <div class="PSF B0 R0 BC_fff W200 H20 LH_20 C_999 FS12 PL10  " >系统编号：{{systemId}}</div>
   </div>
 </template>
 
@@ -41,6 +47,7 @@ export default {
   },
   data() {
     return {
+      systemId:null,
       componentName: null, //动态组件名称
       groupDoc: {},
       groupId: null,
@@ -63,7 +70,7 @@ export default {
         url: `${PUB.domain}/info/commonDetail`,
         data: {
           _id: this.groupId,
-          _systemId: PUB._systemId
+          _systemId: "$all"
         } //传递参数
       });
       this.groupDoc = data.doc;
@@ -72,6 +79,13 @@ export default {
       if (location.hash.startsWith(`#/detail_group?`)) {
         document.title = this.groupDoc.title; //修改浏览器标题栏文字
       }
+
+      let { _systemId } = this.groupDoc
+      this.systemId=_systemId;
+
+      console.log("当前_systemId:", _systemId);
+      //*引用当前用户名
+      PUB._paramAjaxAddon = { _systemId: _systemId || "sys_api" }
 
       this.ready = true;
     }

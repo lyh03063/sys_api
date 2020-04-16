@@ -18,7 +18,6 @@
     ],
     //objParamAddon列表接口的附加参数
     objParamAddon: {
-      _systemId,
       _dataType,
       //传入联表查询参数
       arrLookup: []

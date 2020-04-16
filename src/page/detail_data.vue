@@ -146,7 +146,7 @@ export default {
         cfFormModify: {
           paramAddonInit: {
             _id: "5e78bb5444ba565370025aa5",
-            _systemId: PUB._systemId,
+            _systemId: "$all",
             _dataType: "url"
           }
         }
@@ -338,7 +338,7 @@ export default {
         url: `${PUB.domain}/info/commonDetail`,
         data: {
           _id: this.dataId,
-          _systemId: PUB._systemId
+          _systemId: "$all"
         } //传递参数
       });
 
@@ -362,6 +362,8 @@ export default {
 
       this.cfEditDialog.cfFormModify.paramAddonInit._dataType = _dataType;
       this.cfEditDialog.cfFormModify.paramAddonInit._id = this.doc._id;
+
+      FN.listCFaddItemSystemId(PUB.listCF[`list_${_dataType}`])//调用：{补充_systemId列表字段配置函数}
 
       /*****************根据数据类型修改弹窗编辑数据组件配置-END*****************/
       this.ready = true;

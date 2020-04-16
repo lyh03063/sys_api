@@ -8,9 +8,9 @@
       col_span: 12, //控制显示一行多列
     },
 
-    objParamAddon: { _systemId, _dataType },
+    objParamAddon: { _dataType},
     //公共的附加参数，针对所有接口
-    paramAddonPublic: { _systemId, _dataType },
+    paramAddonPublic: { _dataType},
     //-------详情字段数组-------
     detailItems: ["_id", "trueName", "desc", "phone", "address", "career", "_userId"],
     //-------列配置数组-------
