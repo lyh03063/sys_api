@@ -67,7 +67,6 @@ export default {
   methods: {
     //函数：{设置聚焦菜单函数}
     async setActiveMenu() {
-      console.log("this.$route:", this.$route);
       this.routerKey = document.URL; //路由key，确保路由能响应
       await util.timeout(500); //延迟
       this.$store.commit("changeActiveMenu", this.$route.query.groupId);

@@ -44,7 +44,7 @@ export default {
     },
     value: [Object, Array],
     data: [Object],
-    dataType: {}
+    // dataType: {}
   },
   data() {
     return {
@@ -94,7 +94,13 @@ export default {
       this.dataIdFamiliarity =
         this.dataIdFamiliarity || lodash.get(this.valueNeed, `_id`);
 
-      console.log("this.dataIdFamiliarity:####", this.dataIdFamiliarity);
+
+      let _systemId= lodash.get(PUB, `_paramAjaxAddon._systemId`,PUB._systemId);
+
+
+
+
+
       //Q1:熟悉度uuid存在
       if (this.dataIdFamiliarity) {
         await axios({
@@ -104,7 +110,7 @@ export default {
           data: {
             _id: this.dataIdFamiliarity,
             _dataType: "familiarity",
-            _systemId: PUB._systemId,
+            _systemId,
             _data: { familiarity: value, studyTime }
           }
         });
@@ -119,11 +125,11 @@ export default {
           data: {
             _idRel: this.data[this.idKey],
             _dataType: "familiarity",
-            _systemId: PUB._systemId,
+            _systemId,
             _data: {
               userId: this.$sys.userId,
 
-              dataType: this.dataType,
+              // dataType: this.dataType,
               familiarity: value,
               studyTime
             }
@@ -137,7 +143,7 @@ export default {
       }
     }
   },
-  created() {}
+  created() { }
 };
 </script>
 

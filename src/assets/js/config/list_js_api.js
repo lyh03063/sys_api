@@ -9,7 +9,8 @@
       addon: [
         util.cfList.bBtns.add,
         util.cfList.bBtns.delete,
-        { uiType: "slot", slot: "slot_in_toolbar" }
+        // { uiType: "slot", slot: "slot_in_toolbar" }
+        { uiType: "component", component: "com_score_panel", ref: "score_panel" },
       ],
     },
     //dynamicDict动态数据字典配置

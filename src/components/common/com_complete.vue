@@ -23,7 +23,6 @@ export default {
   methods: {
 
     fnClick() {
-      console.log(`完成度fnClick`);
     }
   },
   created() { }

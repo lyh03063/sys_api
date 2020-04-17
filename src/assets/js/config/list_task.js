@@ -14,9 +14,9 @@
         },
 
         ...PUB.listCFCommon2,//展开公共配置
-        objParamAddon: { _systemId, _dataType },
+        objParamAddon: {  _dataType },
         //公共的附加参数，针对所有接口
-        paramAddonPublic: { _systemId, _dataType },
+        paramAddonPublic: { _dataType },
         detailItems: ["_id", "title", "taskType", "prior", "complete", "personCharge", "predictTime", "actualTime", "detail"],
         columns: ["_id", "title_fixed_edit", "taskType", "prior", "complete_com", "personCharge", "predictTime", "actualTime"],
         searchFormItems: ["title_search","complete_search", "taskType", "prior", "personCharge",],
@@ -26,10 +26,6 @@
     util.handleCommonListCF({_dataType, listCFAddon})//调用：{处理通用列表配置数据函数}
   }
   
-
-
-
-
 
 
 

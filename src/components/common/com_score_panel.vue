@@ -4,15 +4,18 @@
 
 <template>
   <div class="DPIB">
+    <dm_debug_list>
+      <dm_debug_item v-model="data" />
+    </dm_debug_list>
+
     <!-- <div class="" >data:{{data}}</div> -->
     <!-- <div class="" >arrLookupScore:{{arrLookupScore}}</div> -->
     <score_panel
       ref="scorePanel"
       v-if="data"
       :param="data.objParam"
-      idKey="_idRel2"
-      listIndex="detail_group_note"
-      data-type="note"
+      :idKey="idKey"
+      :listIndex="listIndex"
       :arrLookup="arrLookupScore"
       @switch="filterData"
     >
@@ -32,6 +35,8 @@ export default {
   props: ["data"],
   data() {
     return {
+      listIndex: "",
+      idKey: "_id",
       arrLookupScore: null //计分板需要联合查询配置数组-
 
     };
@@ -48,7 +53,17 @@ export default {
       this.$emit("list-event-in", { eventType: "filterDataByFamiliarity" });
 
 
+
+
     },
+  },
+  created() {
+    let _dataType = lodash.get(this.data, `objParam._dataType`);
+    this.listIndex = `list_${_dataType}`
+    if (_dataType == "relation") {//如果是关系表！！！
+      this.idKey = "_idRel2"
+      this.listIndex = `detail_group_note`
+    }
   }
 };
 </script>

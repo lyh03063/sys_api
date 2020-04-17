@@ -11,8 +11,13 @@ import com_note_familiarity_select from '@/components/common/com_note_familiarit
 import com_score_panel from '@/components/common/com_score_panel.vue'
 //查询表单-完成度
 import com_item_complete_search from '@/components/common/com_item_complete_search.vue'
+// 表单-规格价格组件（复杂）
+import com_f_item_listSpecPrice from '@/components/common/com_f_item_listSpecPrice.vue'
+// 列-订单支付状态和退款操作
+import com_c_item_payStatus from '@/components/common/com_c_item_payStatus.vue'
 const Components = {
-    com_complete,com_imagePreview,com_note_familiarity_select,com_score_panel,com_item_complete_search
+    com_complete,com_imagePreview,com_note_familiarity_select,com_score_panel,com_item_complete_search,
+    com_f_item_listSpecPrice,com_c_item_payStatus
 }
 
 //安装以上多个组件

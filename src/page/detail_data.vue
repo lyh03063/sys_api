@@ -317,7 +317,6 @@ export default {
             _id
           } //传递参数
         });
-        console.log("data:#########", data);
 
         let { title, _detail } = data.doc;
         htmlDetail += _detail;

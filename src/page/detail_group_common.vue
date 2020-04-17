@@ -72,7 +72,7 @@ export default {
 
     //关系表补充公共参数
     Object.assign(PUB.listCF.list_relation.paramAddonPublic, PUB._paramAjaxAddon);//合并对象
-    // Object.assign(PUB.listCF.list_relation.objParamAddon, PUB._paramAjaxAddon);//合并对象
+   Object.assign(this.cfList.objParamAddon, PUB._paramAjaxAddon);//合并对象
 
 
 

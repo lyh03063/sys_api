@@ -103,7 +103,6 @@ export default {
     },
     //函数：{设置聚焦菜单函数}
     setActiveMenu() {
-      console.log("this.$route:", this.$route);
       this.groupId = this.$route.query.groupId;
       //如果{groupId}存在
       if (this.groupId) {

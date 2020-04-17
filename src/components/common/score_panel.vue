@@ -36,7 +36,7 @@ export default {
     },
     param: {},
     listIndex: {}, //列表标记
-    dataType: {}, //对应数据类型
+   
     //单独的arrLookup***
     arrLookup: {
       default: function () {
@@ -114,10 +114,10 @@ export default {
         data: {
           _systemId,
           _dataType,
-          dataType: this.dataType, //补充单独的dataType
+          // dataType: this.dataType, //补充单独的dataType
           idKey: this.idKey, //需要传递idKey****
           findJson,
-          arrLookup: this.arrLookup,
+          arrLookup: this.arrLookup||[],
           userId: PUB.$sys.userId
         }
       });
@@ -132,7 +132,6 @@ export default {
       if (groupId) {
         this.updateGroupUserScore({ groupId, score: this.data }); //调用：{更新当前分组的用户学习缓存数据函数}
       } else {
-        console.log("findJson:", findJson);
 
         util.clearObj(findJson); //调用：{清除对象中的空属性（null,undefined,空格等）}
         let isEmpty = !util.isNotEmptyObj(findJson); //调用：{判断是否为非空对象的函数}

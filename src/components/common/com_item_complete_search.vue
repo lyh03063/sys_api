@@ -37,12 +37,12 @@ export default {
         }
 
         // this.formData.complete = dict[newVal];
-        // console.log('value changed');
       },
       immediate: true,
       deep: true
     }
   },
+  
 
   methods: {
 

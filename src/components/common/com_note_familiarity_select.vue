@@ -4,11 +4,14 @@
 
 <template>
   <div class>
+    <dm_debug_list>
+      <dm_debug_item v-model="doc" />
+    </dm_debug_list>
     <familiarity_select
       v-model="doc.familiarityDoc"
       :data="doc"
-      data-type="note"
-      idKey="_idRel2"
+ 
+      :idKey="idKey"
       :key="doc._id"
     ></familiarity_select>
   </div>
@@ -25,7 +28,19 @@ export default {
   //用于列表模糊查询的组件
   props: ["doc"],
   data() {
-    return {};
+    return {
+      idKey: "_id"
+
+    };
+  },
+  created() {
+
+    if (this.doc._idRel2) {//如果存在_idRel2字段，表示来源于专题
+      this.idKey = "_idRel2"
+
+    }
+
+
   },
   methods: {}
 };

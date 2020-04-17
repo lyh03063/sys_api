@@ -86,7 +86,8 @@ export default {
   created() {
     //*引用当前用户名
      PUB._paramAjaxAddon = {
-      _systemId: "$all"
+      // _systemId: "$all",
+      _systemId: "sys_api"
     }
 
     document.title = PUB.systemName; //修改浏览器标题栏文字

@@ -28,7 +28,7 @@
         //-------筛选表单字段数组-------
         searchFormItems: ["title_search"],
         //-------新增、修改表单字段数组-------
-        formItems: ["title", "desc", "album", "deliveryDesc", "detail", "priceMarket", "priceSell", "priceSellSection", "isPublish", "listSpecPrice"],
+        formItems: ["title", "desc", "album", "deliveryDesc", "detail", "priceMarket", "priceSell",  "isPublish", "listSpecPrice"],
     }
     util.handleCommonListCF({ _dataType, listCFAddon })//调用：{处理通用列表配置数据函数}
 }

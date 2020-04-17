@@ -119,7 +119,6 @@ export default {
     //函数：{获取其他分数函数}
     async getScoreOther() {
       let arrScoreKey = this.arrObjScore.map(doc => doc.scoreKey);
-      console.log("arrScoreKey:", arrScoreKey);
 
       let {
         data: { list }
@@ -144,7 +143,6 @@ export default {
         Object.assign(this.dictScore[scoreKey], score); //合并对象
       });
 
-      console.log("list:", list);
     },
     //函数：{初始化函数}
     async init() {

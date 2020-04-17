@@ -83,7 +83,6 @@ export default {
       let { _systemId } = this.groupDoc
       this.systemId=_systemId;
 
-      console.log("当前_systemId:", _systemId);
       //*引用当前用户名
       PUB._paramAjaxAddon = { _systemId: _systemId || "sys_api" }
 

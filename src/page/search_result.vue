@@ -105,8 +105,6 @@ export default {
 
       this.activeName = lodash.get(this.arrTypeShow, `[0].name`); //获取第一个有效选项名聚焦
       this.ready = true;
-      console.log("activeName",this.activeName);
-      console.log("arrTypeShow",this.arrTypeShow)
     }
   },
   //计算属性

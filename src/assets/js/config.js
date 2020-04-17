@@ -17,6 +17,16 @@ PUB.arrRouteListPage = PUB.arrRouteListName.map((item) => {
 })
 
 
+PUB.arrRouteListPageNew = PUB.arrRouteListName.map((item) => {
+  return {
+    path: `${item}`,//没有斜杠
+    component: () => import(`@/page/${item}`)
+  }
+})
+
+
+
+
 PUB.arrRouteListPageForStudy = PUB.arrRouteListName.map((item) => {
   return {
     path: `${item}`,
@@ -50,6 +60,14 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
     ...PUB.arrRouteListPageForStudy
   ]
 },
+{
+  path: '/system_home/:sysId/', component: () => import("@/page/system_home"),
+  children: [//子路由
+    { path: 'detail_group', component: () => import("@/page/detail_group") },
+    ...PUB.arrRouteListPageNew,
+
+  ]
+},
 ]
 //#endregion
 
@@ -72,7 +90,7 @@ MIX.base = {
   },
   computed: {
     $sys() {
-      let sys = util.getLocalStorageObj(PUB._systemId)//调用：{从LocalStorage获取一个对象的函数}
+      let sys = util.getLocalStorageObj(PUB._systemId) || {}//调用：{从LocalStorage获取一个对象的函数}
       sys.env = PUB.domain == "https://www.dmagic.cn" ? "pro" : "dev";
       return sys
     },
@@ -96,7 +114,7 @@ MIX.base = {
 PUB.arrListName = [
   "html_api", "html_api_category", "css_api", "css_api_category", "js_api", "js_api_category", "familiarity",
   "exercises", "score", "front_demo", "task", "file", "image", "person",
-  "resume", "goods"
+  "resume", "goods", "system", "order", "user", "project_case"
 ];
 //#endregion
 
@@ -104,171 +122,76 @@ PUB.arrListName = [
 
 
 
+F_ITEMS.listSpecPrice = {
+  label: "规格/价格表",
+  prop: "listSpecPrice",
+  // slot: "slot_form_listSpecPrice",
+  component: "com_f_item_listSpecPrice",
 
-//#region 临时字段
-
-
-COLUMNS.familiarity_select = {
-  ...D_ITEMS.familiarity,
-  width: 120,
-  component: "com_note_familiarity_select",
-  cfColumn: { "class-name": "table_cell_visible" } //补充特殊单元格类名，进行特殊控制！
 };
 
+DYDICT.order_user = {
+  ajax: {
+    param: { _dataType: "user" },
+    url: "/info/getCommonList"
+  },
+  populateColumn: "userDoc",
+  idColumn: "openid",
+  idColumn2: "openid"
+};
 
+//变量：{查看实体数据详情按钮}
+util.cfList.sBtns.goSystem = {
+  uiType: "link",
+  text: "进入系统",
+  target: "_blank",
+  //地址格式函数
+  urlFormatter: function (row) {
+    return `#/system_home/${row.systemId}/listHome`;
+  },
+};
 
-//#region 公司名
+//#region 支付状态
 {
-  let prop = "companyName"
-  let objBase = {
-    label: "公司名",
-    prop: prop,
-  }
+  let prop = "payStatus", objBase = { label: "支付状态", prop, }
   D_ITEMS[prop] = {
     ...objBase,
+    formatter: function (rowData) {
+      return lodash.get(DYDICT.payStatus, `${rowData.payStatus}.label`);
+    },
   };
-  COLUMNS[prop] = { ...objBase, width: 190, };
-  F_ITEMS[prop] = { ...objBase, type: "input" };
-  F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
+  COLUMNS[prop] = {
+    ...objBase, width: 70,
+    formatter: function (rowData) {
+      return lodash.get(DYDICT.payStatus, `${rowData.payStatus}.label`);
+    },
+  };
 
+  COLUMNS.payStatus_slot = { ...objBase, slot: "slot_column_payStatus", width: 130, };
+  COLUMNS.payStatus_com = { ...objBase, component: "com_c_item_payStatus", width: 130, };
+  F_ITEMS[prop] = { ...objBase, type: "select", options: DYDICT.arr_payStatus };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
 //#endregion
 
-//#region 头像上传2
+
+
+
+//#region 创建时间
 {
-  let prop = "avatarImg", objBase = { label: "头像上传", prop, }
+  let prop = "CreateTime", objBase = { label: "创建时间", prop, }
   D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 70, };
-  F_ITEMS[prop] = {
-    ...objBase, type: "upload_single",
-    cfItem: {
-      isAvatar: true,//头像
-      //两层配置结构，为了更好拓展
-      "cfUpload": {},
+  COLUMNS[prop] = {
+    ...objBase, width: 90,
+    formatter: function (row) {
+      if (!row.CreateTime) return "";
+      return moment(row.CreateTime).format("YYYY-MM-DD")
     }
   };
-}
-//#endregion
-
-
-//#region 职位名称
-{
-  let prop = "positionName", objBase = { label: "职位名称", prop, }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 100, };
   F_ITEMS[prop] = { ...objBase, type: "input" };
   // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
 }
 //#endregion
-
-//#region 在职时间段
-{
-  let prop = "onJobPeriod", objBase = { label: "在职时间段", prop, }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 120, };
-  F_ITEMS[prop] = { ...objBase, type: "input" };
-  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
-//#endregion
-
-//#region 工作内容描述
-{
-  let prop = "descJob", objBase = { label: "工作内容描述", prop: "descJob", }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 170, };
-  F_ITEMS[prop] = { ...objBase, type: "textarea" };
-  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
-//#endregion
-
-
-
-//#region 学校名称
-{
-  let prop = "schoolName", objBase = { label: "学校名称", prop, }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 170, };
-  F_ITEMS[prop] = { ...objBase, type: "input" };
-  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
-//#endregion
-
-
-//#region 在校时间段
-{
-  let prop = "inSchoolPeriod", objBase = { label: "在校时间段", prop, }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 120, };
-  F_ITEMS[prop] = {
-    ...objBase, type: "time_period",
-    cfItem: {
-      keyStart: "start",
-      keyEnd: "end",
-      //两层配置结构，为了更好拓展
-      "cfDataPicker": {
-        "type": "monthrange",
-        "picker-options": {},
-      },
-    }
-  };
-  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
-//#endregion
-
-
-//#region 学历，
-{
-  let prop = "diploma", objBase = { label: "学历", prop, }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 70, };
-  F_ITEMS[prop] = { ...objBase, type: "input" };
-  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
-//#endregion
-
-
-//#region 专业名称
-{
-  let prop = "professionalName", objBase = { label: "专业名称", prop, }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 130, };
-  F_ITEMS[prop] = { ...objBase, type: "input" };
-  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
-//#endregion
-
-//#region 完成度-查询
-{
-  let prop = "complete_search", objBase = { label: "完成度", prop, }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 130, };
-  F_ITEMS[prop] = { ...objBase, component: "com_item_complete_search" };
-  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
-//#endregion
-
-
-
-//#region 系统编号-暂时废弃
-{
-  let prop = "systemId", objBase = { label: "系统编号", prop, }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 100, };
-  F_ITEMS[prop] = { ...objBase, type: "input" };
-  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
-//#endregion
-
-//#region 系统Id
-{
-  let prop = "_systemId", objBase = { label: "系统Id", prop, }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = { ...objBase, width: 100, edit: true };
-  F_ITEMS[prop] = { ...objBase, type: "input" };
-  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
-//#endregion
-
 
 //#endregion
 
@@ -374,7 +297,8 @@ COLUMNS.familiarity_select = {
       addon: [
         util.cfList.bBtns.add,
         util.cfList.bBtns.delete,
-        { uiType: "slot", slot: "slot_in_toolbar" }
+        // { uiType: "slot", slot: "slot_in_toolbar" },
+        { uiType: "component", component: "com_score_panel", ref: "score_panel" },
       ],
     },
     //dynamicDict动态数据字典配置
@@ -760,22 +684,26 @@ PUB.menuList = [
     menuItem: [
       {
         index: "list_html_api",
-        route: "/list_html_api",
+        // route: "/list_html_api",
+        route: "/list_common?type=html_api",
         title: "Html-API"
       },
       {
         index: "list_css_api",
-        route: "/list_css_api",
+        // route: "/list_css_api",
+        route: "/list_common?type=css_api",
         title: "Css-API"
       },
       {
         index: "list_js_api",
-        route: "/list_js_api",
+        // route: "/list_js_api",
+        route: "/list_common?type=js_api",
         title: "Javascript-API"
       },
       {
         index: "list_note",
-        route: "/list_note",
+        // route: "/list_note",
+        route: "/list_common?type=note",
         title: "笔记"
       },
       {
@@ -909,6 +837,11 @@ PUB.menuList = [
     title: "系统管理",
     menuItem: [
       {
+        index: "list_system",
+        route: "/list_common?type=system",
+        title: "系统表"
+      },
+      {
         index: "list_data_type",
         route: "/list_common?type=data_type",
         title: "数据类型"
@@ -933,7 +866,11 @@ PUB.menuList = [
         route: "/list_common?type=admin",
         title: "管理员"
       },
-      { index: "list_role", route: "/list_role", title: "角色" }
+      {
+        index: "list_role",
+        route: "/list_common?type=role",
+        title: "角色"
+      }
     ]
   }
 ];
@@ -1139,7 +1076,6 @@ FN.initArrLookup = async function (listIndex) {
 
   //****计分板统计分数需要的arrLookup数组由2部分组成：固定的查询，上方表单的筛选参数
   this.arrLookupScore = [...arrLookupFixed, ...arrLookupSearch];
-  console.log(" this.arrLookupScore:###", this.arrLookupScore);
 
 
 }
@@ -1186,7 +1122,7 @@ FN.listCFaddItemSystemId = function (cfList) {
     let varName = map[prop]//公共变量名
     if (!arrItemsForThis) return;
     let existsItem = arrItemsForThis.find(doc => doc.prop == "_systemId")
-    if(existsItem)return//如果_systemId字段已存在，不再添加了
+    if (existsItem) return//如果_systemId字段已存在，不再添加了
     arrItemsForThis.push(window[varName]._systemId)
   })
 };
@@ -1237,7 +1173,7 @@ MIX.listGroupData = {
       },
       //查询表单配置-默认数据
       cfFormSearch: {
-        inline: true, "labelWidth": "auto", size: "mini", formItems: [F_ITEMS.importance],
+        inline: true, "labelWidth": "100px", size: "mini", formItems: [F_ITEMS.importance],
         btns: [{ text: "查询", event: "submit", type: "primary", size: "mini" }]
       },
       formDataSearch: {},
@@ -1274,7 +1210,6 @@ MIX.listGroupData = {
         this.cfEditDialogEntity.cfFormModify.paramAddonInit._id = _idRel2//***修改数据id
         this.cfEditDialogEntity.visible = true;//打开弹窗
       } else if (actionType == "copy_entity") {
-        console.log(`doc._id:${doc._id}`);
         this.cfAddDialogEntity.copyId = _idRel2;
         this.readyAddDialogEntity = false;
         await this.$nextTick();//延迟到视图更新
@@ -1320,7 +1255,6 @@ MIX.listGroupData = {
       let com_score_panel = lodash.get(this, `$refs.listData.$refs.score_panel[0]`);
       if (com_score_panel) {//Q1：{计分板子组件}存在
         // let com_score_panel = this.$refs.listData.$refs.score_panel[0];//目标子组件，注意定位后是一个数组，取第一个元素
-        console.log("com_score_panel:", com_score_panel);
         let comTarget2 = com_score_panel.$refs.scorePanel//真正的计分组件
         //设置id数组
         comTarget2.ajaxGetScore(); //调用：{ajax获取分数函数}
@@ -1335,11 +1269,19 @@ MIX.listGroupData = {
     },
     //函数：{更新当前分组的数据量的函数}
     async updateGroupCountData() {
+      console.log(`updateGroupCountData###`);
       let urlModify = PUB.listCF.list_group.url.modify;
       let ajaxParam = {
         _id: this.groupId, _data: { countData: this.$refs.listData.allCount } //获取列表的数据总量
       };
+
       Object.assign(ajaxParam, PUB.listCF.list_group.paramAddonPublic); //合并公共参数
+
+      //调用：{给一个对象设置默认属性函数}-加入全局公共参数
+      util.setObjDefault(ajaxParam, PUB._paramAjaxAddon);
+
+
+      console.log("ajaxParam:###", ajaxParam);
       let response = await axios({
         //请求接口
         method: "post", url: PUB.domain + urlModify,
@@ -1434,13 +1376,13 @@ MIX.listGroupData = {
     window.setFamiliarityAjaxCF(this.cfList, "_idRel2");
 
 
+
     /****************************补充编辑实体数据按钮-START****************************/
     let sBtnEditEntity = { eventType: "edit_entity", text: "编辑", };
     this.cfList.singleBtns.addon.push(sBtnEditEntity);
     /****************************补充编辑实体数据按钮-END****************************/
     //***从cfList中获取到需要的查询条件字段******
     this.cfFormSearch.formItems = this.cfList.searchFormItems
-
 
 
 
@@ -1456,7 +1398,69 @@ MIX.listGroupData = {
 
 
 
+//#region 龙庭FN函数库
 
+
+window.FN = window.FN || {}
+//函数：{获取规格链id函数}
+FN.getIdSpecChian = function (arrSpecSelected) {
+  let arrId = arrSpecSelected.map(doc => lodash.get(doc, `objSOp.__id`));
+  return arrId.sort().join("__");
+
+}
+
+//函数：{获取规格链名称函数}
+FN.getNameSpecChian = function (arrSpecSelected) {
+  let arrId = arrSpecSelected.map(doc => lodash.get(doc, `objSOp.name`));
+  return arrId.join(" + ");
+
+}
+
+
+
+//函数：{标记不符合条件的组合结果项的函数}
+FN.handelCombResult = function ({ listSpecs, arrResult }) {
+  /****************************标记不符合条件的项-START****************************/
+  //循环：{规格数组}
+  listSpecs.forEach((itemEach, index) => {
+    if (!itemEach.objSpecTerm) return;
+    let indexTerm; //条件规格所在的位置
+    let valTerm; //条件值
+    for (var prop in itemEach.objSpecTerm) {
+      indexTerm = listSpecs.findIndex(doc => doc.name == prop);
+      valTerm = itemEach.objSpecTerm[prop];
+
+    }
+    //循环：{组合结果数组}
+    arrResult.forEach(itemEach => {
+      console.log("itemEach[indexTerm].name:", itemEach[indexTerm].name);
+      let flag = itemEach[indexTerm].name != valTerm;
+      console.log("flag:", flag);
+      if (flag) {
+        itemEach[index] = { name: "——" };
+      }
+    });
+  });
+  return arrResult
+  /****************************标记不符合条件的项-END****************************/
+}
+
+
+
+//函数：{规格价格列表去重函数}
+FN.uniqListSpecPrice = function (listSpecPrice) {
+  let listSpecPriceNew = [];
+  //循环：{规格价格列表}
+  listSpecPrice.forEach(itemEach => {
+    let obj = listSpecPriceNew.find(doc => doc.id == itemEach.id);
+    //如果{000}000
+    if (!obj) {
+      listSpecPriceNew.push(itemEach);
+    }
+  });
+  return listSpecPriceNew
+}
+//#endregion
 
 
 
