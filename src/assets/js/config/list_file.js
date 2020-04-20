@@ -1,7 +1,7 @@
 {
   let _dataType = "file";
   let listCFAddon = {
-    breadcrumb: [ { value: "首页", path: "#/listHome" }, { value: "文件" } ],
+    breadcrumb: [ { value: "首页", path: "listHome" }, { value: "文件" } ],
     ...PUB.listCFCommon2,//展开公共配置
   
     

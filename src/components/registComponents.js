@@ -15,9 +15,15 @@ import com_item_complete_search from '@/components/common/com_item_complete_sear
 import com_f_item_listSpecPrice from '@/components/common/com_f_item_listSpecPrice.vue'
 // 列-订单支付状态和退款操作
 import com_c_item_payStatus from '@/components/common/com_c_item_payStatus.vue'
+
+//详情-订单商品列表
+import com_listGoods from '@/components/common/com_d_item_listGoods.vue'
+//详情-订单地址显示
+import com_addressObj from '@/components/common/com_d_item_addressObj.vue'
 const Components = {
     com_complete,com_imagePreview,com_note_familiarity_select,com_score_panel,com_item_complete_search,
-    com_f_item_listSpecPrice,com_c_item_payStatus
+    com_f_item_listSpecPrice,com_c_item_payStatus,
+    com_listGoods,com_addressObj
 }
 
 //安装以上多个组件

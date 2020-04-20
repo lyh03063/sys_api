@@ -63,7 +63,7 @@ export default {
           this.listIndex = `list_${this.dataType}`
           this.ready = false;
           this.cfList = util.deepCopy(PUB.listCF[this.listIndex]);//***改变列表类型
-          if (this.$route.path == "/list_common") {//如果是主后台
+          if (this.$route.path == "/manage/list_common") {//如果是主后台
             FN.listCFaddItemSystemId(this.cfList)//调用：{补充_systemId列表字段配置函数}
 
           }

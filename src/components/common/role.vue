@@ -22,10 +22,12 @@ export default {
   mixins: [MIX.base],
   methods: {
     handleCommand(command) {
+      let systemId = this.$route.params.sysId||PUB._systemId;
+    
       if ((command == "logOut")) {
         //退出登录函数
-        util.extendLocalStorageObj(PUB._systemId, { isLogin: "0" }); //调用：{拓展一个LocalStorage对象的函数}
-        this.$router.push({ path: "/login" }); //跳转到manage
+        util.extendLocalStorageObj(systemId, { isLogin: "0" }); //调用：{拓展一个LocalStorage对象的函数}
+        this.$router.push({ path: "../login" }); //跳转到manage
         this.$message("click on item " + command);
       }
     }

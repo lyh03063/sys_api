@@ -22,7 +22,7 @@ const router = new VueRouter({
     {
       path: '/manage',
       component: manage,
-      redirect: '/listHome', //跳转
+      redirect: 'listHome', //跳转
       children: [//子路由
         ...PUB.arrRouteListPage,
       ]
@@ -31,16 +31,29 @@ const router = new VueRouter({
 })
 router.beforeEach((to, from, next) => {
 
-  let $sys=util.getLocalStorageObj(PUB._systemId); //调用：{从LocalStorage获取一个对象的函数}
+  let systemId = to.params.sysId || from.params.sysId || PUB._systemId;//***获取地址上的_systemId
+
+  let $sys = util.getLocalStorageObj(systemId); //调用：{从LocalStorage获取一个对象的函数}
+
+
+
   // 如果用户未登录，跳转登录页面
-  if ($sys.isLogin != 1) {
-    if (to.path == '/login') {
+  if ($sys.isLogin != 1) {//Q1：未登录
+
+    if (to.path.includes('login')) {//QK1：to路径中包含login
       next();
-    } else {
+    } else {//QK2：to路径中包含login
+
       PUB.goUrlAfterLogin = to.fullPath//变量赋值：{登录后要跳转的地址}
-      next('/login');
+      if (systemId == "sys_api") {//QKK1:是sys_api系统
+        next('login');
+      } else { //QKK2:否则
+        next(`/system/${systemId}/login`);
+      }
+
+
     }
-  } else {
+  } else {//Q2：已登录
     PUB.goUrlAfterLogin = null//变量赋值：{登录后要跳转的地址}
     next();
   }
@@ -83,7 +96,7 @@ const store = new Vuex.Store({//定义Vuex的存储对象
       state.activeMenuIndex = activeMenuIndex
     },
 
-  
+
     openDialogDetail(state, param) {//打开详情弹窗事件
       state.listState[param.listIndex].isShowDialogDetail = true;
       state.listState[param.listIndex].row = param.row;//将行数据保存到vuex

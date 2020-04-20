@@ -2,7 +2,7 @@
 {
     let _dataType = "image";
     let listCFAddon = {
-        breadcrumb: [ { value: "首页", path: "#/listHome" }, { value: "图片" } ],
+        breadcrumb: [ { value: "首页", path: "listHome" }, { value: "图片" } ],
         ...PUB.listCFCommon2,//展开公共配置
         //cfForm新增修改表单的配置
         cfForm: {

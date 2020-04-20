@@ -3,7 +3,7 @@
 {
     let _dataType = "task";
     let listCFAddon = {
-        breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "任务" }],
+        breadcrumb: [{ value: "首页", path: "listHome" }, { value: "任务" }],
         //dynamicDict动态数据字典配置
         dynamicDict: [
             DYDICT.personCharge,

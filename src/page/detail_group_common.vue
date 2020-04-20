@@ -52,6 +52,7 @@
 // let cfSelectList = ;
 
 export default {
+  name:"detail_group_common",
   components: {
     detail_data: () => import("@/page/detail_data.vue") //数据详情页组件
   },

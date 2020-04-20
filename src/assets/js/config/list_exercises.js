@@ -1,7 +1,7 @@
 {
   let _dataType = "exercises";
   let listCFAddon = {
-    breadcrumb: [ { value: "首页", path: "#/listHome" }, { value: "前端习题" } ],
+    breadcrumb: [ { value: "首页", path: "listHome" }, { value: "前端习题" } ],
     ...PUB.listCFCommon2,//展开公共配置
     //-------详情字段数组-------
     detailItems: ["title", "desc", "category", "detail"],

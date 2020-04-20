@@ -108,7 +108,7 @@ export default {
         url: `${PUB.domain}/info/commonDetail`,
         data: {
           _id: this.groupId,
-          _systemId: PUB._systemId
+          _systemId: "$all"
         } //传递参数
       });
       this.groupDoc = data.doc;
@@ -125,7 +125,7 @@ export default {
         method: "post",
         url: `${PUB.domain}/info/getCommonGroupList`,
         data: {
-          _systemId: PUB._systemId,
+          _systemId: "$all",
           groupId: this.groupId,
           arrType: ["group","url"]
         }

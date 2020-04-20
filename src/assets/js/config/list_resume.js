@@ -5,7 +5,7 @@
 {
     let _dataType = "resume_project_experience";
     let listCFAddon = {
-        breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "简历-项目经历" }],
+        breadcrumb: [{ value: "首页", path: "listHome" }, { value: "简历-项目经历" }],
         ...PUB.listCFCommon2,//展开公共配置
         detailItems: ["title", "desc", "link"],
         columns: ["title_fixed", "_id", "desc", "link"],
@@ -21,7 +21,7 @@
 {
     let _dataType = "resume_work_experience";
     let listCFAddon = {
-        breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "简历-工作经历" }],
+        breadcrumb: [{ value: "首页", path: "listHome" }, { value: "简历-工作经历" }],
         ...PUB.listCFCommon2,//展开公共配置
         detailItems: ["companyName", "positionName", "onJobPeriod", "descJob"],
         columns: ["companyName", "positionName", "onJobPeriod", "descJob"],
@@ -37,7 +37,7 @@
 {
     let _dataType = "resume_education_experience";
     let listCFAddon = {
-        breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "简历-教育经历" }],
+        breadcrumb: [{ value: "首页", path: "listHome" }, { value: "简历-教育经历" }],
         ...PUB.listCFCommon2,//展开公共配置
         detailItems: ["schoolName","inSchoolPeriod","diploma","professionalName", ],
         columns: ["schoolName","inSchoolPeriod","diploma","professionalName", ],
@@ -106,7 +106,7 @@
 {
     let _dataType = "resume";
     let listCFAddon = {
-        breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "简历" }],
+        breadcrumb: [{ value: "首页", path: "listHome" }, { value: "简历" }],
         ...PUB.listCFCommon2,//展开公共配置
         detailItems: ["trueName", "phone", "email", "desc", "avatarImg",
         "relWorkExperience", "relProjectExperience","relEducationExperience",],

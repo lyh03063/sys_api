@@ -1,7 +1,7 @@
 {
   let _dataType = "js_api";
   let listCFAddon = {
-    breadcrumb: [ { value: "首页", path: "#/listHome" }, { value: "API手册" }, { value: "Javascript-API" } ],
+    breadcrumb: [ { value: "首页", path: "listHome" }, { value: "API手册" }, { value: "Javascript-API" } ],
     ...PUB.listCFCommon2,//展开公共配置
     //批量操作按钮的配置
     batchBtns: {

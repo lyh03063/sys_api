@@ -1,7 +1,7 @@
 {
   let _dataType = "familiarity";
   let listCFAddon = {
-    breadcrumb: [ { value: "首页", path: "#/listHome" }, { value: "熟悉度" } ],
+    breadcrumb: [ { value: "首页", path: "listHome" }, { value: "熟悉度" } ],
     ...PUB.listCFCommon,//展开公共配置
     //dynamicDict动态数据字典配置
     dynamicDict: [

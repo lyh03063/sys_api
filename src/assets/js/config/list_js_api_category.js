@@ -2,7 +2,7 @@
 {
   let _dataType = "js_api_category";
   let listCFAddon = {
-    breadcrumb: [ { value: "首页", path: "#/listHome" }, { value: "Javascript-api分类" } ],
+    breadcrumb: [ { value: "首页", path: "listHome" }, { value: "Javascript-api分类" } ],
     ...PUB.listCFCommon2,//展开公共配置
     //-------详情字段数组-------
     detailItems: ["title", "desc", "cateIdOld"],

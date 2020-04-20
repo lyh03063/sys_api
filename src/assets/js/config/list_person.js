@@ -1,7 +1,7 @@
 {
   let _dataType = "person";
   let listCFAddon = {
-    breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "人员" }],
+    breadcrumb: [{ value: "首页", path: "listHome" }, { value: "人员" }],
     ...PUB.listCFCommon2,//展开公共配置
     //cfForm新增修改表单的配置
     cfForm: {
@@ -16,7 +16,7 @@
     //-------列配置数组-------
     columns: ["trueName", "desc", "phone", "address", "career", "_userId"],
     //-------筛选表单字段数组-------
-    searchFormItems: ["title_search", "_userId"],
+    searchFormItems: ["trueName_search"],
     //-------新增、修改表单字段数组-------
     formItems: ["trueName", "career", "phone", "address", "birthday", "email", "idCard", "qqNumber", "desc", "headSrc",],
 

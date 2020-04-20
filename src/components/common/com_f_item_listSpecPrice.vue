@@ -103,7 +103,6 @@ export default {
     formDataNeed: {
       handler(newVal, oldVal) {
         if (!T.formData) return;
-        console.log("规格组件值变动！！！");
         let { listSpecs, listSpecPrice } = T.formDataNeed;
         T.$set(T.formData, "listSpecs", listSpecs);
         T.$set(T.formData, "listSpecPrice", listSpecPrice);

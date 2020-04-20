@@ -3,28 +3,30 @@
     <div class="TAC">
       <h1 class="FS24">欢迎使用{{systemName}}</h1>
 
-      <div class="big_group" v-for="docBig in listData" :key="docBig._id">
-        <h2 class="big_group_title">{{docBig.targetDoc.title}}</h2>
+      <div class v-if="listData">
+        <div class="big_group" v-for="docBig in listData" :key="docBig._id">
+          <h2 class="big_group_title">{{docBig.targetDoc.title}}</h2>
 
-        <el-row :gutter="6" class="big_group_List">
-          <el-col
-            :span="6"
-            class="small_group_box"
-            v-for="docSmall in docBig.sonList"
-            :key="docSmall._id"
-          >
-            <el-link
-              class="small_group_link"
-              type="primary"
-              :href="docSmall.targetDoc.link"
-              target="_blank"
+          <el-row :gutter="6" class="big_group_List">
+            <el-col
+              :span="6"
+              class="small_group_box"
+              v-for="docSmall in docBig.sonList"
+              :key="docSmall._id"
             >
-              <el-card shadow="hover">
-                <p class>{{docSmall.targetDoc.title}}</p>
-              </el-card>
-            </el-link>
-          </el-col>
-        </el-row>
+              <el-link
+                class="small_group_link"
+                type="primary"
+                :href="docSmall.targetDoc.link"
+                target="_blank"
+              >
+                <el-card shadow="hover">
+                  <p class>{{docSmall.targetDoc.title}}</p>
+                </el-card>
+              </el-link>
+            </el-col>
+          </el-row>
+        </div>
       </div>
 
       <el-button plain @click="updateGroupAndCount" size="mini">更新分组数据</el-button>
@@ -60,7 +62,7 @@ export default {
     async updateGroupAndCount() {
       let clickStatus = await this.$confirm(
         "确定操作,将需要10到30秒时间？"
-      ).catch(() => {});
+      ).catch(() => { });
       if (clickStatus != "confirm") return;
       //开始loding
       const loading = this.$loading({
@@ -69,7 +71,7 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
       });
-      let {data} = await axios({
+      let { data } = await axios({
         method: "post",
         url: `${PUB.domain}/info/updateGroupAndCount`,
         data: {}
@@ -81,6 +83,16 @@ export default {
     }
   },
   async created() {
+
+    let groupId = PUB.homeGroupId;
+    if (this.$route.path == "/manage/listHome") {//如果是主后台首页
+      groupId = "5e18821555a1e947e7bec88d";
+    }
+
+    if (!groupId) return
+
+
+
     let {
       data: { list: listData }
     } = await axios({
@@ -89,12 +101,17 @@ export default {
       url: `${PUB.domain}/info/getCommonGroupList`,
       data: {
         _systemId: PUB._systemId,
-        groupId: "5e18821555a1e947e7bec88d"
+        groupId,
       }
     });
 
     this.listData = listData;
+
+
+    this.$store.commit("changeActiveMenu", "listHome");//聚焦菜单
   }
+
+  
 };
 </script>
 

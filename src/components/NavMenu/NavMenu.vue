@@ -105,6 +105,7 @@ export default {
 .out-box {
   background: rgb(84, 92, 100);
   min-width: 201px;
+  max-width: 201px;
   height: calc(100vh - 60px );
   transition: 0.5s;
  overflow-y: auto;

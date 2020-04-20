@@ -1,17 +1,30 @@
 //#region 基本配置
 window.PUB = window.PUB || {}
-PUB.domain = "http://localhost:3000"
-PUB.domain__ = "https://www.dmagic.cn"
+PUB.domain$$$$$$$$$$$$$$$$ = "http://localhost:3000"
+PUB.domain = "https://www.dmagic.cn"
 //PUB.domain = 'http://test.dmagic.cn'
 
 
 
+//#region getLocalStorageObj:从LocalStorage获取一个对象的函数
+util.getLocalStorageObj = function (key) {
+  if (!localStorage[key]) return false;
 
+  try {
+    return JSON.parse(localStorage[key]);
+  } catch (err) {
+    return { error: "没有获取对应的localStorage" }
+  }
+
+
+
+}
+//#endregion
 
 
 PUB.arrRouteListPage = PUB.arrRouteListName.map((item) => {
   return {
-    path: `/${item}`,
+    path: `${item}`,///
     component: () => import(`@/page/${item}`)
   }
 })
@@ -61,10 +74,21 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
   ]
 },
 {
-  path: '/system_home/:sysId/', component: () => import("@/page/system_home"),
+  path: '/system/:sysId/', component: () => import("@/page/system/system"), redirect: 'manage',
   children: [//子路由
-    { path: 'detail_group', component: () => import("@/page/detail_group") },
-    ...PUB.arrRouteListPageNew,
+    { path: 'login', component: () => import("@/login") },
+    {
+      path: 'manage', component: () => import("@/page/system/manage"),
+      children: [//子路由
+        { path: 'detail_group', component: () => import("@/page/detail_group") },
+        { path: 'search_result', component: () => import("@/page/search_result") },
+        { path: 'detail_group_g_card', component: () => import("@/page/detail_group_g_card") },
+        { path: 'detail_g_card_link', component: () => import("@/page/detail_g_card_link") },
+        ...PUB.arrRouteListPageNew,
+      ]
+
+    },
+
 
   ]
 },
@@ -90,7 +114,8 @@ MIX.base = {
   },
   computed: {
     $sys() {
-      let sys = util.getLocalStorageObj(PUB._systemId) || {}//调用：{从LocalStorage获取一个对象的函数}
+      let systemId = this.$route.params.sysId || PUB._systemId;//变量：{当前系统Id}
+      let sys = util.getLocalStorageObj(systemId) || {}//调用：{从LocalStorage获取一个对象的函数}
       sys.env = PUB.domain == "https://www.dmagic.cn" ? "pro" : "dev";
       return sys
     },
@@ -147,7 +172,7 @@ util.cfList.sBtns.goSystem = {
   target: "_blank",
   //地址格式函数
   urlFormatter: function (row) {
-    return `#/system_home/${row.systemId}/listHome`;
+    return `#/system/${row.systemId}/manage/listHome`;
   },
 };
 
@@ -193,6 +218,64 @@ util.cfList.sBtns.goSystem = {
 }
 //#endregion
 
+
+//#region 首页专题Id
+{
+  let prop = "homeGroupId", objBase = { label: "首页专题Id", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = {
+    ...objBase, width: 90,
+
+  };
+  F_ITEMS[prop] = { ...objBase, type: "input" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
+
+
+F_ITEMS.role = {
+  label: "所属角色",
+  prop: "role",
+  type: "select",
+  ajax: {
+    param: { _dataType: "role" },
+    url: "/info/getCommonList",
+    keyLabel: "name",
+    keyValue: "_id"
+  }
+}
+
+{
+  let _dataType = "admin";
+  let listIndex = `list_${_dataType}`
+  PUB.listCF[listIndex] = {
+    idKey: "_id", //键名
+    pageSize: 20,
+    listIndex, //vuex对应的字段~
+    focusMenu: true, //进行菜单聚焦
+    threeTitle: "管理员", //面包屑2级菜单
+    ...PUB.listCFCommon2,//展开公共配置
+    //objParamAddon列表接口的附加参数
+    objParamAddon: { _dataType },
+    //公共的附加参数，针对所有接口
+    paramAddonPublic: { _dataType },
+
+
+    //-------详情字段数组-------
+    detailItems: ["Id", "userName", "passWord"],
+    //-------列配置数组-------
+    columns: ["Id", "userName", "passWord", "nickName", "role"],
+    //-------筛选表单字段数组-------
+    searchFormItems: ["Id"],
+    //-------新增、修改表单字段数组-------
+    formItems: ["userName", "passWord", "nickName", "role"],
+  }
+  //调用：{改造列表字段配置形式的函数（字符串转对象）}
+  util.reformCFListItem(PUB.listCF[listIndex])
+
+}
+
+
 //#endregion
 
 //#region 网址列表页
@@ -206,7 +289,7 @@ util.cfList.sBtns.goSystem = {
     pageSize: 20,
     listIndex, //vuex对应的字段~
     focusMenu: true, //进行菜单聚焦
-    breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "网址" }],
+    breadcrumb: [{ value: "首页", path: "listHome" }, { value: "网址" }],
     ...PUB.listCFCommon3,//展开公共配置
     //objParamAddon列表接口的附加参数
     // singleBtns:PUB.singleBtns_copy_link_sort,
@@ -243,7 +326,7 @@ util.cfList.sBtns.goSystem = {
     pageSize: 20,
     listIndex, //vuex对应的字段~
     focusMenu: true, //进行菜单聚焦
-    breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "分组" }],
+    breadcrumb: [{ value: "首页", path: "listHome" }, { value: "分组" }],
     ...PUB.listCFCommon,//展开公共配置
     //列表单项操作按钮的配置
     singleBtns: {
@@ -290,7 +373,7 @@ util.cfList.sBtns.goSystem = {
     pageSize: 20,
     listIndex, //vuex对应的字段~
     focusMenu: true, //进行菜单聚焦
-    breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "笔记" }],
+    breadcrumb: [{ value: "首页", path: "listHome" }, { value: "笔记" }],
     ...PUB.listCFCommon2,//展开公共配置
     //批量操作按钮的配置
     batchBtns: {
@@ -673,7 +756,7 @@ PUB.menuList = [
   {
     //菜单
     index: "listHome",
-    route: "/listHome",
+    route: "listHome",
     icon: "el-icon-house",
     title: "首页"
   },
@@ -684,46 +767,46 @@ PUB.menuList = [
     menuItem: [
       {
         index: "list_html_api",
-        // route: "/list_html_api",
-        route: "/list_common?type=html_api",
+        // route: "list_html_api",
+        route: "list_common?type=html_api",
         title: "Html-API"
       },
       {
         index: "list_css_api",
-        // route: "/list_css_api",
-        route: "/list_common?type=css_api",
+        // route: "list_css_api",
+        route: "list_common?type=css_api",
         title: "Css-API"
       },
       {
         index: "list_js_api",
-        // route: "/list_js_api",
-        route: "/list_common?type=js_api",
+        // route: "list_js_api",
+        route: "list_common?type=js_api",
         title: "Javascript-API"
       },
       {
         index: "list_note",
-        // route: "/list_note",
-        route: "/list_common?type=note",
+        // route: "list_note",
+        route: "list_common?type=note",
         title: "笔记"
       },
       {
         index: "list_front_demo",
-        route: "/list_common?type=front_demo",
+        route: "list_common?type=front_demo",
         title: "前端demo"
       },
       {
         index: "list_vedio",
-        route: "/list_common?type=vedio",
+        route: "list_common?type=vedio",
         title: "视频"
       },
       {
         index: "list_exercises",
-        route: "/list_common?type=exercises",
+        route: "list_common?type=exercises",
         title: "习题"
       },
       {
         index: "list_url",
-        route: "/list_common?type=url",
+        route: "list_common?type=url",
         title: "网址"
       }
     ]
@@ -735,42 +818,42 @@ PUB.menuList = [
     menuItem: [
       {
         index: "list_group",
-        route: "/list_common?type=group",
+        route: "list_common?type=group",
         title: "分组"
       },
       {
         index: "list_file",
-        route: "/list_common?type=file",
+        route: "list_common?type=file",
         title: "文件"
       },
       {
         index: "list_image",
-        route: "/list_common?type=image",
+        route: "list_common?type=image",
         title: "图片库"
       },
       {
         index: "list_score",
-        route: "/list_common?type=score",
+        route: "list_common?type=score",
         title: "记分项"
       },
       {
         index: "list_html_api_category",
-        route: "/list_common?type=html_api_category",
+        route: "list_common?type=html_api_category",
         title: "Html-API分类"
       },
       {
         index: "list_css_api_category",
-        route: "/list_common?type=css_api_category",
+        route: "list_common?type=css_api_category",
         title: "Css-API分类"
       },
       {
         index: "list_js_api_category",
-        route: "/list_common?type=js_api_category",
+        route: "list_common?type=js_api_category",
         title: "Javascript-API分类"
       },
       {
         index: "list_note_category",
-        route: "/list_common?type=note_category",
+        route: "list_common?type=note_category",
         title: "笔记分类"
       }
     ]
@@ -782,12 +865,12 @@ PUB.menuList = [
     menuItem: [
       {
         index: "list_person",
-        route: "/list_common?type=person",
+        route: "list_common?type=person",
         title: "人员"
       },
       {
         index: "list_company",
-        route: "/list_common?type=company",
+        route: "list_common?type=company",
         title: "企业"
       },
     ]
@@ -799,7 +882,7 @@ PUB.menuList = [
     menuItem: [
       {
         index: "list_task",
-        route: "/list_common?type=task",
+        route: "list_common?type=task",
         title: "任务"
       }
     ]
@@ -811,22 +894,22 @@ PUB.menuList = [
     menuItem: [
       {
         index: "list_resume",
-        route: "/list_common?type=resume",
+        route: "list_common?type=resume",
         title: "简历"
       },
       {
         index: "list_resume_project_experience",
-        route: "/list_common?type=resume_project_experience",
+        route: "list_common?type=resume_project_experience",
         title: "简历-项目经历"
       },
       {
         index: "list_resume_work_experience",
-        route: "/list_common?type=resume_work_experience",
+        route: "list_common?type=resume_work_experience",
         title: "简历-工作经历"
       },
       {
         index: "list_resume_education_experience",
-        route: "/list_common?type=resume_education_experience",
+        route: "list_common?type=resume_education_experience",
         title: "简历-教育经历"
       }
     ]
@@ -838,37 +921,37 @@ PUB.menuList = [
     menuItem: [
       {
         index: "list_system",
-        route: "/list_common?type=system",
+        route: "list_common?type=system",
         title: "系统表"
       },
       {
         index: "list_data_type",
-        route: "/list_common?type=data_type",
+        route: "list_common?type=data_type",
         title: "数据类型"
       },
       {
         index: "list_all",
-        route: "/list_common?type=all",
+        route: "list_common?type=all",
         title: "所有数据"
       },
       {
         index: "list_relation",
-        route: "/list_common?type=relation",
+        route: "list_common?type=relation",
         title: "关系数据"
       },
       {
         index: "list_familiarity",
-        route: "/list_common?type=familiarity",
+        route: "list_common?type=familiarity",
         title: "熟悉度"
       },
       {
         index: "list_admin",
-        route: "/list_common?type=admin",
+        route: "list_common?type=admin",
         title: "管理员"
       },
       {
         index: "list_role",
-        route: "/list_common?type=role",
+        route: "list_common?type=role",
         title: "角色"
       }
     ]
@@ -1269,7 +1352,6 @@ MIX.listGroupData = {
     },
     //函数：{更新当前分组的数据量的函数}
     async updateGroupCountData() {
-      console.log(`updateGroupCountData###`);
       let urlModify = PUB.listCF.list_group.url.modify;
       let ajaxParam = {
         _id: this.groupId, _data: { countData: this.$refs.listData.allCount } //获取列表的数据总量
@@ -1281,7 +1363,6 @@ MIX.listGroupData = {
       util.setObjDefault(ajaxParam, PUB._paramAjaxAddon);
 
 
-      console.log("ajaxParam:###", ajaxParam);
       let response = await axios({
         //请求接口
         method: "post", url: PUB.domain + urlModify,
@@ -1433,9 +1514,7 @@ FN.handelCombResult = function ({ listSpecs, arrResult }) {
     }
     //循环：{组合结果数组}
     arrResult.forEach(itemEach => {
-      console.log("itemEach[indexTerm].name:", itemEach[indexTerm].name);
       let flag = itemEach[indexTerm].name != valTerm;
-      console.log("flag:", flag);
       if (flag) {
         itemEach[index] = { name: "——" };
       }

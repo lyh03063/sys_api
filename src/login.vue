@@ -36,6 +36,9 @@
 </template>
 <script>
 export default {
+  props: {
+    systemDoc: {}//从router-view传过来！！！
+  },
   data() {
     var validateuserName = (rule, value, callback) => {
       if (value === "") {
@@ -73,13 +76,19 @@ export default {
 
   methods: {
     async adminLogin() {
+
+
+      let _systemId = this.$route.params.sysId||PUB._systemId;
+      PUB._systemId = _systemId
+
+
       let { data } = await axios({
         //请求接口
         method: "post",
         url: `${PUB.domain}/info/commonDetail`,
         data: {
           _dataType: "admin",
-          _systemId: PUB._systemId,
+          _systemId,
           findJson: {
             userName: this.ruleForm.userName,
             passWord: this.ruleForm.passWord
@@ -99,7 +108,7 @@ export default {
         this.$message.success("登录成功");
 
         sysData.isLogin = 1;
-        
+
 
         let { data } = await axios({
           //请求接口
@@ -107,7 +116,7 @@ export default {
           url: `${PUB.domain}/info/commonDetail`,
           data: {
             _dataType: "role",
-            _systemId: PUB._systemId,
+            _systemId,
             _id: roleId
           }
         });
@@ -119,18 +128,17 @@ export default {
         sysData.name = PUB.systemName;
         sysData.key = PUB.key;
 
-        util.setLocalStorageObj(PUB._systemId, sysData); //调用：{设置一个对象到LocalStorage}
+        util.setLocalStorageObj(_systemId, sysData); //调用：{设置一个对象到LocalStorage}
 
         util.setLocalStorageObj(PUB.keyPower, power); //调用：{设置一个对象到LocalStorage}
 
         await util.timeout(500); //延迟
-
         if (PUB.goUrlAfterLogin) {
           //Q1:{登录后要跳转的地址}存在
           this.$router.push({ path: PUB.goUrlAfterLogin });
         } else {
           //Q2:{登录后要跳转的地址}不存在
-          this.$router.push({ path: "/listhome" });
+          this.$router.push({ path: "manage/listhome" });
         }
       } else {
         this.$message.error("用户名或密码错误");
@@ -150,13 +158,13 @@ export default {
     //------------如果已经登录------------
     if (PUB.$sys.isLogin == 1) {
       setTimeout(() => {
-        this.$router.push({ path: "/listHome" });
+        this.$router.push({ path: "manage/listHome" });
       }, 10);
       //跳转到后台首页
     }
   },
-  beforeMount() {},
-  mounted() {}
+  beforeMount() { },
+  mounted() { }
 };
 </script>
 

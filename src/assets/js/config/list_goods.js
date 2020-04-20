@@ -5,7 +5,7 @@
 {
     let _dataType = "goods";
     let listCFAddon = {
-        breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "商品/服务" }],
+        breadcrumb: [{ value: "首页", path: "listHome" }, { value: "商品/服务" }],
         ...PUB.listCFCommon2,//展开公共配置
         singleBtns: {
             addon: [

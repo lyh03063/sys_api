@@ -1,16 +1,16 @@
 {
   let _dataType = "order";
   let listCFAddon = {
-    breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "系统" }],
+    breadcrumb: [{ value: "首页", path: "listHome" }, { value: "系统" }],
     ...PUB.listCFCommon2,//展开公共配置
     //动态数据字典
     dynamicDict: [
       DYDICT.order_user
     ],
     //-------详情字段数组-------
-    detailItems: ["orderId", "_id", "openid", "timeOrder", "priceOrder", "listGoods", "payStatus", "addressObj", "remark"],
+    detailItems: ["orderId", "_id", "openid", "timeOrder", "priceOrder", "listGoods", "payStatus", "receiverName", "phone", "addressObj", "remark"],
     //-------列配置数组-------
-    columns: ["orderId", "_id", "openid", "orderNickName", "receiverName", "phone", "timeOrder", "priceOrder", "listGoods", "payStatus_com"],
+    columns: ["orderId", "orderNickName", "receiverName", "phone", "timeOrder", "priceOrder", "payStatus_com", "openid"],
     //-------筛选表单字段数组-------
     searchFormItems: ["orderId"],
     //-------新增、修改表单字段数组-------

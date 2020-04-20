@@ -1,7 +1,7 @@
 {
   let _dataType = "user";
   let listCFAddon = {
-    breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "用户" }],
+    breadcrumb: [{ value: "首页", path: "listHome" }, { value: "用户" }],
     ...PUB.listCFCommon2,//展开公共配置
     //-------详情字段数组-------
     detailItems: ["trueName", "nickName", "openid", "phone", "sex", "countOrder"],

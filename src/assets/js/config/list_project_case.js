@@ -1,7 +1,7 @@
 {
   let _dataType = "project_case";
   let listCFAddon = {
-    breadcrumb: [{ value: "首页", path: "#/listHome" }, { value: "工程案例" }],
+    breadcrumb: [{ value: "首页", path: "listHome" }, { value: "工程案例" }],
     ...PUB.listCFCommon2,//展开公共配置
     //-------详情字段数组-------
     detailItems: ["title", "desc", "link"],
