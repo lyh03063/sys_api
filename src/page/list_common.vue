@@ -7,6 +7,7 @@
       ref="listData"
       @after-search="afterSearch"
       @after-modify="afterModify"
+      @after-delete="afterDelete"
     ></dm_list_data>
   </div>
 </template>
@@ -30,8 +31,47 @@ PUB.listCFAddon = {
         }
       }
     },
+  },
+  file: {
+    methods: {
+      //文件列表删除文件后触发的函数
+      async afterDelete(arrDoc) {
+        let url = lodash.get(arrDoc, `[0].file[0].url`);//实体文件路径
+        if (!url) return
+        let clickStatus = await this.$confirm("是否删除对应的实体文件？").catch(() => { });
+        if (clickStatus != "confirm") return
+        let dataResult = await util.deleteQiNiuFile(url)
+        await util.ajaxDeleteBaseFile(url)
+
+        if (dataResult.code == 0) {//如果{000}000
+          this.$message.success('删除文件成功!');
+        } else {
+          this.$message.error(dataResult.error);
+        }
+      }
+    },
+  },
+  file_base: {
+    methods: {
+      //文件列表删除文件后触发的函数
+      async afterDelete(arrDoc) {
+        let url = lodash.get(arrDoc, `[0].link`);//实体文件路径
+        if (!url) return
+        let clickStatus = await this.$confirm("是否删除对应的实体文件？").catch(() => { });
+        if (clickStatus != "confirm") return
+        let dataResult = await util.deleteQiNiuFile(url)
+        if (dataResult.code == 0) {//如果{000}000
+          this.$message.success('删除文件成功!');
+        } else {
+          this.$message.error(dataResult.error);
+        }
+      }
+    },
   }
 }
+PUB.listCFAddon.image = PUB.listCFAddon.file//图片列表页加上删除对应的实体文件
+
+
 
 
 
@@ -62,6 +102,7 @@ export default {
           this.dataType = this.$route.query.type;
           this.listIndex = `list_${this.dataType}`
           this.ready = false;
+          console.log(`this.listIndex:###`, this.listIndex);
           this.cfList = util.deepCopy(PUB.listCF[this.listIndex]);//***改变列表类型
           if (this.$route.path == "/manage/list_common") {//如果是主后台
             FN.listCFaddItemSystemId(this.cfList)//调用：{补充_systemId列表字段配置函数}
@@ -91,6 +132,16 @@ export default {
     }
   },
   methods: {
+    afterDelete(doc) {
+
+      let afterDelete = lodash.get(PUB, `listCFAddon.${this.dataType}.methods.afterDelete`);
+      console.log(`afterDelete:`, afterDelete);
+      if (afterDelete) {//如果函数存在，调用它
+
+
+        afterDelete.call(this, doc)//**改变this指向 */
+      }
+    },
     afterModify(doc) {
       let afterModify = lodash.get(PUB, `listCFAddon.${this.dataType}.methods.afterModify`);
       if (afterModify) {//如果函数存在，调用它

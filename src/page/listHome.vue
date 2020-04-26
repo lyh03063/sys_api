@@ -3,29 +3,29 @@
     <div class="TAC">
       <h1 class="FS24">欢迎使用{{systemName}}</h1>
 
-      <div class v-if="listData">
+      <div class="TAL" v-if="listData">
         <div class="big_group" v-for="docBig in listData" :key="docBig._id">
-          <h2 class="big_group_title">{{docBig.targetDoc.title}}</h2>
-
-          <el-row :gutter="6" class="big_group_List">
-            <el-col
-              :span="6"
-              class="small_group_box"
-              v-for="docSmall in docBig.sonList"
-              :key="docSmall._id"
-            >
-              <el-link
-                class="small_group_link"
-                type="primary"
-                :href="docSmall.targetDoc.link"
-                target="_blank"
+          <dm_pannel_new class="MB20" :title="docBig.targetDoc.title">
+            <el-row :gutter="6" class="big_group_List MT20">
+              <el-col
+                :span="6"
+                class="small_group_box"
+                v-for="docSmall in docBig.sonList"
+                :key="docSmall._id"
               >
-                <el-card shadow="hover">
-                  <p class>{{docSmall.targetDoc.title}}</p>
-                </el-card>
-              </el-link>
-            </el-col>
-          </el-row>
+                <el-link
+                  class="small_group_link"
+                  type="primary"
+                  :href="docSmall.targetDoc.link"
+                  target="_blank"
+                >
+                  <el-card shadow="hover">
+                    <p class>{{docSmall.targetDoc.title}}</p>
+                  </el-card>
+                </el-link>
+              </el-col>
+            </el-row>
+          </dm_pannel_new>
         </div>
       </div>
 
@@ -111,7 +111,7 @@ export default {
     this.$store.commit("changeActiveMenu", "listHome");//聚焦菜单
   }
 
-  
+
 };
 </script>
 

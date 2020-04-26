@@ -1,7 +1,7 @@
 //#region 基本配置
 window.PUB = window.PUB || {}
-PUB.domain$$$$$$$$$$$$$$$$ = "http://localhost:3000"
-PUB.domain = "https://www.dmagic.cn"
+PUB.domain = "http://localhost:3000"
+PUB.domain$$$$$$$$$$$$$$$$ = "https://www.dmagic.cn"
 //PUB.domain = 'http://test.dmagic.cn'
 
 
@@ -92,10 +92,35 @@ PUB.arrRouteAddon = [{ path: '/detail_group', component: () => import("@/page/de
 
   ]
 },
+{
+  path: '/site/:sysId/', component: () => import("@/page/site/main"),
+  // path: '/site/:sysId/list_course', component: () => import("@/page/site/home"),
+  children: [//子路由
+    { path: 'login', component: () => import("@/login") },
+    { path: 'home', component: () => import("@/page/site/home") },
+    { path: 'list_course', component: () => import("@/page/site/list_course") },
+
+
+
+  ]
+},
 ]
 //#endregion
 
-
+PUB.cfForm = PUB.cfForm || {}
+PUB.cfForm.watch = PUB.cfForm.watch || {}
+PUB.cfForm.watch.file = {
+  //传入监听器
+  file(newVal, oldVal) {
+    if (!(newVal && newVal.length)) return;//如果不是有效数组，退出
+    let doc = lodash.get(newVal, `[0]`)
+    let { name } = doc
+    console.log(`doc:`, doc);
+    if (!this.value.title) {//如果标题是空
+      this.value.title = name;
+    }
+  }
+}
 
 
 PUB.arrGroupMoudlesSpe = [
@@ -138,32 +163,11 @@ MIX.base = {
 //#region 列表模块名数组配置
 PUB.arrListName = [
   "html_api", "html_api_category", "css_api", "css_api_category", "js_api", "js_api_category", "familiarity",
-  "exercises", "score", "front_demo", "task", "file", "image", "person",
-  "resume", "goods", "system", "order", "user", "project_case"
+  "exercises", "score", "front_demo", "task", "file", "image", "file_base", "person",
+  "resume", "goods", "system", "order", "order_offline", "user", "project_case", "data_item"
 ];
 //#endregion
 
-
-
-
-
-F_ITEMS.listSpecPrice = {
-  label: "规格/价格表",
-  prop: "listSpecPrice",
-  // slot: "slot_form_listSpecPrice",
-  component: "com_f_item_listSpecPrice",
-
-};
-
-DYDICT.order_user = {
-  ajax: {
-    param: { _dataType: "user" },
-    url: "/info/getCommonList"
-  },
-  populateColumn: "userDoc",
-  idColumn: "openid",
-  idColumn2: "openid"
-};
 
 //变量：{查看实体数据详情按钮}
 util.cfList.sBtns.goSystem = {
@@ -176,104 +180,56 @@ util.cfList.sBtns.goSystem = {
   },
 };
 
-//#region 支付状态
+
+//#region 订单商品说明
 {
-  let prop = "payStatus", objBase = { label: "支付状态", prop, }
-  D_ITEMS[prop] = {
-    ...objBase,
-    formatter: function (rowData) {
-      return lodash.get(DYDICT.payStatus, `${rowData.payStatus}.label`);
-    },
-  };
-  COLUMNS[prop] = {
-    ...objBase, width: 70,
-    formatter: function (rowData) {
-      return lodash.get(DYDICT.payStatus, `${rowData.payStatus}.label`);
-    },
-  };
-
-  COLUMNS.payStatus_slot = { ...objBase, slot: "slot_column_payStatus", width: 130, };
-  COLUMNS.payStatus_com = { ...objBase, component: "com_c_item_payStatus", width: 130, };
-  F_ITEMS[prop] = { ...objBase, type: "select", options: DYDICT.arr_payStatus };
-  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
-}
-//#endregion
-
-
-
-
-//#region 创建时间
-{
-  let prop = "CreateTime", objBase = { label: "创建时间", prop, }
+  let prop = "orderGoodsDesc", objBase = { label: "商品说明", prop, }
   D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = {
-    ...objBase, width: 90,
-    formatter: function (row) {
-      if (!row.CreateTime) return "";
-      return moment(row.CreateTime).format("YYYY-MM-DD")
-    }
-  };
+  COLUMNS[prop] = { ...objBase, width: 270, };
   F_ITEMS[prop] = { ...objBase, type: "input" };
   // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
 }
 //#endregion
 
 
-//#region 首页专题Id
-{
-  let prop = "homeGroupId", objBase = { label: "首页专题Id", prop, }
-  D_ITEMS[prop] = { ...objBase, };
-  COLUMNS[prop] = {
-    ...objBase, width: 90,
+F_ITEMS.addressObj = {
+  col_span: 24, //控制显示一行多列
+  label: "收货地址", prop: "addressObj",
+  default: {}, //默认值必须要有，否则新增的时候会出问题
+  cfForm: {
+    col_span: 12, //控制显示一行多列
+    formItems: [
+      {
+        label: "省市区", valueType: "arrObj", prop: "arrArea", type: "select_area"
+      },
+      {
+        label: "详细地址",
+        prop: "detail"
+      },
+    ]
+  }
+};
 
-  };
+//#region 0000
+{
+  let prop = "aaaa", objBase = { label: "0000", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 70, };
+  F_ITEMS[prop] = { ...objBase, type: "input" };
+  // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
+}
+//#endregion
+//#region 0000
+{
+  let prop = "aaaa", objBase = { label: "0000", prop, }
+  D_ITEMS[prop] = { ...objBase, };
+  COLUMNS[prop] = { ...objBase, width: 70, };
   F_ITEMS[prop] = { ...objBase, type: "input" };
   // F_ITEMS[`${prop}_search`] = { ...objBase, type: "input_find_vague" };
 }
 //#endregion
 
 
-F_ITEMS.role = {
-  label: "所属角色",
-  prop: "role",
-  type: "select",
-  ajax: {
-    param: { _dataType: "role" },
-    url: "/info/getCommonList",
-    keyLabel: "name",
-    keyValue: "_id"
-  }
-}
-
-{
-  let _dataType = "admin";
-  let listIndex = `list_${_dataType}`
-  PUB.listCF[listIndex] = {
-    idKey: "_id", //键名
-    pageSize: 20,
-    listIndex, //vuex对应的字段~
-    focusMenu: true, //进行菜单聚焦
-    threeTitle: "管理员", //面包屑2级菜单
-    ...PUB.listCFCommon2,//展开公共配置
-    //objParamAddon列表接口的附加参数
-    objParamAddon: { _dataType },
-    //公共的附加参数，针对所有接口
-    paramAddonPublic: { _dataType },
-
-
-    //-------详情字段数组-------
-    detailItems: ["Id", "userName", "passWord"],
-    //-------列配置数组-------
-    columns: ["Id", "userName", "passWord", "nickName", "role"],
-    //-------筛选表单字段数组-------
-    searchFormItems: ["Id"],
-    //-------新增、修改表单字段数组-------
-    formItems: ["userName", "passWord", "nickName", "role"],
-  }
-  //调用：{改造列表字段配置形式的函数（字符串转对象）}
-  util.reformCFListItem(PUB.listCF[listIndex])
-
-}
 
 
 //#endregion
@@ -832,6 +788,11 @@ PUB.menuList = [
         title: "图片库"
       },
       {
+        index: "list_file_base",
+        route: "list_common?type=file_base",
+        title: "基础文件信息"
+      },
+      {
         index: "list_score",
         route: "list_common?type=score",
         title: "记分项"
@@ -953,6 +914,11 @@ PUB.menuList = [
         index: "list_role",
         route: "list_common?type=role",
         title: "角色"
+      },
+      {
+        index: "list_data_item",
+        route: "list_common?type=data_item",
+        title: "数据字段配置"
       }
     ]
   }
@@ -1545,6 +1511,443 @@ FN.uniqListSpecPrice = function (listSpecPrice) {
 
 
 
+PUB.dataSite = PUB.dataSite || {}
+PUB.dataSite.sys_chunqiu = {
+  cfBanner: {
+    cfElCarousel: {
+      height: "450px",
+      interval: 5000,
+
+    },
+
+    list: [
+      {
+        title: 'banner2',
+        link: 'javascript:;',
+        imgSrc: 'http://qn-dmagic.dmagic.cn/chunqiu/banner_big_9.jpg',
+      },
+      {
+        title: 'banner2',
+        link: 'javascript:;',
+        imgSrc: 'http://qn-dmagic.dmagic.cn/chunqiu/banner_big_7.jpg',
+        // imgSrc: 'http://qn-dmagic.dmagic.cn/chunqiu/banner_big_6.jpg',
+        // imgSrc: 'http://qn-dmagic.dmagic.cn/chunqiu/banner_big_5.jpg',
+        // imgSrc: 'http://qn-dmagic.dmagic.cn/chunqiu/banner_big_2.jpg',
+        // imgSrc: 'http://qn-dmagic.dmagic.cn/chunqiu/banner_1200_1.jpg',
+      },
+      {
+        title: 'banner2',
+        link: 'javascript:;',
+        imgSrc: 'http://qn-dmagic.dmagic.cn/chunqiu/banner_big_4.jpg',
+      },
+
+
+    ],
+  },
+
+  cfPageMenu: {
+    cfElMenu: {
+      "background-color": "#0091e0",
+      "text-color": "#fff",
+      "active-text-color": "#ffd04b",
+      "aaaa": "1111",
+    },
+    listMenu: [
+      { name: "首页", url: "/" },
+      {
+        name: "课程体系",
+        url: "/productList",
+        sonMenu: [
+          { name: "专业设置", url: "javascript:;" },
+          { name: "培训项目", url: "javascript:;" },
+
+        ]
+      },
+      {
+        name: "创业就业", url: "javascript:;",
+        sonMenu: [
+          { name: "教学成果", url: "javascript:;" },
+          { name: "学员风采", url: "javascript:;" },
+          { name: "就业指导", url: "javascript:;" },
+        ]
+      },
+
+
+      {
+        name: "新闻中心",
+        url: "javascript:;",
+        sonMenu: [
+          { name: "学校动态", url: "javascript:;" },
+          { name: "媒体报道", url: "javascript:;" },
+          { name: "行业新闻", url: "javascript:;" }
+        ]
+      },
+      {
+        name: "关于星孵化",
+        url: "javascript:;",
+        sonMenu: [
+          { name: "学校简介", url: "javascript:;" },
+          { name: "发展历程", url: "javascript:;" },
+          { name: "核心技术", url: "javascript:;" },
+          { name: "教学实景", url: "javascript:;" },
+          { name: "师资保障", url: "javascript:;" },
+        ]
+      },
+      {
+        name: "学员风采",
+        url: "javascript:;",
+        sonMenu: [
+          { name: "xxx", url: "javascript:;" },
+          { name: "xxx1", url: "javascript:;" },
+          { name: "xxx2", url: "javascript:;" },
+
+        ]
+      },
+      {
+        name: "案例剖析",
+        url: "javascript:;",
+        sonMenu: [
+          { name: "xxx", url: "javascript:;" },
+          { name: "xxx1", url: "javascript:;" },
+          { name: "xxx2", url: "javascript:;" },
+
+        ]
+      }
+    ]
+
+  },
+  cfPageHead: {
+    siteName: "春秋教育-烹饪培训",
+    cfLogo: {
+      title: "星孵化烹饪学校",
+      src: "http://qn-dmagic.dmagic.cn/202004231128385151_20083_logo_chunqiu_simple.png",
+      // src: "//qn-dmagic.dmagic.cn/chunqiu/logo_chunqiu.png",
+      width: "86px",
+      height: "86px",
+      styleText: {
+        "font-size": "34px",
+        "margin-top": "32px",
+        "margin-left": "10px",
+        "color": "#333",
+      },
+      styleBox: {
+
+        "margin-top": "0",
+        "height": "86px",
+      }
+    },
+  },
+
+  cfStudentWork: {
+    title: "学生作品",
+    list: [
+      {
+        title: "学生作品1",
+        imgSrc: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+      },
+
+      {
+        title: "学生作品2",
+        imgSrc: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+      },
+
+      {
+        title: "学生作品3",
+        imgSrc: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+      },
+
+      {
+        title: "学生作品4",
+        imgSrc: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+      },
+
+    ]
+  },
+  cfCourse: {
+    title: "课程体系",
+    list: [
+      {
+        title: "粤菜",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course1.png",
+        priceSell: 1900,
+        priceMarket: 2400,
+      },
+
+      {
+        title: "火锅",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course2.png",
+        priceSell: 1300,
+        priceMarket: 2200,
+      },
+
+      {
+        title: "西餐",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course3.png",
+        priceSell: 2900,
+        priceMarket: 3400,
+      },
+
+      {
+        title: "粥粉面",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course4.png",
+        priceSell: 1400,
+        priceMarket: 2400,
+      },
+      {
+        title: "粤菜",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course1.png",
+        priceSell: 1900,
+        priceMarket: 2400,
+      },
+
+      {
+        title: "火锅",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course2.png",
+        priceSell: 1300,
+        priceMarket: 2200,
+      },
+
+      {
+        title: "西餐",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course3.png",
+        priceSell: 2900,
+        priceMarket: 3400,
+      },
+
+      {
+        title: "粥粉面",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course4.png",
+        priceSell: 1400,
+        priceMarket: 2400,
+      },
+    ]
+  },
+  cfTeacher: {
+    title: "师资力量",
+    list: [
+      {
+        title: "张老师",
+        desc: "粤菜料理专家级导师",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/cook1.png"
+      },
+
+      {
+        title: "李老师",
+        desc: "粥粉面专家老师",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/cook2.png"
+      },
+
+      {
+        title: "黄老师",
+        desc: "粥粉面专家老师",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/cook3.png"
+      },
+
+      {
+        title: "罗老师",
+        desc: "粥粉面专家老师",
+        imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/cook4.png"
+      },
+
+    ]
+  },
+  cfListSchoolNews: {
+    title: "学校新闻",
+    // linkMore: "###",
+    list: [
+      {
+        title: "学校动态文章标题1",
+        date: "2020-11-22",
+      },
+
+      {
+        title: "学校动态文章标题2",
+        date: "2020-4-22",
+      },
+
+      {
+        title: "学校动态文章标题3",
+        date: "2020-4-22",
+      },
+
+      {
+        title: "学校动态文章标题4",
+        date: "2020-4-22",
+      },
+      {
+        title: "学校动态文章标题4",
+        date: "2020-4-22",
+      },
+      {
+        title: "学校动态文章标题4",
+        date: "2020-4-22",
+      },
+      {
+        title: "学校动态文章标题4",
+        date: "2020-4-22",
+      },
+      {
+        title: "学校动态文章标题4",
+        date: "2020-4-22",
+      },
+
+    ]
+  },
+  cfListNews2: {
+    title: "行业资讯",
+    linkMore: "######",
+    list: [
+      {
+        title: "行业资讯文章标题1",
+        date: "2020-11-22",
+      },
+
+      {
+        title: "行业资讯文章标题2",
+        date: "2020-11-22",
+      },
+
+
+
+    ]
+  },
+  cfNewsCenter: {
+    title: "新闻中心",
+    linkMore: "######",
+
+
+
+
+  },
+  cfSchoolIntro: {
+    title: "学校简介",
+    linkMore: "######",
+    imgSchool: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=405534800,3305762250&fm=26&gp=0.jpg",
+    cotent: `江门市春秋教育科技有限公司，成立于2012年，是集学历合作办学、职业行业培训、线上学习平台研发运营、教育装备整合研发的教育科技公司。目前与江门开放大学（原江门市广播电视大学）开展合作办学，为学生提供便利、先进和优质的学习平台和支持服务。
+    <br>
+
+    春秋教育本着“发展科技、培养人才、传承文化、服务社会”的宗旨，以解放思想，实事求是，大胆革新为办学理念，依靠品德高尚、专业技术过硬，不断开拓进取的师资团队，建立和发展优秀的教育培训综合服务平台，服务学校，服务学生，服务企业。目前在读学生近4000人，合作办学学校两间，战略合作行业企业两家。<br>
+    作为协调各部门运作基础业务部门，教务部是主管教育培训平台的教学工作和实施教学管理与服务的行政职能部门，主要负责学员档案、教学计划、教学质量、考试安排以及教学发展等方面的教学运行与管理工作。
+    
+    `
+
+  },
+  cfStrength: {
+    title: "实力保证",
+    linkMore: "######",
+    imgSrc: "http://qn-dmagic.dmagic.cn/202004231052135959_57032_1.png"
+
+
+  },
+
+  cf_page_list_course: {
+    focusMenu: "粤菜",
+    breadcrumb: [{ value: "首页", path: "home" }, { value: "课程体系" }, { value: "粤菜" }],
+    cfListMain: {
+      title: "粤菜体系",
+      list: [
+        {
+          title: "粤菜1",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course1.png",
+          priceSell: 1900,
+          priceMarket: 2400,
+        },
+
+        {
+          title: "粤菜2",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course2.png",
+          priceSell: 1300,
+          priceMarket: 2200,
+        },
+
+        {
+          title: "粤菜3",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course3.png",
+          priceSell: 2900,
+          priceMarket: 3400,
+        },
+
+        {
+          title: "粤菜4",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course4.png",
+          priceSell: 1400,
+          priceMarket: 2400,
+        },
+        {
+          title: "粤菜",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course1.png",
+          priceSell: 1900,
+          priceMarket: 2400,
+        },
+
+        {
+          title: "火锅",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course2.png",
+          priceSell: 1300,
+          priceMarket: 2200,
+        },
+
+        {
+          title: "西餐",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course3.png",
+          priceSell: 2900,
+          priceMarket: 3400,
+        },
+
+        {
+          title: "粥粉面",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course4.png",
+          priceSell: 1400,
+          priceMarket: 2400,
+        },
+      ]
+    },
+    cfCategory: {
+      title: "课程分类",
+      list: [
+        {
+          title: "粤菜",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course1.png",
+        },
+
+        {
+          title: "火锅",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course2.png",
+        },
+
+        {
+          title: "西餐",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course3.png",
+        },
+
+        {
+          title: "粥粉面",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course4.png",
+        },
+        {
+          title: "湘菜",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course1.png",
+        },
+
+        {
+          title: "火锅",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course2.png",
+        },
+
+        {
+          title: "西餐",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course3.png",
+        },
+
+        {
+          title: "粥粉面",
+          imgSrc: "//qn-dmagic.dmagic.cn/chunqiu/course4.png",
+        },
+      ]
+    }
+
+  }
+}
 
 
 

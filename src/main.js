@@ -39,10 +39,11 @@ router.beforeEach((to, from, next) => {
 
   // 如果用户未登录，跳转登录页面
   if ($sys.isLogin != 1) {//Q1：未登录
-
-    if (to.path.includes('login')) {//QK1：to路径中包含login
+    if (to.path.includes('/site/')) {//QK1：to路径中包含/site/表示网站首页
       next();
-    } else {//QK2：to路径中包含login
+    } else if (to.path.includes('login')) {//QK2：to路径中包含login
+      next();
+    } else {//QK3：to路径中包含login
 
       PUB.goUrlAfterLogin = to.fullPath//变量赋值：{登录后要跳转的地址}
       if (systemId == "sys_api") {//QKK1:是sys_api系统
