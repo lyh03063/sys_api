@@ -1,6 +1,7 @@
 <template>
   <div class>
     <ul class="n-flex-ul MB10 BC_fff PL10 PR10">
+      
       <li v-for="(item) in doc.listGoods" :key="item._id+item.idSpecChain">
         <b class="W110">
           <el-link type="primary" href="javascript:;">
@@ -9,7 +10,8 @@
         </b>
         <i>
           <p class="MB6">{{ item.title }}</p>
-          <p class="MB6">规格：{{ item.nameSpecChain }}</p>
+          <p class="MB6" v-if="item.nameSpecChain">规格：{{ item.nameSpecChain }}</p>
+           <p class="MB6">购买数量：{{item.count}}</p>
         </i>
       </li>
     </ul>

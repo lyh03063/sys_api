@@ -39,7 +39,7 @@ router.beforeEach((to, from, next) => {
 
   // 如果用户未登录，跳转登录页面
   if ($sys.isLogin != 1) {//Q1：未登录
-    if (to.path.includes('/site/')) {//QK1：to路径中包含/site/表示网站首页
+    if (to.path.includes('/site/')||to.path.includes('/site_m/')) {//QK1：to路径中包含/site/表示网站首页
       next();
     } else if (to.path.includes('login')) {//QK2：to路径中包含login
       next();

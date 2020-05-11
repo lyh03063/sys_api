@@ -30,9 +30,9 @@
 
         <el-submenu index="frontAPI">
           <template slot="title">前端API</template>
-          <el-menu-item index="html_api" route="list_html_api">Html-API</el-menu-item>
-          <el-menu-item index="css_api" route="list_css_api">Css-API</el-menu-item>
-          <el-menu-item index="js_api" route="list_js_api">Javascript-API</el-menu-item>
+          <el-menu-item index="html_api" route="list_common?type=html_api">Html-API</el-menu-item>
+          <el-menu-item index="css_api" route="list_common?type=css_api">Css-API</el-menu-item>
+          <el-menu-item index="js_api" route="list_common?type=js_api">Javascript-API</el-menu-item>
         </el-submenu>
         <el-menu-item
           index="thirdPart"
@@ -79,9 +79,9 @@ export default {
         "5e5f49b5a56e720593572973": "demo",
         "5e5f5b85a56e720593572a90": "vedio",
         "5e18821555a1e947e7bec88d": "thirdPart",
-        "/study_home/list_css_api": "css_api",
-        "/study_home/list_html_api": "html_api",
-        "/study_home/list_js_api": "js_api",
+        "/study_home/list_common?type=css_api": "css_api",
+        "/study_home/list_common?type=html_api": "html_api",
+        "/study_home/list_common?type=js_api": "js_api",
         "/study_home/study_user": "study_user"
       }
     };
@@ -109,7 +109,7 @@ export default {
         // this.activeMenuIndex = this.mapActiveMenu[this.groupId];
         this.activeMenuIndex = this.mapActiveMenu[this.groupId];
       }else{
-        let key=this.$route.path;
+        let key=this.$route.fullPath;
         this.activeMenuIndex =this.mapActiveMenu[key]
       }
       

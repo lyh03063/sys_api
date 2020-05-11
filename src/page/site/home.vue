@@ -7,16 +7,21 @@
     <!-- banner轮播图-->
     <banner class="MB20" :cf="cfBanner"></banner>
     <div class="layout1200">
+      <com_block class="MB20">页头</com_block>
+
+      <van-button type="default">默认按钮</van-button>
+      <dm_pannel_new class="MB20" title="当前页面的数据配置">
+        <dm_object class="MT8" v-model="data" :cf="cfItem"></dm_object>
+      </dm_pannel_new>
       <dm_pannel_new class="MB20" title="新闻中心" skin="pannel_A__version2" urlMore="#bbbb">
         <el-row :gutter="36" class="MT20">
           <el-col :span="24" :sm="12">
             <!--资讯列表-->
-
-            <list_article_img :cf="cfListNews2"></list_article_img>
+            <list_article_img :cf="cfNews2"></list_article_img>
           </el-col>
           <el-col :span="24" :sm="12">
             <!--学校新闻列表-->
-            <list_article_date :cf="cfListSchoolNews"></list_article_date>
+            <list_article_date :cf="cfSchoolNews"></list_article_date>
           </el-col>
         </el-row>
       </dm_pannel_new>
@@ -101,6 +106,19 @@ export default {
   data() {
 
     return {
+      // data: lodash.cloneDeep(PUB.dataSite.sys_chunqiu),
+      data: PUB.dataSite.sys_chunqiu,
+      cfItem: {
+        formItems: [
+          F_ITEMS.cfSchoolNews,
+          F_ITEMS.cfNews2,
+          F_ITEMS.cfBanner,
+          F_ITEMS.cfCourse,
+          F_ITEMS.cfTeacher,
+
+
+        ],
+      },
       ...PUB.dataSite.sys_chunqiu
     };
   },

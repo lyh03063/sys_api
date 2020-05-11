@@ -22,13 +22,14 @@ import com_listGoods from '@/components/common/com_d_item_listGoods.vue'
 import com_addressObj from '@/components/common/com_d_item_addressObj.vue'
 
 import com_block from '@/components/site/block.vue'
-
+import com_longting_order_statistics from '@/components/bussiness/longting_order_statistics.vue'
 
 const Components = {
     com_complete,com_imagePreview,com_note_familiarity_select,com_score_panel,com_item_complete_search,
     com_f_item_listSpecPrice,com_c_item_payStatus,
     com_listGoods,com_addressObj,
-    com_block
+    com_block,
+    com_longting_order_statistics
 }
 
 //安装以上多个组件

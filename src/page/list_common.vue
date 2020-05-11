@@ -8,6 +8,8 @@
       @after-search="afterSearch"
       @after-modify="afterModify"
       @after-delete="afterDelete"
+      @bacth-btn-click="bacthBtnClick"
+      @single-btn-click="singleBtnClick"
     ></dm_list_data>
   </div>
 </template>
@@ -71,8 +73,75 @@ PUB.listCFAddon = {
 }
 PUB.listCFAddon.image = PUB.listCFAddon.file//图片列表页加上删除对应的实体文件
 
+PUB.listCFAddon.data_item = {
+  methods: {
+    //批量操作栏按钮事件
+    async bacthBtnClick(eventType) {
+      if (eventType == "buildDebugJs") {//如果{事件类型}生成调试版本Js文件
+        let { data } = await axios({
+          //请求接口
+          method: "post", url: `${PUB.domain}/info/builtAllItemJS`,
+          data: { "version": "1.0.0", "uplloadQiNiu": false }
+        });
+        if (data.code == 0) {//如果ok
+          this.$alert(`生成文件成功:${PUB.domain}/built_js/config_item.1.0.0.js`, {
+            confirmButtonText: '确定',
+          });
+        }
+      } else if (eventType == "buildDebugQiNiuJs") {//如果{事件类型}生成Js文件并上传七牛云
+        alert(`{事件类型}生成Js文件并上传七牛云`);
+
+      }
+    }
+  },
+}
+PUB.listCFAddon.js_file = {
+  methods: {
+    //批量操作栏按钮事件
+    async singleBtnClick(eventType, doc) {
+      console.log(`doc:##$`, doc);
+      // alert(eventType);
+      let { _id, fileName } = doc
+      if (eventType == "buildDebugJs") {//如果{事件类型}生成调试版本Js文件
+        let { data } = await axios({//请求接口
+          method: "post", url: `${PUB.domain}/info/builtJSFile`,
+          data: { _id, "uplloadQiNiu": false }
+        });
+        if (data.code == 0) {//如果ok
+          this.$alert(`生成文件成功:${PUB.domain}/built_js/${fileName}`, {
+            confirmButtonText: '确定',
+          });
+        } else {
+          this.$message.error(data.error);
+        }
+      } else if (eventType == "buildProductionJs") {//如果{事件类型}生成Js文件并上传七牛云
+        let clickStatus = await this.$confirm("将生成新版本Js文件并上传七牛云，确定操作？").catch(() => { });
+        if (clickStatus != "confirm") return
+        const loading = this.$loading({
+          lock: true, text: "执行中，请勿关闭",
+          spinner: "el-icon-loading", background: "rgba(0, 0, 0, 0.7)"
+        });
+
+        let { data } = await axios({//请求接口
+          method: "post", url: `${PUB.domain}/info/builtJSFile`,
+          data: { _id, "uplloadQiNiu": true }
+        });
+        loading.close(); //关闭loding
+        if (data.code == 0) {//如果ok
+          let { result } = data
+          this.$alert(`生成文件成功:${result.downloadDomain}/${result.fileName}`, {
+            confirmButtonText: '确定',
+          });
+        } else {
+          this.$message.error(data.error);
+        }
 
 
+
+      }
+    }
+  },
+}
 
 
 export default {
@@ -132,6 +201,20 @@ export default {
     }
   },
   methods: {
+    singleBtnClick(eventType, doc) {
+      let singleBtnClick = lodash.get(PUB, `listCFAddon.${this.dataType}.methods.singleBtnClick`);
+      if (singleBtnClick) {//如果函数存在，调用它
+        singleBtnClick.call(this, eventType, doc)//**改变this指向 */
+      }
+
+    },
+    bacthBtnClick(eventType) {
+      let bacthBtnClick = lodash.get(PUB, `listCFAddon.${this.dataType}.methods.bacthBtnClick`);
+      if (bacthBtnClick) {//如果函数存在，调用它
+        bacthBtnClick.call(this, eventType)//**改变this指向 */
+      }
+
+    },
     afterDelete(doc) {
 
       let afterDelete = lodash.get(PUB, `listCFAddon.${this.dataType}.methods.afterDelete`);
@@ -156,6 +239,15 @@ export default {
         let comTarget2 = com_score_panel.$refs.scorePanel//真正的计分组件
         comTarget2.ajaxGetScore(); //调用：{ajax获取分数函数}
       }
+
+
+      let com_stat_panel = lodash.get(this, `$refs.listData.$refs.stat_panel[0]`);
+      console.log(`com_stat_panel:`, com_stat_panel);
+      if (com_stat_panel) {//Q1：{子组件}存在
+        com_stat_panel.ajaxGetData(); //调用：{ajax获取统计数据函数}
+      }
+
+
     },
     //函数：{补充熟悉度动态数据字典ajax配置函数}
     setFamiliarityAjaxCF() {

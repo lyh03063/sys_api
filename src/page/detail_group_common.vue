@@ -24,7 +24,7 @@
       @list-event-in="handleListEventIn"
     >
       <!--分数列插槽-->
-      <template v-slot:slot_column_score="{row}">{{$lodash.get(dictScore, `${row._idRel2}.score`)}}</template>
+      <template v-slot:slot_column_score="{row}">xxx-{{$lodash.get(dictScore, `${row._idRel2}.score`)}}</template>
       <!--自定义详情弹窗插槽-->
       <template v-slot:customDetail="{detailData}">
         <detail_data :propDataId="detailData._idRel2"></detail_data>
@@ -68,6 +68,8 @@ export default {
 
   },
   async created() {
+
+
 
   
 
