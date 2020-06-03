@@ -1,12 +1,12 @@
 <template>
-  <a class="link-box n-a" target="_blank" :href="`javascript:;`">
-    <div class="item-box MB15">
-      <div class="icon-box W70 H70 MR20">
-        <i class="icon-zhg size_100_100" :class="classIcon" style="transform: scale(0.7);"></i>
+  <a class="link-box n-a" :href="getLink(item)">
+    <div class="item-box ">
+      <div class="icon-box W60 H60 MR12 n-img-box">
+        <img :src="item.device_type_icon" alt />
       </div>
       <span class="FX1">
-        <p class="FWB FS18 MB15 MT4">{{item.device_type_name}}</p>
-        <div class="DPF FS16 C_999">
+        <p class=" FS16 MB10  DPF"><span class="MR8">{{item.device_type_name}}</span> <i class="count_all" >{{countAll(item)}}</i></p>
+        <div class="DPF FS14 C_999">
           <div class="WP33">在线：{{item.device_online}}</div>
           <div class="WP33 TAC">离线：{{item.device_offline}}</div>
           <div class="WP33 TAR">故障：{{item.device_fault}}</div>
@@ -18,21 +18,29 @@
 
 <script>
 export default {
-   mixins: [MIX.base],
+  mixins: [MIX.base, MIX.zhihuigeng_base],
   props: ["item"],
-  
+
   data() {
     return {
-      mapIcon: { "1": "atmos", "2": "switch" }
+      
 
     };
   },
   computed: {
-    classIcon() {
-      let type = this.item.type || 2;
-      return `icon_${this.mapIcon[type]}`
-    }
+   countAll(item) {//getLink注意是computed属性返回一个函数
+      
+      return function (item) {
+        return item.device_online+item.device_offline+item.device_fault
+      }
+    },
+    getLink(item) {//getLink注意是computed属性返回一个函数
+      return function (item) {
+        return `${this.hashBase}list_device?device_type=${item.device_type}&device_type_name=${item.device_type_name}&pre_page=${this.pageUrlEncode}`
+      }
+    },
   },
+
   methods: {},
   created() { }
 };
@@ -43,6 +51,20 @@ export default {
   display: flex;
   background: #fff;
   border-radius: 5px;
-  padding: 20px 25px;
+  padding: 12px 12px;
+  align-items: center;
+}
+.count_all{
+  line-height: 1;
+border-radius: 50%;
+padding: 5px 5px;
+min-width: 24px;
+display: inline-block;
+text-align: center;
+background: #f0f0f0;
+font-style: normal;
+font-size: 12px;
+font-weight: normal;
+
 }
 </style>

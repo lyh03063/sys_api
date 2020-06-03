@@ -3,10 +3,18 @@
     <dm_debug_list>
       <dm_debug_item v-model="listData" text="listData" />
     </dm_debug_list>
+
     <h1 class="FS24 TAC">
       {{groupDoc.title}} 
       <!-- <el-button plain @click="getDataList" size="mini">刷新</el-button> -->
+         <a
+            target="_blank"
+            class="FS12 n-a FR"
+            :href="`#/study_home/detail_group?groupId=${this.groupId}`"
+            v-if="$power('groupDataList.all.modify')"
+          >编辑</a>
     </h1>
+  
     <dm_loading height="100" v-if="!listData"></dm_loading>
     <div class="big_group" v-for="docBig in listData" :key="docBig._id">
      
@@ -41,6 +49,7 @@
 
 <script>
 export default {
+   mixins: [MIX.base],
   components: {},
   props: {},
   data() {

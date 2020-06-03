@@ -9,6 +9,13 @@
         【总分：
         <span class="C_f30">{{scoreAverage}}</span>】
       </span>
+
+      <a
+        target="_blank"
+        class="FS12 n-a FR"
+        :href="`#/study_home/detail_group?groupId=${this.groupId}`"
+        v-if="$power('groupDataList.all.modify')"
+      >编辑</a>
       <!-- <el-button plain @click="getDataList" size="mini">刷新</el-button> -->
     </h1>
     <dm_loading height="100" v-if="!listData"></dm_loading>
@@ -72,6 +79,7 @@ export default {
     //函数：{格式化分数函数}
     formatScore(docSmall) {
       let score = lodash.get(this.dictScore, `${docSmall._idRel2}.score`, 0);
+      if (score > 100) { score = 100 }//如果超过100，会报错
       return Number(score);
     },
     //函数：{列表查询后执行的函数}
@@ -129,7 +137,7 @@ export default {
         }
       };
       Object.assign(ajaxParam, PUB.listCF.list_familiarity.paramAddonPublic); //合并公共参数
-     ajaxParam._systemId="$all"
+      ajaxParam._systemId = "$all"
       let {
         data: { list }
       } = await axios({

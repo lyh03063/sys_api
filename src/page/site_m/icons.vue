@@ -1,7 +1,7 @@
 
 <template>
   <div class="main-box2">
-    <div class="layoutWidth">
+    <div class="n-m-main-box">
       <div class="clearfix PL10 PR10 pannel1">
         <dm_pannel_new
           class="MB20 TAL pannel1"
@@ -304,13 +304,6 @@ a:visited:hover {
   color: #f90;
 }
 
-.layoutWidth {
-  min-width: 360px;
-  max-width: 1200px;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
 
 .pannel1 {
   background-color: #f0f0f0;

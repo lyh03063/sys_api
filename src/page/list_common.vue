@@ -99,14 +99,17 @@ PUB.listCFAddon.js_file = {
   methods: {
     //批量操作栏按钮事件
     async singleBtnClick(eventType, doc) {
-      console.log(`doc:##$`, doc);
       // alert(eventType);
       let { _id, fileName } = doc
       if (eventType == "buildDebugJs") {//如果{事件类型}生成调试版本Js文件
+        const loading = this.$loading({
+          lock: true, text: "执行中，请勿关闭", spinner: "el-icon-loading", background: "rgba(0, 0, 0, 0.7)"
+        });
         let { data } = await axios({//请求接口
           method: "post", url: `${PUB.domain}/info/builtJSFile`,
           data: { _id, "uplloadQiNiu": false }
         });
+        loading.close(); //关闭loding
         if (data.code == 0) {//如果ok
           this.$alert(`生成文件成功:${PUB.domain}/built_js/${fileName}`, {
             confirmButtonText: '确定',
@@ -118,8 +121,7 @@ PUB.listCFAddon.js_file = {
         let clickStatus = await this.$confirm("将生成新版本Js文件并上传七牛云，确定操作？").catch(() => { });
         if (clickStatus != "confirm") return
         const loading = this.$loading({
-          lock: true, text: "执行中，请勿关闭",
-          spinner: "el-icon-loading", background: "rgba(0, 0, 0, 0.7)"
+          lock: true, text: "执行中，请勿关闭", spinner: "el-icon-loading", background: "rgba(0, 0, 0, 0.7)"
         });
 
         let { data } = await axios({//请求接口
@@ -171,7 +173,6 @@ export default {
           this.dataType = this.$route.query.type;
           this.listIndex = `list_${this.dataType}`
           this.ready = false;
-          console.log(`this.listIndex:###`, this.listIndex);
           this.cfList = util.deepCopy(PUB.listCF[this.listIndex]);//***改变列表类型
           if (this.$route.path == "/manage/list_common") {//如果是主后台
             FN.listCFaddItemSystemId(this.cfList)//调用：{补充_systemId列表字段配置函数}
@@ -218,7 +219,6 @@ export default {
     afterDelete(doc) {
 
       let afterDelete = lodash.get(PUB, `listCFAddon.${this.dataType}.methods.afterDelete`);
-      console.log(`afterDelete:`, afterDelete);
       if (afterDelete) {//如果函数存在，调用它
 
 
@@ -242,7 +242,6 @@ export default {
 
 
       let com_stat_panel = lodash.get(this, `$refs.listData.$refs.stat_panel[0]`);
-      console.log(`com_stat_panel:`, com_stat_panel);
       if (com_stat_panel) {//Q1：{子组件}存在
         com_stat_panel.ajaxGetData(); //调用：{ajax获取统计数据函数}
       }

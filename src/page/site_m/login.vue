@@ -1,13 +1,12 @@
 <template>
-  <div class="HP100">
+  <div class="out">
     <dm_debug_list>
-      <dm_debug_item v-model="ready" />
+      <dm_debug_item v-model="userInfo" />
+      <dm_debug_item v-model="urlFrom" />
     </dm_debug_list>
 
-    <div class="layoutWidth mobile-main-box">
-      <van-nav-bar :title="title" left-text left-arrow @click-left="onClickLeft" />
-      <dm_space height="15"></dm_space>
-
+    <page_h5_zhihuigeng :title="title">
+      <dm_space height="65"></dm_space>
       <div class="PL30 PR30">
         <van-cell-group>
           <van-field
@@ -44,52 +43,64 @@
         <van-button class="MT10 MB10" type="primary" block round @click="goLogin">登录</van-button>
         <dm_space height="15"></dm_space>
         <van-button type="default" block round>注册</van-button>
+        <!--通知栏-->
+        <van-notify id="van-notify" />
       </div>
-    </div>
+    </page_h5_zhihuigeng>
   </div>
 </template>
 
 <script>
-// PUB.domain=
-const HOST_ONLINE = "https://zhy.club/zhy";
-// const HOST_ONLINE = "http://47.107.49.84:8088/zhy";
+
+
+
+
+
 export default {
+  mixins: [MIX.base, MIX.zhihuigeng_base,],
   data() {
+
     return {
       title: "登录",
       ready: true,
       formData: {
-        phone_num: "13677778888", password: ""
+        phone_num: "15011101179",
+        password: "1234561",
       },
-
-
-
+      urlFrom: null,//登录前的来源地址
     };
   },
   methods: {
-    onClickLeft() {
-      alert(`onClickLeft`);
-
-    },
     async goLogin() {
-      console.log(`this.formData:`, this.formData);
-      let { data } = await axios({//请求接口
-        method: "post",
-        url: `${HOST_ONLINE}//user/login`,
-        data: this.formData
-      });
-      console.log(`data:`, data);
-
-
-
+      let { phone_num, password } = this.formData
+      password = md5(password)//密码进行md5加密
+      //请求接口
+      let data = await this.$ajax({ url: `/user/login`, data: { phone_num, password } });
+      let { code, msg } = data;
+      if (code != 0) {//如果登录失败
+        return this.$toast(msg);
+      }
+      let userInfo = data.data;//2级data
+      this.userInfo = userInfo;
+      if (userInfo) {//将用户信息写入公共变量和本地存储
+        util.zhihuigeng.globalData.userInfo = userInfo;
+        util.setLocalStorageObj("zhihuigeng_userInfo", userInfo)//调用：{设置一个对象到LocalStorage}
+      }
+      if (this.urlFrom) {
+        this.$router.replace({ path: this.urlFrom });//跳转到来源页
+      }
     },
-
-
-
-
-
   },
   async created() {
+    let { fullPath, code, msg } = this.$route.query;
+    this.urlFrom = fullPath;
+    if (msg) {
+      this.$notify(msg);//警告信息
+    }
+
+    $.cachedScript("//qn-static.dmagic.cn/md5.min.js")
+      .done(() => {})
+
 
   }
 };
@@ -97,22 +108,7 @@ export default {
 
 
 <style scoped>
-.mobile-main-box {
+.out >>> .n-m-main-box {
   background-color: #fff;
-}
-
-.layoutWidth {
-  min-width: 360px;
-  max-width: 640px;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.item-box {
-  display: flex;
-  background: #fff;
-  border-radius: 5px;
-  padding: 20px 25px;
 }
 </style>

@@ -1,56 +1,50 @@
 <template>
-  <div class="item-box MB15">
-    <a
-      class="link-box n-a FX1 DPF"
-      target="_blank"
-      :href="`javascript:;`"
-      style="align-items: center;"
-    >
-      <div class="DP3 W70 H70 OFH n-img-box MR15">
-        <img :src="item.icon" alt />
-      </div>
-      <span class="FX1">
-        <p class="FS16">{{item.strategy_name}}</p>
+  <div class >
+    <div class="item-box MB15">
+      <a class="link-box n-a FX1 DPF" :href="`javascript:;`" style="align-items: center;">
+        <div class="DP3 W70 H70 OFH n-img-box MR15">
+          <img :src="item.icon" alt />
+        </div>
+        <span class="FX1">
+          <p class="FS16">{{item.strategy_name}}</p>
+        </span>
+      </a>
+      
+      <span class="W40 TAC PT3" @click.prevent="actionDialogShow">
+        <van-icon name="setting-o" size="24px" color="#999" />
       </span>
-    </a>
-    <span
-      @click="dialogDelete"
-      class="W50 TAR DPF BC_f0f0f0 P10 Cur1"
-      style="align-items: center;color:#999"
-    >
-      <van-icon name="delete" size="26px" />
-    </span>
+    </div>
+   
   </div>
 </template>
 
 <script>
 export default {
   name: "device_strategy",
-  mixins: [MIX.base],
+  mixins: [MIX.base, MIX.zhihuigeng_base],
   props: ["item"],
   data() {
     return {
-      mapIcon: { "1": "atmos", "2": "switch" }
-
+     
     };
   },
   computed: {
-    classIcon() {
-      let type = this.item.type || 2;
-      return `icon_${this.mapIcon[type]}`
-    }
+
   },
   methods: {
-    dialogDelete() {
-      this.$dialog.confirm({
-        title: '温馨提示',
-        message: '是否确定删除选中的策略',
-      }).then(() => {
-        this.$toast('删除成功');
-      });
-    }
+
+   //函数：{选择菜单后的回调函数}
+    async actionDialogShow() {
+      this.$emit("action-dialog-show", this.item);//向父组件传值1
+    },
+   
+    
   },
-  created() { }
+  created() {
+
+    window.document.title = `资产策略`
+    this.ready = true;
+  }
 };
 </script>
 

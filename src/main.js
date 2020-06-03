@@ -4,10 +4,10 @@ Vue.prototype.$lodash = lodash//让vue实例中可访问$store
 window.axios = axios;
 import moment from "moment";
 window.moment = moment;
-
+import "@/assets/js/config.js";
 import "@/components/registComponents.js";//引入注册全局组件
 
-import "@/assets/js/config.js";
+
 import "@/assets/css/util.scss"; //导入公共样式文件
 Vue.use(VueRouter)
 import manage from "@/manage";
@@ -32,14 +32,15 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
 
   let systemId = to.params.sysId || from.params.sysId || PUB._systemId;//***获取地址上的_systemId
-
   let $sys = util.getLocalStorageObj(systemId); //调用：{从LocalStorage获取一个对象的函数}
+  PUB.keyPower = `${systemId}_power`;
 
-
+  
+  window.rolePower = util.getLocalStorageObj(PUB.keyPower);
 
   // 如果用户未登录，跳转登录页面
   if ($sys.isLogin != 1) {//Q1：未登录
-    if (to.path.includes('/site/')||to.path.includes('/site_m/')) {//QK1：to路径中包含/site/表示网站首页
+    if (to.path.includes('/site/') || to.path.includes('/site_m/')) {//QK1：to路径中包含/site/表示网站首页
       next();
     } else if (to.path.includes('login')) {//QK2：to路径中包含login
       next();
@@ -109,8 +110,6 @@ const store = new Vuex.Store({//定义Vuex的存储对象
 })
 
 
-
-window.rolePower = util.getLocalStorageObj(PUB.keyPower);
 
 
 Vue.prototype.$store = store//让vue实例中可访问$store

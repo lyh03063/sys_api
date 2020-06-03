@@ -3,8 +3,15 @@
 
 
 <template>
-  <div class>
-    <img :src="src" alt style="max-width:80px;max-height:60px;" @click="fnClick" />
+  <div class="item-box">
+    <!-- <img :src="src" alt style="max-width:80px;max-height:60px;" @click="fnClick" /> -->
+    <el-image
+      style="width:80px;height:60px;"
+      :src="src"
+      :preview-src-list="srcList"
+      fit="scale-down"
+      @click="fnClick"
+    ></el-image>
   </div>
 </template>
 
@@ -14,7 +21,10 @@ export default {
   //用于列表模糊查询的组件
   props: ["doc"],
   data() {
-    return {};
+    return {
+      srcList: [
+      ]
+    };
   },
   computed: {
     src() {
@@ -24,7 +34,38 @@ export default {
   },
   methods: {
     fnClick() {
+      //加载图片预览列表
+      let vmList = this.$parent.$parent.$parent//***获取到列表组件vm对象
+      let { tableData } = vmList
+
+      let srcList = tableData.map(doc => {
+        let url = lodash.get(doc, `file[0].url`, "");
+        return url
+
+      })
+
+      let indexCurr = srcList.findIndex(src => src == this.src)
+
+
+
+
+      let arrDelete = srcList.splice(0, indexCurr)
+      srcList.push(...arrDelete)
+
+
+
+
+
+      this.srcList = srcList
+
     }
+  }, mounted() {
+    this.srcList = [this.src]
   }
 };
 </script>
+<style scoped>
+.item-box >>> .el-icon-circle-close {
+  color: white;
+}
+</style>

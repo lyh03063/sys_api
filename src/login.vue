@@ -27,7 +27,7 @@
             <el-input v-model="ruleForm.passWord" placeholder="请输入密码" show-password></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" class="WP100" @click="submitForm('ruleForm')">登录</el-button>
+            <el-button type="primary" class="WP100" @click="submitForm()">登录</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -78,8 +78,9 @@ export default {
     async adminLogin() {
 
 
-      let _systemId = this.$route.params.sysId||PUB._systemId;
+      let _systemId = this.$route.params.sysId || PUB._systemId;
       PUB._systemId = _systemId
+      PUB.keyPower = `${_systemId}_power`;
 
 
       let { data } = await axios({
@@ -115,13 +116,12 @@ export default {
           method: "post",
           url: `${PUB.domain}/info/commonDetail`,
           data: {
-            _dataType: "role",
-            _systemId,
-            _id: roleId
+            _dataType: "role",_systemId:"$all",_id: roleId
           }
         });
 
-        let power = lodash.get(data, `doc.power`);
+
+        let power = lodash.get(data, `doc.power`, {});
         let roleName = lodash.get(data, `doc.name`);
 
         sysData.roleName = roleName;
@@ -144,7 +144,7 @@ export default {
         this.$message.error("用户名或密码错误");
       }
     },
-    submitForm(formName) {
+    submitForm() {
       this.$refs.ruleForm.validate(valid => {
         //表单组件执行validate校验方法
         if (valid) {

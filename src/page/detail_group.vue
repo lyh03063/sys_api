@@ -1,6 +1,7 @@
 <template>
   <div class style="padding:10px">
-    <h1 class="title">{{groupDoc.title||"标题"}}</h1>
+    <!--如果是路由组件模式，显示标题-->
+    <h1 class="title" v-if="!prop_groupId">{{groupDoc.title||"标题"}}</h1>
 
     <dm_debug_list>
       <dm_debug_item v-model="groupId" text="groupId" />
@@ -17,9 +18,14 @@
         :data-type="groupDoc.dataType"
         v-if="isSpecial"
       ></component>
-      <detail_group_common :groupId="groupId" :data-type="groupDoc.dataType" v-else></detail_group_common>
+      <detail_group_common
+        :groupId="groupId"
+        :data-type="groupDoc.dataType"
+        @update_count="update_count"
+        v-else
+      ></detail_group_common>
     </template>
-    <div class="PSF B0 R0 BC_fff W200 H20 LH_20 C_999 FS12 PL10  " >系统编号：{{systemId}}</div>
+    <div class="PSF B0 R0 BC_fff W200 H20 LH_20 C_999 FS12 PL10">系统编号：{{systemId}}</div>
   </div>
 </template>
 
@@ -47,13 +53,14 @@ export default {
   },
   data() {
     return {
-      systemId:null,
+      systemId: null,
       componentName: null, //动态组件名称
       groupDoc: {},
       groupId: null,
       ready: false
     };
   },
+  props: ["prop_groupId"],//***属性过来的groupId，这种是组件形式而不是路由形式！！！！
   computed: {
     //变量：{是否为特殊数据类型}
     isSpecial() {
@@ -62,16 +69,15 @@ export default {
   },
 
   methods: {
+    //函数：{分组数据量变更事件函数}
+    update_count: async function (countData) {
+      this.$emit("update_count", countData);//继续抛出
+    },
     //函数：{获取分组详情函数}
     async getGroupDoc() {
-      let { data } = await axios({
-        //请求接口
-        method: "post",
-        url: `${PUB.domain}/info/commonDetail`,
-        data: {
-          _id: this.groupId,
-          _systemId: "$all"
-        } //传递参数
+      let { data } = await axios({  //请求接口
+        method: "post", url: `${PUB.domain}/info/commonDetail`,
+        data: { _id: this.groupId, _systemId: "$all" } //传递参数
       });
       this.groupDoc = data.doc;
       this.componentName = `detail_group_${this.groupDoc.dataType}`;
@@ -81,16 +87,20 @@ export default {
       }
 
       let { _systemId } = this.groupDoc
-      this.systemId=_systemId;
+      this.systemId = _systemId;
 
-      //*引用当前用户名
-      PUB._paramAjaxAddon = { _systemId: _systemId || "sys_api" }
+      if (!PUB._paramAjaxAddon) {//如果{PUB._paramAjaxAddon}不存在
+      //存在了就不要去覆盖！！！！！
+        PUB._paramAjaxAddon = { _systemId: _systemId || "sys_apiaaaa" }
+      }
+
+
 
       this.ready = true;
     }
   },
   async created() {
-    this.groupId = this.$route.query.groupId;
+    this.groupId = this.prop_groupId || this.$route.query.groupId;//***优先使用prop_groupId
 
     this.getGroupDoc(); //调用：{获取分组详情函数}
   }
