@@ -1,7 +1,7 @@
 
 <template>
-  <div class="main-box2">
-    <div class="n-m-main-box">
+  <div class="main-box2" v-if="readyBase">
+    <div class="n-m-main-box1">
       <div class="clearfix PL10 PR10 pannel1">
         <dm_pannel_new
           class="MB20 TAL pannel1"
@@ -120,6 +120,7 @@
 
 
 export default {
+    mixins: [MIX.base, MIX.zhihuigeng_base,],
   components: {
   },
 

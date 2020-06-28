@@ -1,5 +1,5 @@
 <template>
-  <div class="out">
+  <div class="out" v-if="readyBase">
     <dm_debug_list>
       <dm_debug_item v-model="formData" />
     </dm_debug_list>

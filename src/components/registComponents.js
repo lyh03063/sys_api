@@ -44,30 +44,46 @@ import com_c_g_company_file from '@/components/common/com_c_g_company_file.vue'
 import com_c_g_company_image from '@/components/common/com_c_g_company_image.vue'
 import com_c_g_company_album from '@/components/common/com_c_g_company_album.vue'
 
-import com_page_detail_group from '@/page/detail_group.vue'
+import com_c_g_bankruptcy_file_1 from '@/components/common/com_c_g_bankruptcy_file_1.vue'
+import com_c_g_bankruptcy_file_2 from '@/components/common/com_c_g_bankruptcy_file_2.vue'
+
+
+
+
+
+
+
+
+
+
 
 import page_h5_zhihuigeng from '@/page/site_m/zhihuigeng/components/page_h5_zhihuigeng.vue'
 import m_picker_field from '@/components/form_item/m_picker_field.vue'
 import m_select_list from '@/components/form_item/m_select_list.vue'
+import m_btn_send_vcode from '@/components/common/m_btn_send_vcode.vue'
+
 import play_live_vedio from '@/page/site_m/zhihuigeng/components/play_live_vedio.vue'
 
 import tabbar_zhihuigeng from '@/page/site_m/zhihuigeng/components/tabbar.vue'
+
+import detail_data from '@/page/detail_data.vue'
+
 
 
 const Components = {
     com_complete,com_imagePreview,com_note_familiarity_select,com_score_panel,com_item_complete_search,
     com_f_item_listSpecPrice,com_c_item_payStatus,
-    com_listGoods,com_addressObj,
-    com_block,
-    com_longting_order_statistics,
+    com_listGoods,com_addressObj, com_block, com_longting_order_statistics,
     com_column_operate_rel_data,com_column_operate_entity_data,
     com_c_sonData,com_c_countSonTask,com_c_sonTaskGId,com_c_sonNoteGId,
-    com_page_detail_group,//整个分组数据列表页***
+    detail_data,
     tabbar_zhihuigeng,page_h5_zhihuigeng,//智慧耕h5页面
-    m_picker_field,m_select_list,play_live_vedio,
+    m_picker_field,m_select_list,m_btn_send_vcode,play_live_vedio,
     com_c_g_person_url,com_c_g_person_file,com_c_g_person_image,com_c_g_person_album,
     com_c_g_company_url,com_c_g_company_person,com_c_g_company_file,com_c_g_company_image,com_c_g_company_album,
-    com_c_g_album_image,
+    com_c_g_album_image,com_c_g_bankruptcy_file_1,com_c_g_bankruptcy_file_2,
+ 
+    
 
 }
 

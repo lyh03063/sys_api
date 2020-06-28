@@ -1,5 +1,5 @@
 <template>
-  <div class="out">
+  <div class="out" v-if="readyBase">
     <dm_debug_list>
       <dm_debug_item v-model="formData" />
     </dm_debug_list>
@@ -22,7 +22,7 @@
       </div>
       <div class="C_999 PT5 PB5 PL15">资产图片，最佳分辨率1242*1242</div>
 
-      <div class v-if="ready">
+      <div class v-if="readyAsset">
         <van-cell-group>
           <van-field
             v-model="formData.resource_name"
@@ -65,13 +65,14 @@
 <script>
 
 
-import OSS from 'ali-oss';
+
 export default {
   mixins: [MIX.base, MIX.zhihuigeng_base,],
   data() {
 
     return {
-      ready: false,
+      title:"",
+      readyAsset: false,
       mode: "add",
       //选择器配置
       cf_picker_resourceType: {
@@ -111,7 +112,6 @@ export default {
     afterRead: async function (obj) {
       let { file, content } = obj
 
-      // alert(`afterRead`);
       let maxSize = 2
       const isLimit = file.size / 1024 / 1024 < maxSize;
       if (!isLimit) {
@@ -180,6 +180,7 @@ export default {
 
     //函数：{初始化阿里云文件上传函数}
     initAliyunOss: async function () {
+       await util.loadJs({ url: PUB.urlJS.aliOss })//加载JS
       let dataOosToken = await this.getAliyunOssToken()//调用：{初始化阿里云文件上传函数}
       let { AccessKeyId: accessKeyId, AccessKeySecret: accessKeySecret, SecurityToken: stsToken } = dataOosToken
       this.oosClient = new OSS({
@@ -189,7 +190,32 @@ export default {
 
     },
 
+    //自定义生命周期函数：{准备好基础资源的后续函数}--
+    afterReadyBase: async function () {
+      this.title = "添加资产";//修改标题
 
+      let { resource_type_id, resource_id } = this.$route.query;
+
+      if (resource_id) {//如果有resource_id，表示修改资产
+        this.resource_id = resource_id;
+        this.mode = "modify";
+        this.title = "修改资产";//修改标题
+
+      }
+
+      window.document.title = this.title
+
+      this.formData.resource_type_id = resource_type_id;
+      this.formData.resource_id = resource_id;
+
+      if (this.mode == "modify") {//如果是修改
+        await this.initFormModify();//调用：{初始化修改表单函数}
+
+      }
+      this.readyAsset = true;
+
+      this.initAliyunOss()//调用：{初始化阿里云文件上传函数}
+    },
 
 
 
@@ -199,29 +225,8 @@ export default {
 
 
 
-    this.title = "添加资产";//修改标题
 
-    let { resource_type_id, resource_id } = this.$route.query;
 
-    if (resource_id) {//如果有resource_id，表示修改资产
-      this.resource_id = resource_id;
-      this.mode = "modify";
-      this.title = "修改资产";//修改标题
-
-    }
-
-    window.document.title = this.title
-
-    this.formData.resource_type_id = resource_type_id;
-    this.formData.resource_id = resource_id;
-
-    if (this.mode == "modify") {//如果是修改
-      await this.initFormModify();//调用：{初始化修改表单函数}
-
-    }
-    this.ready = true;
-
-    this.initAliyunOss()//调用：{初始化阿里云文件上传函数}
 
 
 

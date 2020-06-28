@@ -1,5 +1,5 @@
 <template>
-  <div class="HP100">
+  <div class="HP100" v-if="readyBase">
     <dm_debug_list>
       <dm_debug_item v-model="cfList" />
     </dm_debug_list>
@@ -8,7 +8,7 @@
       <div class="PT10 PR15 TAR">
         <van-button plain type="primary" :url="linkAdd" size="small">添加策略</van-button>
       </div>
-      <list_data_zhihuigeng class :cf="cfList" v-if="ready" @single-action="singleAction"></list_data_zhihuigeng>
+      <list_data_zhihuigeng class :cf="cfList" @single-action="singleAction"></list_data_zhihuigeng>
     </page_h5_zhihuigeng>
   </div>
 </template>
@@ -20,7 +20,6 @@ export default {
   mixins: [MIX.base, MIX.zhihuigeng_base, MIX.zhihuigeng_page_list],
   data() {
     return {
-      ready: true,
       title: "策略",
       cfList: {
         com_card: "card_device_strategy",
@@ -65,7 +64,7 @@ export default {
   methods: {
 
     //函数：{列表单项操作的处理函数}
-    async singleAction({ action, doc, vm }) {
+    async singleAction({ action, doc, vm_list }) {
       if (action == "modify") {//Q1:修改
 
         let path = `strategy_add_modify?resource_id=${this.resource_id}&equipment_id=${this.equipment_id}&strategy_id=${doc.id}&pre_page=${this.pageUrlEncode}`;
@@ -106,7 +105,6 @@ export default {
     this.resource_id = resource_id//资源id
     this.equipment_id = equipment_id
     Object.assign(this.cfList.ajax.params, { equipment_id });//合并对象-ajax参数
-    this.ready = true;
   }
 };
 </script>

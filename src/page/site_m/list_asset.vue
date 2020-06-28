@@ -1,5 +1,5 @@
 <template>
-  <div class="HP100">
+  <div class="HP100" v-if="readyBase">
     <dm_debug_list>
       <dm_debug_item v-model="cfList" />
       <dm_debug_item v-model="pre_page" />
@@ -7,7 +7,6 @@
 
     <page_h5_zhihuigeng class :title="title">
       <div class="PT10 PR15 TAR">
-      
         <van-button plain type="primary" :url="linkAdd" size="small">添加资产</van-button>
       </div>
       <list_data_zhihuigeng class :cf="cfList" @single-action="singleAction"></list_data_zhihuigeng>
@@ -19,7 +18,7 @@ export default {
   mixins: [MIX.base, MIX.zhihuigeng_base, MIX.zhihuigeng_page_list],
   data() {
     return {
-      title: "果园111",
+      title: "",
       type_id: null,
       cfList: {
         com_card: "card_asset",
@@ -60,9 +59,9 @@ export default {
     },
   },
   methods: {
- 
 
-     async singleAction({ action, doc, vm }) {
+
+    async singleAction({ action, doc, vm_list }) {
       // 默认情况下点击选项时不会自动收起
       // 可以通过 close-on-click-action 属性开启自动收起
       this.showAction = false;
@@ -79,7 +78,7 @@ export default {
         let param = { resource_ids: doc.id }
         let data = await this.$ajax({ url: `/resource/del_resource`, data: param });
         this.$toast('删除成功');
-        vm.ajaxGetList()//子组件请求数据
+        vm_list.ajaxGetList()//子组件请求数据
       }
 
     },
@@ -89,12 +88,9 @@ export default {
     let { type_id, resource_type_name } = this.$route.query;
     this.type_id = type_id;
     this.title = resource_type_name;//修改标题
-    window.document.title = `${this.title}-我的资产-智慧耕`
-
-
+    window.document.title = `${this.title}-我的资产`
     Object.assign(this.cfList.ajax.params, { resource_type: type_id });//合并对象-ajax参数
-
-    this.ready = true;
+   
   }
 };
 </script>

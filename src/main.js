@@ -40,7 +40,7 @@ router.beforeEach((to, from, next) => {
 
   // 如果用户未登录，跳转登录页面
   if ($sys.isLogin != 1) {//Q1：未登录
-    if (to.path.includes('/site/') || to.path.includes('/site_m/')) {//QK1：to路径中包含/site/表示网站首页
+    if (to.path.includes('/site/') || to.path.includes('/site_m/')|| to.path.includes('/open/')) {//QK1：to路径中包含/site/表示网站首页
       next();
     } else if (to.path.includes('login')) {//QK2：to路径中包含login
       next();
@@ -60,60 +60,8 @@ router.beforeEach((to, from, next) => {
     next();
   }
 })
-const store = new Vuex.Store({//定义Vuex的存储对象
-  state: {
-    debug: false,
-    activeMenuIndex: "",//当前激活的菜单index
-    listState: {//存放列表的共享状态，
-    },
-    defultFindJson: {//存放列表的默认查询参数，
-      // list_article:{articleCategory:3  }
-    },
-    arrLookup: {//存放列表的联合查询参数值，
-      // list_article:{articleCategory:3  }
-    },
-  },
-  mutations: {//变更事件
-    setDebug(state, param) {//设置debug模式
-      state.debug = param;
-    },
-    setListArrLookup(state, param) {//设置列表的联合查询参数值
-      state.arrLookup[param.listIndex] = param.arrLookup;
-      //对listState进行整个对象的变更（深拷贝），因为listState是有注册的，可以触发响应
-      state.arrLookup = lodash.cloneDeep(state.arrLookup);  //深拷贝
-    },
-    setListFindJson(state, param) {//设置列表的初始筛选参数值
-      state.defultFindJson[param.listIndex] = param.findJson;
-      //对listState进行整个对象的变更（深拷贝），因为listState是有注册的，可以触发响应
-      let str = JSON.stringify(state.defultFindJson)//对象转换成字符串
-      state.defultFindJson = JSON.parse(str)//字符串转换成对象
-    },
-    initListState(state, param) {//改变列表的初始状态值
-      state.listState[param.listIndex] = param.objState;
-      //对listState进行整个对象的变更（深拷贝），因为listState是有注册的，可以触发响应
-      let str = JSON.stringify(state.listState)//对象转换成字符串
-      state.listState = JSON.parse(str)//字符串转换成对象
-    },
-    changeActiveMenu(state, activeMenuIndex) {//改变聚焦菜单
-      state.activeMenuIndex = activeMenuIndex
-    },
 
 
-    openDialogDetail(state, param) {//打开详情弹窗事件
-      state.listState[param.listIndex].isShowDialogDetail = true;
-      state.listState[param.listIndex].row = param.row;//将行数据保存到vuex
-    },
-    closeDialogDetail(state, listIndex) {//关闭详情弹窗事件
-      state.listState[listIndex].isShowDialogDetail = false;
-    },
-  }
-})
-
-
-
-
-Vue.prototype.$store = store//让vue实例中可访问$store
-Vue.prototype.$handelItem = util.handelItem//让vue实例中可访问$handelItem
 import Main from './main.vue'
 new Vue({
   render: h => h(Main),

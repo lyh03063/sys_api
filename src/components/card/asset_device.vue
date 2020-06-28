@@ -14,8 +14,8 @@
     </van-dialog>
     <!--摄像头-->
     <div class="item-box DPF C_666" v-if="item.equipment_type==10" @click="playVedio">
-      <div class="DP3 W60 H60 OFH n-img-box MR12 Circle">
-        <img :src="item.equipment_type_icon" alt />
+      <div class="DP3 W50 H50 OFH n-img-box MR12 Circle">
+        <img :src="item.equipment_type_icon" @error="imgError" />
       </div>
       <div class="FX1">
         <p class="FS16 MB8">{{item.equipment_name}}</p>
@@ -52,8 +52,8 @@
     <!--控制设备-->
     <div class="item-box DPF" v-else-if="arr_type_control.includes(item.equipment_type)">
       <a class="link-box n-a FX1 DPF" :href="getLink(item)">
-        <div class="DP3 W60 H60 OFH n-img-box MR12 Circle">
-          <img :src="item.equipment_type_icon" alt />
+        <div class="DP3 W50 H50 OFH n-img-box MR12 Circle">
+          <img :src="item.equipment_type_icon" @error="imgError" />
         </div>
         <div class="FX1">
           <p class="FS16 MB8">{{item.equipment_name}}</p>
@@ -83,8 +83,8 @@
 
     <!--环境设备-->
     <div class="item-box DPF C_666" v-else-if="arr_type_env.includes(item.equipment_type)">
-      <div class="DP3 W60 H60 OFH n-img-box MR12 Circle">
-        <img :src="item.equipment_type_icon" alt />
+      <div class="DP3 W50 H50 OFH n-img-box MR12 Circle">
+        <img :src="item.equipment_type_icon" @error="imgError" />
       </div>
       <div class="FX1">
         <p class="FS16 MB8">{{item.equipment_name}}</p>
@@ -105,6 +105,7 @@
 
 <script>
 export default {
+
   name: "asset_device",
   mixins: [MIX.base, MIX.zhihuigeng_base, MIX.zhihuigeng_card_device],
   props: ["item"],
@@ -131,7 +132,7 @@ export default {
 
     //函数：{选择菜单后的回调函数}
     async actionDialogShow() {
-      this.$emit("action-dialog-show", this.item);//向父组件传值1
+      this.$emit("action-dialog-show", this.item,this);//向父组件传值1
     },
     //函数：{跳转到策略列表函数}
     goListStrategy: async function () {

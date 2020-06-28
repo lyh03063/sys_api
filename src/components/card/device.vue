@@ -5,8 +5,8 @@
         <i class="point MR5"></i>
         {{$dictLable('equipment_state',item.state)}}
       </div>
-      <div class="DP3 W60 H60 OFH n-img-box">
-        <img :src="item.equipment_type_icon" />
+      <div class="DP3 W50 H50 OFH n-img-box Circle">
+        <img :src="item.equipment_type_icon" alt @error="imgError" />
       </div>
       <p class="FS16 MB15 MT4">{{item.equipment_name}}</p>
     </a>

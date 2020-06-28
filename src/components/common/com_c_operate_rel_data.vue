@@ -3,7 +3,7 @@
     <!-- {{visible}} -->
     <el-popover placement="left" width="260" trigger="hover" v-model="visible"  v-if="$power('groupDataList.all.modify')" >
       <!--候选值列表-->
-      <div class>
+      <div class="TAR">
         <el-button icon="el-icon-edit" circle @click="emit('modify')" size="mini"></el-button>
         <el-button title="取消关联" icon="el-icon-delete" circle @click="emit('delete')" size="mini"></el-button>
         <el-button
@@ -26,7 +26,8 @@
         ></el-button>
         
       </div>
-      <el-button slot="reference" size="mini">操作</el-button>
+     
+       <span class="DP3 W50 H22  TAC LH22" slot="reference">操作<i class="el-icon-caret-bottom"></i></span>
     </el-popover>
   </div>
 </template>
@@ -46,13 +47,14 @@ export default {
   methods: {
 
     emit: async function (evType) {
-      this.comList.$emit("single-btn-click", evType, this.doc);
+       this.vm_list = this.$closest({ vmT: this, name: "dm_list_data" })
+      this.vm_list.$emit("single-btn-click", evType, this.doc);
       this.visible = false;
     },
 
   },
   created() {
-    this.comList = this.$parent.$parent.$parent//***找到列表组件---3层
+
 
 
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="HP100">
+  <div class="HP100" v-if="readyBase">
     <dm_debug_list>
       <dm_debug_item v-model="cfList" />
     </dm_debug_list>
@@ -9,7 +9,7 @@
         <van-button plain type="primary" :url="linkAdd" size="small">添加资产</van-button>
       </div>
 
-      <list_data_zhihuigeng class :cf="cfList" v-if="ready"></list_data_zhihuigeng>
+      <list_data_zhihuigeng class :cf="cfList" ></list_data_zhihuigeng>
     </page_h5_zhihuigeng>
   </div>
 </template>
@@ -22,6 +22,7 @@ export default {
   data() {
     return {
       title: "我的资产",
+      
       cfList: {
         com_card: "card_asset_cate",
         ajax: {//ajax配置
@@ -50,9 +51,6 @@ export default {
         ],
 
       },
-
-
-
     };
   },
   computed: {
@@ -63,12 +61,10 @@ export default {
   methods: {
 
 
-
-
   },
   async created() {
+ 
     window.document.title = `我的资产`
-    this.ready = true;
   }
 };
 </script>

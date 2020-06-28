@@ -12,8 +12,6 @@ export default {
   data() {
     return {
       ready: true,
-
-
     };
   },
   methods: {
@@ -23,7 +21,6 @@ export default {
   },
   async created() {
     this.sysId = this.$route.params.sysId;
-
   }
 };
 </script>

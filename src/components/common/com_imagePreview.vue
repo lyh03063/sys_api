@@ -35,8 +35,8 @@ export default {
   methods: {
     fnClick() {
       //加载图片预览列表
-      let vmList = this.$parent.$parent.$parent//***获取到列表组件vm对象
-      let { tableData } = vmList
+       this.vm_list = this.$closest({ vmT: this, name: "dm_list_data" })
+      let { tableData } = this.vm_list
 
       let srcList = tableData.map(doc => {
         let url = lodash.get(doc, `file[0].url`, "");

@@ -1,5 +1,5 @@
 <template>
-  <div class="out">
+  <div class="out" v-if="readyBase">
     <dm_debug_list>
       <dm_debug_item v-model="formData" />
       <dm_debug_item v-model="arrCheck" />
@@ -18,7 +18,7 @@
         color="#3ACC80"
         title-active-color="#3ACC80"
         @click="tabsClick"
-        v-if="ready"
+        v-if="readyStrategy"
       >
         <van-tab name="term" title="触发条件" :title-style="tabTitleStyle">
           <div class="pannel-title">时间条件</div>
@@ -87,14 +87,16 @@
                 </div>
               </div>
 
-              <div class="TAR PT5 PB5 PR50 C_999">周期等于0表示不执行周期</div>
+              <div class="TAR PB10 PR50 C_999">周期等于0表示不执行周期</div>
             </van-checkbox-group>
           </div>
           <div class="pannel-title">其他条件</div>
           <div class="BC_fff">
             <!--已选条件列表-->
             <list_data_zhihuigeng class :cf="cfListOtherItem" @single-action="singleAction_OItem">
-              <template v-slot:slot_no_data>666666666666</template>
+              <template v-slot:slot_no_data>
+                <span class="C_999">暂未设置其他条件</span>
+              </template>
             </list_data_zhihuigeng>
           </div>
           <!--新增条件弹窗选择列表-->
@@ -110,7 +112,7 @@
         </van-tab>
       </van-tabs>
 
-      <div class v-if="ready">
+      <div class v-if="readyStrategy">
         <dm_space height="65" class="BC_fff"></dm_space>
         <div class="n-bottom-bar" style="padding:0">
           <van-button
@@ -153,7 +155,6 @@ for (var i = 0; i < 60; i++) {
 }
 
 
-import OSS from 'ali-oss';
 export default {
   name: "strategy_add_modify",
   mixins: [MIX.base, MIX.zhihuigeng_base,],
@@ -162,17 +163,14 @@ export default {
   },
   data() {
     return {
+      title: "",
       arrCheck: [],//复选框选项
       arrCheckAll: ["ontime1", "ontime2", "duration", "irrCycle",],
       active: "term",//tab聚焦
       tabTitleStyle: "font-size:18px",
-      ready: false,
+      readyStrategy: false,
       mode: "add",
       loadingSubmit: false,//提交数据的loading
-
-
-
-
       //已选条件列表配置
       cfListOP: {
         finishedText: "",
@@ -187,6 +185,7 @@ export default {
 
       },
 
+
       //新增动作弹窗选择列表配置
       cfSelectListOP: {
         title: "选择动作设备",
@@ -199,8 +198,10 @@ export default {
         cfList: {
           com_card: "card_device_op_select",
           ajax: {//ajax配置
-            url: `/resource/resource_device_info_v2`,
-            params: { mold: 2 },//  
+            // url: `/resource/resource_device_info_v2`,
+            url: `/resource/resource_getway_control_device`,
+            //参数在初始化后会进行更新！！！
+           
           },
           cf_list_flex: {
             col: 1, style_g: {
@@ -222,9 +223,9 @@ export default {
             'margin-bottom': 0, 'border-bottom': '1px #f0f0f0 solid'
           }
         },
+        //无数据配置-不显示
         cfNoData: {
-          text: "",
-          iconType: "no",
+          text: "", iconType: "no",
         },
         list: [],
 
@@ -382,7 +383,7 @@ export default {
 
 
     //函数：{列表单项操作的处理函数}
-    async singleAction_OItem({ action, doc, vm }) {
+    async singleAction_OItem({ action, doc, vm_list }) {
       if (action == "modify") {//Q1:修改
         let path = "aaaaaaaaaaaaaa";
         alert(`modify`);
@@ -391,8 +392,8 @@ export default {
       } else if (action == "detail") { //Q2:查看详情
         alert(`查看详情`);
       } else if (action == "delete") { //Q3:删除
-        let index = vm.list.findIndex(d => d.equipment_code == doc.equipment_code)
-        vm.list.splice(index, 1)//删除数据
+        let index = vm_list.list.findIndex(d => d.equipment_code == doc.equipment_code)
+        vm_list.list.splice(index, 1)//删除数据
       }
 
     },
@@ -520,35 +521,45 @@ export default {
       this.cfListOP.list = this.formData.controlDevice
     },
 
+    //自定义生命周期函数：{准备好基础资源的后续函数}--
+    afterReadyBase: async function () {
+      this.title = "添加策略";//修改标题
+      //注意这里的equipment_id一定是网关设备
+      let { strategy_id, resource_id, equipment_id } = this.$route.query;
+      this.cfSelectListItem.cfList.ajax.params.resource_id = resource_id//传入资产ID
+      if (strategy_id) {//如果有resource_id，表示修改资产
+        this.strategy_id = strategy_id;
+        this.mode = "modify";
+        this.title = "修改策略";//修改标题
+      }
+      window.document.title = this.title
+
+      this.formData.strategy_id = strategy_id;
+      this.formData.resource_id = resource_id;
+      this.formData.equipment_id = equipment_id;
+
+
+      //***设置动作弹窗修改参数
+      this.cfSelectListOP.cfList.ajax.params = {
+        // mold: 2 ,
+        resource_id, gateway_mac: equipment_id
+      }
+
+
+      if (this.mode == "modify") {//如果是修改
+        await this.initFormModify();//调用：{初始化修改表单函数}
+
+      }
+      this.relFormAndList();//调用：{关联表单和两个列表的函数}
+      this.readyStrategy = true;
+    },
+
+
 
 
   },
   async created() {
-    this.title = "添加策略";//修改标题
-    //注意这里的equipment_id一定是网关设备
-    let { strategy_id, resource_id, equipment_id } = this.$route.query;
-    this.cfSelectListItem.cfList.ajax.params.resource_id = resource_id//传入资产ID
-    if (strategy_id) {//如果有resource_id，表示修改资产
-      this.strategy_id = strategy_id;
-      this.mode = "modify";
-      this.title = "修改策略";//修改标题
-    }
-    window.document.title = this.title
 
-    this.formData.strategy_id = strategy_id;
-    this.formData.resource_id = resource_id;
-    this.formData.equipment_id = equipment_id;
-
-
-
-
-
-    if (this.mode == "modify") {//如果是修改
-      await this.initFormModify();//调用：{初始化修改表单函数}
-
-    }
-    this.relFormAndList();//调用：{关联表单和两个列表的函数}
-    this.ready = true;
 
 
 
@@ -578,7 +589,7 @@ export default {
 }
 
 .out >>> .n-m-main-box {
-  /* background-color: #fff; */
+  background-color: #fff;
 }
 
 .input-circle {
@@ -598,6 +609,7 @@ export default {
 
 .pannel-title {
   padding: 14px 0 4px 10px;
+  background-color: #f0f0f0;
 
   color: #999;
 }

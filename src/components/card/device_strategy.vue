@@ -1,9 +1,10 @@
 <template>
   <div class >
-    <div class="item-box MB15">
+    <div class="item-box MB10">
       <a class="link-box n-a FX1 DPF" :href="`javascript:;`" style="align-items: center;">
-        <div class="DP3 W70 H70 OFH n-img-box MR15">
-          <img :src="item.icon" alt />
+        <div class="DP3 W50 H50 OFH n-img-box MR10">
+     
+          <img :src="item.icon||'x'" @error="imgError" />
         </div>
         <span class="FX1">
           <p class="FS16">{{item.strategy_name}}</p>

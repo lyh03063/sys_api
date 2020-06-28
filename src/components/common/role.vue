@@ -9,7 +9,7 @@
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item disabled>{{$sys.userId}}</el-dropdown-item>
         <el-dropdown-item disabled>{{$sys.roleName}}</el-dropdown-item>
-        <router-link to="/modify_password">
+        <router-link to="/manage/modify_password">
           <el-dropdown-item command="changePassword">修改密码</el-dropdown-item>
         </router-link>
         <el-dropdown-item command="logOut">退出登录</el-dropdown-item>

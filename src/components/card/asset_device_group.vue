@@ -41,12 +41,12 @@ export default {
   },
   methods: {
     //函数：{选择菜单后的回调函数}
-    async actionDialogShow(item) {
-      this.$emit("action-dialog-show", item);//向父组件传值2
+    async actionDialogShow(item,vm_card) {
+      this.$emit("action-dialog-show", item,vm_card);//向父组件传值2
 
     },
     //函数：{处理单项操作的回调函数}
-    async singleAction({ action, doc, vm }) {
+    async singleAction({ action, doc,  }) {
       this.$emit("single-action", { action, doc });//传值给父组件-
     },
   

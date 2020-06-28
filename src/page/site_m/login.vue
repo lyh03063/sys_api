@@ -1,5 +1,5 @@
 <template>
-  <div class="out">
+  <div class="out" v-if="readyBase">
     <dm_debug_list>
       <dm_debug_item v-model="userInfo" />
       <dm_debug_item v-model="urlFrom" />
@@ -40,9 +40,9 @@
           </van-field>
         </van-cell-group>
         <dm_space height="35"></dm_space>
-        <van-button class="MT10 MB10" type="primary" block round @click="goLogin">登录</van-button>
+        <van-button class="MT10 MB10" type="primary" block round @click="goLogin(formData)">登录</van-button>
         <dm_space height="15"></dm_space>
-        <van-button type="default" block round>注册</van-button>
+        <van-button type="default" block round to="register">注册</van-button>
         <!--通知栏-->
         <van-notify id="van-notify" />
       </div>
@@ -62,44 +62,39 @@ export default {
 
     return {
       title: "登录",
-      ready: true,
       formData: {
-        phone_num: "15011101179",
-        password: "1234561",
+        phone_num: "",
+        password: "",
+        // phone_num: "15011101179",
+        // password: "1234561",
+        // phone_num: "13691916429",
+        // password: "888888",
       },
       urlFrom: null,//登录前的来源地址
     };
   },
   methods: {
-    async goLogin() {
-      let { phone_num, password } = this.formData
-      password = md5(password)//密码进行md5加密
-      //请求接口
-      let data = await this.$ajax({ url: `/user/login`, data: { phone_num, password } });
-      let { code, msg } = data;
-      if (code != 0) {//如果登录失败
-        return this.$toast(msg);
+
+    //自定义生命周期函数：{准备好基础资源的后续函数}--
+    afterReadyBase: async function () {
+      window.document.title = this.title
+      let { fullPath, code, msg } = this.$route.query;
+      this.urlFrom = fullPath;
+      if (msg) {
+        this.$notify(msg);//警告信息
       }
-      let userInfo = data.data;//2级data
-      this.userInfo = userInfo;
-      if (userInfo) {//将用户信息写入公共变量和本地存储
-        util.zhihuigeng.globalData.userInfo = userInfo;
-        util.setLocalStorageObj("zhihuigeng_userInfo", userInfo)//调用：{设置一个对象到LocalStorage}
-      }
-      if (this.urlFrom) {
-        this.$router.replace({ path: this.urlFrom });//跳转到来源页
-      }
+      this.formData.phone_num = localStorage.zhihuigeng_user || ""
+
     },
+
   },
   async created() {
-    let { fullPath, code, msg } = this.$route.query;
-    this.urlFrom = fullPath;
-    if (msg) {
-      this.$notify(msg);//警告信息
-    }
 
-    $.cachedScript("//qn-static.dmagic.cn/md5.min.js")
-      .done(() => {})
+
+
+
+
+
 
 
   }

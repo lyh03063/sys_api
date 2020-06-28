@@ -111,14 +111,7 @@ export default {
 </script>
 
 <style >
-/* 单选框补丁 */
-body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
-  color: #fff;
-  background-color: #e6a23c;
-  border-color: #e6a23c;
-  -webkit-box-shadow: -1px 0 0 0 #e6a23c;
-  box-shadow: -1px 0 0 0 #e6a23c;
-}
+
 .home-head-box {
   background-color: rgb(84, 92, 100);
 }

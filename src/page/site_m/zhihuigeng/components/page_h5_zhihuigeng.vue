@@ -1,9 +1,9 @@
 <template>
-  <div class="HP100">
+  <div class="HP100 out">
     <dm_debug_list>
       <dm_debug_item v-model="$data" />
     </dm_debug_list>
-    <div class="n-m-main-box BC_f0f0f0">
+    <div class="n-m-main-box BC_f0f0f0" v-if="readyBase">
       <!--在小程序中则不显示这个标题栏-->
       <div class="H45" v-if="!inWxMiniProgram">
         <div class="PSF T0 R0 WP100" style="z-index:100">
@@ -14,7 +14,7 @@
             left-arrow
             @click-left="onClickLeft"
           />
-      </div>
+        </div>
       </div>
 
       <!-- inWxMiniProgram: {{inWxMiniProgram}}
@@ -44,7 +44,7 @@ export default {
 
   data() {
     return {
-     
+
     };
   },
   computed: {
@@ -56,14 +56,14 @@ export default {
   },
 
   methods: {
-   
+
 
 
 
   },
   async created() {
 
-    
+
   },
   mounted() {
 
@@ -73,4 +73,8 @@ export default {
 </script>
 
 <style scoped>
+.out >>> .n-a:link,
+.out >>> .n-a:visited {
+  color: #000;
+}
 </style>

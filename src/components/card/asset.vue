@@ -2,8 +2,8 @@
   <div class v-if="!isDelete">
     <a class="link-box n-a" :href="getLink(item)">
       <div class="item-box ">
-        <div class="DP3 W60 H60 OFH n-img-box MR15">
-          <img :src="item.resourceTypePic" alt />
+        <div class="DP3 W50 H50 OFH n-img-box MR15 Circle">
+          <img :src="item.resourceTypePic" @error="imgError" />
         </div>
         <span class="FX1">
           <p class="FS16">{{item.resourceName}}</p>

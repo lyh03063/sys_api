@@ -1,7 +1,7 @@
 <template>
   <div class="item-box DPF">
     <div class="DP3 W36 H36 OFH n-img-box MR10">
-      <img :src="item.equipment_type_icon" />
+      <img :src="item.equipment_type_icon" @error="imgError"/>
     </div>
     <p class="FS14 MB15 MT6 FX1">{{item.equipment_name||item.equipment_type_name}}</p>
     <div class="DPF MR6">

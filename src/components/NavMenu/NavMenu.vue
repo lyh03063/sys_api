@@ -1,9 +1,7 @@
 <template>
   <div :class="['out-box',{'collapse':isCollapse}]">
-    
-<dm_debug_list>
-      <dm_debug_item v-model="cf" text="cf"/>
-
+    <dm_debug_list>
+      <dm_debug_item v-model="cf" text="cf" />
     </dm_debug_list>
 
     <el-aside class :style="[isCollapse?open:close]">
@@ -28,6 +26,7 @@
         @select="selectItem"
       >
         <template v-for="(menuEach,index) in cf">
+          <!--一级菜单带route，表示无子菜单-->
           <el-menu-item
             :index="menuEach.index"
             :route="menuEach.route"
@@ -37,7 +36,7 @@
             <i :class="menuEach.icon"></i>
             <span slot="title">{{menuEach.title}}</span>
           </el-menu-item>
-
+          <!--一级菜单不带route，表示有子菜单-->
           <el-submenu :index="menuEach.index" :key="index" v-else>
             <template slot="title">
               <i :class="menuEach.icon"></i>
@@ -71,7 +70,7 @@ export default {
       return this.$store.state.activeMenuIndex; //从vuex的store里面读取值
     }
   },
-  mounted(){
+  mounted() {
   },
   methods: {
     isCollapseFun() {
@@ -106,10 +105,10 @@ export default {
   background: rgb(84, 92, 100);
   min-width: 201px;
   max-width: 201px;
-  height: calc(100vh - 60px );
+  height: calc(100vh - 60px);
   transition: 0.5s;
- overflow-y: auto;
- overflow-x: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .out-box >>> .el-menu {
@@ -118,7 +117,7 @@ export default {
 
 .out-box.collapse {
   width: 60px;
-    min-width: 60px;
+  min-width: 60px;
 }
 ul {
   margin: 0;

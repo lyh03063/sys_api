@@ -1,7 +1,7 @@
 <template>
   <a class="link-box n-a" :href="getLink(item)">
     <div class="item-box ">
-      <div class="icon-box W60 H60 MR12 n-img-box">
+      <div class="icon-box W50 H50 MR12 n-img-box Circle">
         <img :src="item.device_type_icon" alt />
       </div>
       <span class="FX1">

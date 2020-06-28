@@ -1,5 +1,5 @@
 <template>
-  <div class="out">
+  <div class="out" v-if="readyBase">
     <dm_debug_list>
       <dm_debug_item v-model="userInfo" />
     </dm_debug_list>
@@ -9,7 +9,8 @@
         <dm_space height="15"></dm_space>
         <div class=" user_info" >
           <div class="DP3 W50 H50 OFH n-img-box MR10 Circle">
-            <img :src="userInfo.avatar" />
+            <img :src="userInfo.avatar"  @error="headError" />
+          
           </div>
           <div class>
             <div class="FM4  FS18 MB3">{{userInfo.phone_num}}</div>
@@ -20,7 +21,10 @@
         <!-- <div class="MT10">导航1</div>
         <div  class="MT10">导航2</div> -->
         <div class="MT30">
-          <van-button class="MT10 MB10" type="primary" block round @click="logout">退出登录</van-button>
+          <van-button class="MT10 MB10" type="primary" block round to="../home" >返回首页</van-button>
+        </div>
+        <div class="MT10">
+          <van-button class="MT10 MB10" type="primary" plain block round @click="logout">退出登录</van-button>
         </div>
       </div>
 
@@ -49,12 +53,12 @@ export default {
   methods: {
     //函数：{退出登录函数}
     logout: async function () {
-
       delete localStorage.zhihuigeng_userInfo
       window.location.reload();//函数调用：{重载页面}
-      alert(`清除登录数据`);
+      this.$toast('退出登录成功');
 
     },
+   
 
   },
   async created() {

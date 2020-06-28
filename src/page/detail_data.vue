@@ -67,6 +67,11 @@
         <video width="760" height="440" controls :src="srcVedio"></video>
       </div>
 
+      <div class v-if="doc._dataType=='note'&&doc.sonNoteGId">
+        <!--子笔记列表-->
+        <dm_detail_son_data class :doc="doc"></dm_detail_son_data>
+      </div>
+
       <template class v-if="doc.link&&isShowIframe">
         <div class>
           以下内容通过嵌入其他网页引用：
@@ -135,8 +140,10 @@ export default {
       import("@/components/common/familiarity_select.vue")
   },
   props: {
-    propDataId: null
+    propDataId: null,
+    docDetail: {},//***属性过来的caseId
   },
+
   data() {
     return {
       ready: false,//是否准备完毕
@@ -392,8 +399,10 @@ export default {
     }
   },
   async created() {
-    this.dataId = this.$route.query.dataId;
-    this.dataId = this.dataId || this.propDataId; //如果地址没有(非页面级组件)，从属性中获取数据id
+    //如果地址没有(非页面级组件)，从属性中获取数据id
+    this.dataId = this.$route.query.dataId ||this.docDetail._idRel2 ||  this.propDataId;
+
+
     this.init(); //函数：{初始化函数}
   }
 };
@@ -408,7 +417,7 @@ export default {
 .float_bar {
   position: fixed;
   right: 10px;
-  top: 200px;
+  top: 340px;
   border: 1px #ddd solid;
   border-radius: 5px;
   padding: 8px;

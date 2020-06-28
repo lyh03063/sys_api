@@ -39,14 +39,12 @@ export default {
 
 
   },
-  mounted() {
-    //引入萤石云JSSDK
-    $.cachedScript("https://qn-static.dmagic.cn/ezuikit.js")
-      .done(() => {
-        if (this.cf.cfVedio.src) {//如果视频地址存在
-          new EZUIPlayer(this.id);//初始化播放器
-        }
-      })
+  async mounted() {
+    await util.loadJs({ url: PUB.urlJS.ezuikit })//引入萤石云JSSDK
+    if (this.cf.cfVedio.src) {//如果视频地址存在
+      new EZUIPlayer(this.id);//初始化播放器
+    }
+
   }
 };
 </script>

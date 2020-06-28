@@ -1,15 +1,18 @@
 
 <template>
-  <div class="out">
+  <div class="out" v-if="readyBase">
     <dm_debug_list>
       <dm_debug_item v-model="dataBanner" />
       <dm_debug_item v-model="dataStat" />
     </dm_debug_list>
 
-    <page_h5_zhihuigeng :title="title">
+    <page_h5_zhihuigeng :title="title" >
       <van-swipe :autoplay="3000" style="width:10rem;height:4.5rem">
-        <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img :src="image" style="width:10rem;height:5rem" />
+        <van-swipe-item v-for="(item, index) in images" :key="index">
+          <a  target="_blank"  :href="item.link">
+             <img :src="item.src" style="width:10rem;height:5rem" />
+          </a>
+         
         </van-swipe-item>
       </van-swipe>
       <dm_space height="20"></dm_space>
@@ -47,6 +50,7 @@
           </div>
         </div>
       </div>
+      <dm_space height="60"></dm_space>
       <!--底部菜单栏-->
       <tabbar_zhihuigeng></tabbar_zhihuigeng>
     </page_h5_zhihuigeng>
@@ -124,7 +128,7 @@ Object.assign(optionPie2, {
     itemWidth: 6,
     itemHeight: 6,
   },
-  color: ['#2CAEEC', '#989EFF', '#ff6600',],//颜色配置
+  color: ['#00CA66', '#989EFF', '#ff6600',],//颜色配置
   series: [
     {
       itemStyle: {//自定义显示标签
@@ -168,18 +172,16 @@ export default {
     return {
       title: "智慧耘物联",
       style_g: { width: '48%', 'margin-bottom': 0 },//固定两列，不自动响应
-
-      ready: false,
       ready_echarts: false,
       listCard: [
         //icon: "icon_assets",icon: "icon_equipment",
         { title: "资源", desc: "园区、产地等", icon: "shop", bgColor: "#897DFD", href: "list_asset_cate" },
         { title: "设备", desc: "尝鲜智能设备", icon: "photograph", bgColor: "#FEC202", href: "list_device_cate" },
-      ]
-      ,
+      ],
+      
       images: [
-        'https://ranktop-agriculture.oss-cn-shenzhen.aliyuncs.com/1590720587746.png',
-        'https://ranktop-agriculture.oss-cn-shenzhen.aliyuncs.com/1590720587746.png',
+         { link:"https://www.ranktop.top", src: "https://ranktop-agriculture.oss-cn-shenzhen.aliyuncs.com/1590720587746.png",},
+         { link:"https://www.ranktop.top", src: "https://ranktop-agriculture.oss-cn-shenzhen.aliyuncs.com/1590720587746.png",}
       ],
       dataBanner: null,
       dataStat: null,
@@ -223,51 +225,29 @@ export default {
 
 
     },
+    //自定义生命周期函数：{准备好基础资源的后续函数}--
+    afterReadyBase: async function () {
+      window.document.title = this.title
+      this.ajaxGetListBanner()//调用：{ajax获取Banner列表数据函数}
+      await this.ajaxGetStat()//调用：{ajax获取商户资源,设备状态统计函数}
+
+      let rsLoadJs = await util.loadJs({ url: PUB.urlJS.echarts })
+      console.log(`rsLoadJs:###############`, rsLoadJs);
+      this.ready_echarts = true;
+     
+
+    },
 
 
   },
   async created() {
-    window.document.title = this.title
-    this.ajaxGetListBanner()//调用：{ajax获取Banner列表数据函数}
-    await this.ajaxGetStat()//调用：{ajax获取商户资源,设备状态统计函数}
-    this.ready = true;
 
 
 
-    //加载js文件
-    $.cachedScript("https://qn-static.dmagic.cn/echarts.min.4.8.0.js")
-      .done(() => {
-        this.ready_echarts = true;
-      })
 
 
   },
-  mounted() {
-    $.cachedScript("//res.wx.qq.com/open/js/jweixin-1.3.2.js")
-      .done(() => {
-        wx.miniProgram.postMessage({ data: { status: "h5_home_mounted" } })
-      })
-
-
-    console.log(`require:`, require);
-
-    // require.config({
-    //   paths: {
-    //     "jQuery": "http://qn-static.dmagic.cn/jquery.min.3.4.0"
-    //   }
-
-    // });
-
-
-
-    // require(['http://qn-static.dmagic.cn/jquery.min.3.4.0',], function ($, b) {
-    //   console.log(`jQuery:`, jQuery);
-    //   //既然我在开头明确声明依赖需求，那可以确定在执行这个回调函数时，依赖肯定是已经满足了
-    //   //所以，放心地使用吧
-    // })
-
-
-  }
+ 
 
 
 };

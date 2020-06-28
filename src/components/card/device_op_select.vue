@@ -1,8 +1,8 @@
 <template>
   <div class="item-box DPF">
-    <div class="" >
+    <!-- <div class="" >
       {{item._selected}}-
-    </div>
+    </div> -->
     
     <van-checkbox
       v-model="item._selected"
@@ -11,7 +11,7 @@
       @change="changeSelected"
     ></van-checkbox>
     <div class="DP3 W40 H40 OFH n-img-box MR10">
-      <img :src="item.equipment_type_icon" />
+      <img :src="item.equipment_type_icon" @error="imgError"/>
     </div>
     <p class="FS14 MB15 MT4 FX1">{{item.equipment_name}}</p>
     
